@@ -381,13 +381,16 @@
   <div class="config-card">
     <div class="field">
       <label>Nome do evento</label>
-      <input type="text" id="event-name" placeholder="Ex: Casamento Ana & Pedro"/>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <input type="text" id="event-name" placeholder="Ex: Casamento Ana & Pedro" style="flex:1"/>
+        <button class="btn-save" id="btn-save" onclick="saveEventName()" style="white-space:nowrap; padding:12px 20px;">Salvar</button>
+      </div>
     </div>
     <div class="field">
       <label>Tempo por foto (segundos)</label>
       <div class="range-wrap">
         <input type="range" id="slide-duration" min="3" max="10" value="5"
-          oninput="document.getElementById('slide-val').textContent = this.value + 's'"/>
+          oninput="document.getElementById('slide-val').textContent = this.value + 's'; autoSaveDuration()"/>
         <span class="range-val" id="slide-val">5s</span>
       </div>
     </div>
@@ -397,7 +400,7 @@
         <p>Congela o painel na foto atual</p>
       </div>
       <label class="toggle">
-        <input type="checkbox" id="toggle-paused"/>
+        <input type="checkbox" id="toggle-paused" onchange="autoSaveToggle('paused', this.checked)"/>
         <span class="toggle-slider"></span>
       </label>
     </div>
@@ -407,12 +410,11 @@
         <p>Aprovar fotos antes de exibir</p>
       </div>
       <label class="toggle">
-        <input type="checkbox" id="toggle-moderation"/>
+        <input type="checkbox" id="toggle-moderation" onchange="autoSaveToggle('moderation', this.checked)"/>
         <span class="toggle-slider"></span>
       </label>
     </div>
-    <div style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
-      <button class="btn-save" id="btn-save" onclick="saveConfig()">Salvar configurações</button>
+    <div style="margin-top:20px;">
       <button class="btn-danger" onclick="clearPhotos()">Limpar todas as fotos</button>
     </div>
   </div>
@@ -615,20 +617,35 @@
     });
   };
 
-  window.saveConfig = async () => {
+  window.saveEventName = async () => {
     if (!currentUid) return;
     const btn = document.getElementById('btn-save');
     btn.disabled = true; btn.textContent = 'Salvando...';
     try {
       await setDoc(doc(db, 'eventos', currentUid), {
         eventName: document.getElementById('event-name').value.trim() || 'Meu Evento',
-        slideDuration: parseInt(document.getElementById('slide-duration').value) * 1000,
-        paused: document.getElementById('toggle-paused').checked,
-        moderation: document.getElementById('toggle-moderation').checked,
       }, { merge: true });
-      showToast('✓ Configurações salvas!');
+      showToast('✓ Nome salvo!');
     } catch { showToast('Erro ao salvar.'); }
-    btn.disabled = false; btn.textContent = 'Salvar configurações';
+    btn.disabled = false; btn.textContent = 'Salvar';
+  };
+
+  let durationTimer = null;
+  window.autoSaveDuration = () => {
+    if (!currentUid) return;
+    clearTimeout(durationTimer);
+    durationTimer = setTimeout(async () => {
+      await setDoc(doc(db, 'eventos', currentUid), {
+        slideDuration: parseInt(document.getElementById('slide-duration').value) * 1000,
+      }, { merge: true });
+      showToast('✓ Tempo atualizado!');
+    }, 600);
+  };
+
+  window.autoSaveToggle = async (field, value) => {
+    if (!currentUid) return;
+    await setDoc(doc(db, 'eventos', currentUid), { [field]: value }, { merge: true });
+    showToast(value ? `✓ ${field === 'paused' ? 'Pausado' : 'Moderação ativada'}` : `✓ ${field === 'paused' ? 'Retomado' : 'Moderação desativada'}`);
   };
 
   window.clearPhotos = async () => {
