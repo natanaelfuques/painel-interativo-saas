@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrar · Painel Interativo</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%3E%3Crect%20x%3D%222%22%20y%3D%224%22%20width%3D%2228%22%20height%3D%2220%22%20rx%3D%223%22%20stroke%3D%22%23ff3c6e%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%225%22%20y%3D%227%22%20width%3D%2222%22%20height%3D%2214%22%20rx%3D%221.5%22%20fill%3D%22%23ff3c6e%22%20fill-opacity%3D%220.15%22%20stroke%3D%22%23ff3c6e%22%20stroke-width%3D%221.2%22/%3E%3Cpath%20d%3D%22M11%2028h10M16%2024v4%22%20stroke%3D%22%23ff3c6e%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f; --card: #13131a; --card2: #1a1a24;
+    --accent: #ff3c6e; --accent2: #ff8c42;
+    --text: #f0f0f5; --muted: #6b6b80;
+    --border: rgba(255,255,255,0.08);
+    --border-accent: rgba(255,60,110,0.25);
+    --green: #22c55e;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg); color: var(--text);
+    min-height: 100dvh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 24px; position: relative; overflow: hidden;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% -10%, rgba(255,60,110,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 90% 100%, rgba(255,140,66,0.08) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px; font-weight: 800; color: var(--text);
+    margin-bottom: 32px; position: relative; z-index: 1;
+  }
+  .logo-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+  .card {
+    position: relative; z-index: 1;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 24px; padding: 40px 36px;
+    width: 100%; max-width: 400px;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+    animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.95) translateY(16px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px; font-weight: 800;
+    letter-spacing: -0.02em; margin-bottom: 6px;
+  }
+  .card-sub { font-size: 13px; color: var(--muted); font-weight: 300; margin-bottom: 28px; }
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  .field input {
+    width: 100%; padding: 13px 16px;
+    background: var(--card2); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 15px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .field input:focus { border-color: rgba(255,60,110,0.5); }
+  .field input::placeholder { color: var(--muted); }
+  .forgot { text-align: right; margin-top: -8px; margin-bottom: 20px; }
+  .forgot a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .forgot a:hover { color: var(--accent); }
+  .btn-primary {
+    width: 100%; padding: 15px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; font-family: 'Outfit', sans-serif;
+    font-size: 15px; font-weight: 700;
+    border: none; border-radius: 12px;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-primary:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 10px 28px rgba(255,60,110,0.3); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-ghost {
+    width: 100%; padding: 13px;
+    background: transparent; border: 1px solid var(--border);
+    border-radius: 12px; color: var(--muted);
+    font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.2s; margin-top: 10px;
+  }
+  .btn-ghost:hover { border-color: var(--border-accent); color: var(--text); }
+  .error-box {
+    display: none;
+    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+    border-radius: 10px; padding: 12px 16px;
+    font-size: 13px; color: #ef4444;
+    margin-bottom: 16px; text-align: center;
+  }
+  .success-box {
+    display: none;
+    background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25);
+    border-radius: 10px; padding: 12px 16px;
+    font-size: 13px; color: var(--green);
+    margin-bottom: 16px; text-align: center;
+  }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white; border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .brand {
+    position: fixed; bottom: 18px;
+    font-size: 12px; font-weight: 600;
+    color: rgba(255,255,255,0.2); letter-spacing: 1px;
+    text-decoration: none; z-index: 1; transition: color 0.2s;
+  }
+  .brand:hover { color: rgba(255,255,255,0.5); }
+</style>
+</head>
+<body>
+
+<div class="logo">
+  <div class="logo-dot"></div>
+  Painel Interativo
+</div>
+
+<!-- LOGIN -->
+<div class="card" id="login-card">
+  <div class="card-title">Bem-vindo de volta</div>
+  <p class="card-sub">Entre com seu email e senha para acessar o painel.</p>
+  <div class="error-box" id="login-error"></div>
+  <div class="field">
+    <label>Email</label>
+    <input type="email" id="email" placeholder="seu@email.com" autocomplete="email"/>
+  </div>
+  <div class="field">
+    <label>Senha</label>
+    <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"
+      onkeydown="if(event.key==='Enter') doLogin()"/>
+  </div>
+  <div class="forgot">
+    <a href="#" onclick="showReset(event)">Esqueci minha senha</a>
+  </div>
+  <button class="btn-primary" id="btn-login" onclick="doLogin()">Entrar</button>
+</div>
+
+<!-- RESET SENHA -->
+<div class="card" id="reset-card" style="display:none">
+  <div class="card-title">Recuperar senha</div>
+  <p class="card-sub">Enviaremos um link para redefinir sua senha.</p>
+  <div class="error-box" id="reset-error"></div>
+  <div class="success-box" id="reset-success"></div>
+  <div class="field">
+    <label>Email</label>
+    <input type="email" id="reset-email" placeholder="seu@email.com"/>
+  </div>
+  <button class="btn-primary" id="btn-reset" onclick="doReset()">Enviar link</button>
+  <button class="btn-ghost" onclick="showLogin()">← Voltar ao login</button>
+</div>
+
+<a class="brand" href="index.html">Painel Interativo</a>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+  import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
+  import { getFirestore, doc, getDoc }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+
+  const app = initializeApp({
+    apiKey: "AIzaSyAuPS32OoQtQIQBO6LfEfYn2T5J6xTTxHY",
+    authDomain: "painel-interativo-saas.firebaseapp.com",
+    projectId: "painel-interativo-saas",
+    storageBucket: "painel-interativo-saas.firebasestorage.app",
+    messagingSenderId: "962909096330",
+    appId: "1:962909096330:web:d446a082bce21a0447a073"
+  });
+
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Se já logado e ativo, redireciona direto
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) return;
+    try {
+      const snap = await getDoc(doc(db, 'usuarios', user.uid));
+      if (snap.exists() && snap.data().status === 'ativo') {
+        window.location.href = 'dashboard.html';
+      } else {
+        await auth.signOut();
+      }
+    } catch {}
+  });
+
+  const ERRORS = {
+    'auth/invalid-credential': 'Email ou senha incorretos.',
+    'auth/user-not-found': 'Nenhuma conta com este email.',
+    'auth/wrong-password': 'Senha incorreta.',
+    'auth/too-many-requests': 'Muitas tentativas. Aguarde e tente novamente.',
+    'auth/invalid-email': 'Email inválido.',
+    'auth/user-disabled': 'Conta desativada. Entre em contato.',
+  };
+
+  window.doLogin = async () => {
+    const email = document.getElementById('email').value.trim();
+    const pw = document.getElementById('password').value;
+    const btn = document.getElementById('btn-login');
+    const errEl = document.getElementById('login-error');
+
+    errEl.style.display = 'none';
+    if (!email || !pw) { errEl.textContent = 'Preencha email e senha.'; errEl.style.display = 'block'; return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div>';
+
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, pw);
+      const snap = await getDoc(doc(db, 'usuarios', cred.user.uid));
+      if (!snap.exists() || snap.data().status !== 'ativo') {
+        await auth.signOut();
+        errEl.textContent = 'Sua conta está inativa. Entre em contato via WhatsApp.';
+        errEl.style.display = 'block';
+        btn.disabled = false; btn.innerHTML = 'Entrar';
+        return;
+      }
+      window.location.href = 'dashboard.html';
+    } catch (err) {
+      errEl.textContent = ERRORS[err.code] || 'Erro ao entrar. Tente novamente.';
+      errEl.style.display = 'block';
+      btn.disabled = false; btn.innerHTML = 'Entrar';
+    }
+  };
+
+  window.doReset = async () => {
+    const email = document.getElementById('reset-email').value.trim();
+    const btn = document.getElementById('btn-reset');
+    const errEl = document.getElementById('reset-error');
+    const sucEl = document.getElementById('reset-success');
+
+    errEl.style.display = 'none'; sucEl.style.display = 'none';
+    if (!email) { errEl.textContent = 'Digite seu email.'; errEl.style.display = 'block'; return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<div class="spinner"></div>';
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      sucEl.textContent = 'Link enviado! Verifique seu email (e a caixa de spam).';
+      sucEl.style.display = 'block';
+    } catch {
+      errEl.textContent = 'Erro ao enviar. Verifique o email digitado.';
+      errEl.style.display = 'block';
+    } finally {
+      btn.disabled = false; btn.innerHTML = 'Enviar link';
+    }
+  };
+
+  window.showReset = (e) => {
+    e.preventDefault();
+    document.getElementById('login-card').style.display = 'none';
+    document.getElementById('reset-card').style.display = 'block';
+  };
+  window.showLogin = () => {
+    document.getElementById('reset-card').style.display = 'none';
+    document.getElementById('login-card').style.display = 'block';
+  };
+</script>
+</body>
+</html>

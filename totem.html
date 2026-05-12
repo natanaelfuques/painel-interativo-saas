@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, initial-scale=1.0">
+  <title>Painel Interativo</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%20fill%3D%22none%22%3E%3Crect%20x%3D%222%22%20y%3D%224%22%20width%3D%2228%22%20height%3D%2220%22%20rx%3D%223%22%20stroke%3D%22%23ff3c6e%22%20stroke-width%3D%222%22/%3E%3Crect%20x%3D%225%22%20y%3D%227%22%20width%3D%2222%22%20height%3D%2214%22%20rx%3D%221.5%22%20fill%3D%22%23ff3c6e%22%20fill-opacity%3D%220.15%22%20stroke%3D%22%23ff3c6e%22%20stroke-width%3D%221.2%22/%3E%3Cpath%20d%3D%22M11%2028h10M16%2024v4%22%20stroke%3D%22%23ff3c6e%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22/%3E%3C/svg%3E">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; width: 100vw; height: 100vh; overflow: hidden; font-family: 'Outfit', sans-serif; color: #fff; }
+
+    /* ERRO DE UID */
+    #uid-error {
+      position: fixed; inset: 0; display: none;
+      flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+      background: #0a0a0f;
+    }
+    #uid-error h2 { font-size: 28px; font-weight: 800; color: #ff3c6e; }
+    #uid-error p { font-size: 16px; color: rgba(255,255,255,0.4); }
+
+    #slideshow { position: relative; width: 100%; height: 100%; }
+    .slide {
+      position: absolute; inset: 0; opacity: 0;
+      transition: opacity 1s ease-in-out;
+      display: flex; align-items: center; justify-content: center;
+      background: #000; overflow: hidden;
+    }
+    .slide.active { opacity: 1; }
+    .slide-bg {
+      position: absolute; inset: -20px;
+      background-size: cover; background-position: center;
+      filter: blur(24px) brightness(0.5) saturate(1.4);
+      transform: scale(1.1); z-index: 0;
+    }
+    .slide img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: contain; }
+    .slide::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.7) 100%);
+      pointer-events: none; z-index: 2;
+    }
+
+    .overlay {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      padding: 32px 48px; z-index: 10;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
+    }
+    .event-name { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; opacity: 0.9; }
+    .brand { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; margin-top: 4px; }
+
+    .qr-wrap {
+      position: fixed; bottom: 24px; right: 48px; z-index: 10;
+      text-align: center; display: flex; flex-direction: column; align-items: center;
+    }
+    .qr-wrap img { width: 110px; height: 110px; border-radius: 10px; border: 3px solid #fff; display: block; }
+    .qr-label { font-size: 11px; margin-bottom: 6px; opacity: 0.7; letter-spacing: 0.5px; order: -1; }
+
+    #empty {
+      position: fixed; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+      background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,60,110,0.15) 0%, transparent 70%);
+    }
+    #empty h2 {
+      font-size: 42px; font-weight: 800;
+      background: linear-gradient(135deg, #fff 30%, rgba(255,255,255,0.4));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    #empty p { font-size: 20px; opacity: 0.5; }
+
+    #dots {
+      position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 10;
+    }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: all 0.3s; }
+    .dot.active { background: #ff3c6e; transform: scale(1.4); }
+    .dot.new { background: #facc15; transform: scale(1.4); }
+
+    #flash { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 100; transition: opacity 0.1s; }
+
+    #new-badge {
+      position: fixed; top: 32px; left: 48px;
+      background: linear-gradient(135deg, #ff3c6e, #ff8c42);
+      padding: 8px 20px; border-radius: 99px;
+      font-size: 14px; font-weight: 700; z-index: 20;
+      opacity: 0; transform: translateY(-10px);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    #new-badge.show { opacity: 1; transform: translateY(0); }
+
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  </style>
+</head>
+<body>
+
+<div id="slideshow"></div>
+<div id="dots"></div>
+<div id="flash"></div>
+
+<div id="new-badge">
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="display:inline;vertical-align:middle;margin-right:5px">
+    <rect x="1" y="3" width="12" height="9" rx="2" stroke="white" stroke-width="1.4"/>
+    <circle cx="7" cy="7.5" r="2.5" stroke="white" stroke-width="1.4"/>
+    <path d="M5 3l.8-1.5h2.4L9 3" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+  </svg>
+  Nova foto!
+</div>
+
+<div id="empty">
+  <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+    <rect x="8" y="20" width="64" height="46" rx="8" stroke="rgba(255,60,110,0.6)" stroke-width="2.5"/>
+    <circle cx="40" cy="43" r="14" stroke="rgba(255,60,110,0.6)" stroke-width="2.5"/>
+    <circle cx="40" cy="43" r="6" fill="rgba(255,60,110,0.25)"/>
+    <path d="M28 20l4-8h16l4 8" stroke="rgba(255,60,110,0.6)" stroke-width="2.5" stroke-linejoin="round"/>
+  </svg>
+  <h2>Envie sua foto!</h2>
+  <p>Escaneie o QR code e apareça aqui</p>
+</div>
+
+<div id="uid-error" style="display:none">
+  <h2>Link inválido</h2>
+  <p>Este totem não possui um ID de evento válido.</p>
+</div>
+
+<div class="overlay">
+  <div>
+    <div class="event-name" id="event-name">Painel Interativo</div>
+    <div class="brand">@audiodequalidade</div>
+  </div>
+</div>
+
+<div class="qr-wrap">
+  <img id="qr-img" alt="QR Code"/>
+  <div class="qr-label">Envie sua foto</div>
+</div>
+
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+  import { getFirestore, doc, onSnapshot }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+
+  const app = initializeApp({
+    apiKey: "AIzaSyAuPS32OoQtQIQBO6LfEfYn2T5J6xTTxHY",
+    authDomain: "painel-interativo-saas.firebaseapp.com",
+    projectId: "painel-interativo-saas",
+    storageBucket: "painel-interativo-saas.firebasestorage.app",
+    messagingSenderId: "962909096330",
+    appId: "1:962909096330:web:d446a082bce21a0447a073"
+  });
+
+  const db = getFirestore(app);
+
+  // Pega UID da URL
+  const uid = new URLSearchParams(window.location.search).get('uid');
+  if (!uid) {
+    document.getElementById('uid-error').style.display = 'flex';
+    document.getElementById('empty').style.display = 'none';
+  } else {
+    // Gera QR code apontando para upload.html?uid=...
+    const uploadUrl = `${window.location.origin}${window.location.pathname.replace('totem.html','upload.html')}?uid=${uid}`;
+    document.getElementById('qr-img').src =
+      `https://quickchart.io/qr?text=${encodeURIComponent(uploadUrl)}&size=240&margin=2`;
+
+    let photos = [];
+    let currentIndex = 0;
+    let slideInterval = null;
+    let slideDuration = 5000;
+    let paused = false;
+    let newPhotoIndices = new Set();
+
+    // Listener em tempo real do Firestore
+    onSnapshot(doc(db, 'eventos', uid), (snap) => {
+      if (!snap.exists()) return;
+      const data = snap.data();
+
+      if (data.eventName) document.getElementById('event-name').textContent = data.eventName;
+      if (data.slideDuration) slideDuration = data.slideDuration;
+
+      const waspaused = paused;
+      paused = !!data.paused;
+      if (paused && !waspaused) {
+        if (slideInterval) { clearInterval(slideInterval); slideInterval = null; }
+      } else if (!paused && waspaused) {
+        startSlideshow();
+      }
+
+      const newPhotos = (data.photos || []).filter(p => !data.pendingPhotos?.includes(p));
+      const prevCount = photos.length;
+      const changed = newPhotos.length !== photos.length || newPhotos.some((u, i) => u !== photos[i]);
+
+      if (changed) {
+        const hadPhotos = photos.length > 0;
+        photos = newPhotos;
+        rebuildSlides();
+
+        if (photos.length > 0) {
+          document.getElementById('empty').style.display = 'none';
+          if (!hadPhotos) showSlide(0);
+          else if (photos.length > prevCount) {
+            showNewBadge();
+            for (let i = prevCount; i < photos.length; i++) newPhotoIndices.add(i);
+            renderDots();
+          }
+        } else {
+          document.getElementById('empty').style.display = 'flex';
+        }
+      }
+    });
+
+    function renderDots() {
+      document.getElementById('dots').innerHTML = photos.map((_, i) => {
+        let cls = 'dot';
+        if (i === currentIndex) cls += ' active';
+        else if (newPhotoIndices.has(i)) cls += ' new';
+        return `<div class="${cls}"></div>`;
+      }).join('');
+    }
+
+    function showSlide(index) {
+      document.querySelectorAll('.slide').forEach((s, i) => {
+        s.classList.toggle('active', i === index);
+      });
+      currentIndex = index;
+      newPhotoIndices.delete(currentIndex);
+      renderDots();
+    }
+
+    function makeSlide(url, active) {
+      const div = document.createElement('div');
+      div.className = 'slide' + (active ? ' active' : '');
+      const bg = document.createElement('div');
+      bg.className = 'slide-bg';
+      bg.style.backgroundImage = `url(${url})`;
+      const img = document.createElement('img');
+      img.src = url; img.loading = 'lazy';
+      div.appendChild(bg); div.appendChild(img);
+      return div;
+    }
+
+    function rebuildSlides() {
+      const ss = document.getElementById('slideshow');
+      if (currentIndex >= photos.length) currentIndex = 0;
+      ss.innerHTML = '';
+      photos.forEach((url, i) => ss.appendChild(makeSlide(url, i === currentIndex)));
+      renderDots();
+    }
+
+    function showNewBadge() {
+      const b = document.getElementById('new-badge');
+      b.classList.add('show');
+      setTimeout(() => b.classList.remove('show'), 3000);
+    }
+
+    function startSlideshow() {
+      if (paused) return;
+      if (slideInterval) clearInterval(slideInterval);
+      slideInterval = setInterval(() => {
+        if (photos.length > 1 && !paused) showSlide((currentIndex + 1) % photos.length);
+      }, slideDuration);
+    }
+
+    startSlideshow();
+  }
+</script>
+</body>
+</html>
