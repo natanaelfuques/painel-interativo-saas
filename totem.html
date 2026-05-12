@@ -185,7 +185,7 @@
       paused = !!data.paused;
       if (paused && !waspaused) {
         if (slideInterval) { clearInterval(slideInterval); slideInterval = null; }
-        if (photos.length > 0) showSlide(0); // volta para a primeira foto
+        currentIndex = 0; // reset índice antes de rebuild
       } else if (!paused && waspaused) {
         startSlideshow();
       }
@@ -210,6 +210,9 @@
         } else {
           document.getElementById('empty').style.display = 'flex';
         }
+      } else if (paused && !waspaused && photos.length > 0) {
+        // sem mudança de fotos, só força a primeira
+        showSlide(0);
       }
     });
 
