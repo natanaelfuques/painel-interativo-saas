@@ -293,6 +293,7 @@
   <div class="nav-logo"><div class="nav-dot"></div> Painel Interativo</div>
   <div class="nav-user">
     <span class="nav-email" id="nav-email"></span>
+    <button class="btn-logout" onclick="sendPasswordReset()">Alterar senha</button>
     <button class="btn-logout" onclick="doLogout()">Sair</button>
   </div>
 </nav>
@@ -408,7 +409,7 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
-  import { getAuth, onAuthStateChanged, signOut }
+  import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
   import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, arrayRemove }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
@@ -531,6 +532,17 @@
     const url = `${BASE}upload.html?uid=${currentUid}`;
     await navigator.clipboard.writeText(url);
     showToast('✓ Link copiado!');
+  };
+
+  window.sendPasswordReset = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+    try {
+      await sendPasswordResetEmail(auth, user.email);
+      showToast('✓ Link enviado para ' + user.email);
+    } catch {
+      showToast('Erro ao enviar. Tente novamente.');
+    }
   };
 
   window.doLogout = async () => {
