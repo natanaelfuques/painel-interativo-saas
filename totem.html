@@ -174,7 +174,12 @@
       const data = snap.data();
 
       if (data.eventName) document.getElementById('event-name').textContent = data.eventName;
-      if (data.slideDuration) slideDuration = data.slideDuration;
+      if (data.slideDuration && data.slideDuration !== slideDuration) {
+        slideDuration = data.slideDuration;
+        startSlideshow(); // reinicia com nova duração
+      } else if (data.slideDuration) {
+        slideDuration = data.slideDuration;
+      }
 
       const waspaused = paused;
       paused = !!data.paused;
