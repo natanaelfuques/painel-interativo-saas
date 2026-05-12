@@ -158,6 +158,7 @@
     </div>
     <h1>Foto enviada!</h1>
     <p>Sua foto foi adicionada à tela. Aproveite o evento!</p>
+    <p id="success-msg" style="font-size:13px;color:var(--muted)">Sua foto foi adicionada à tela. Aproveite o evento!</p>
     <img class="sent-preview" id="sent-preview" alt="Sua foto"/>
     <button class="btn-remove" id="btn-remove" onclick="removePhoto()">Remover minha foto da tela</button>
     <div class="status" id="remove-status"></div>
@@ -259,9 +260,18 @@
 
       const url = data.data.url;
 
-      // Salva URL no Firestore
-      await updateDoc(doc(db, 'eventos', uid), { photos: arrayUnion(url) });
+      // Verifica se moderação está ativa
+      const eventSnap = await getDoc(doc(db, 'eventos', uid));
+      const moderation = eventSnap.data()?.moderation || false;
+
+      // Salva na fila certa
+      if (moderation) {
+        await updateDoc(doc(db, 'eventos', uid), { pendingPhotos: arrayUnion(url) });
+      } else {
+        await updateDoc(doc(db, 'eventos', uid), { photos: arrayUnion(url) });
+      }
       uploadedUrl = url;
+      window._moderation = moderation;
 
       bar.style.width = '100%';
 
@@ -270,6 +280,10 @@
         const s = document.getElementById('success-state');
         s.style.display = 'flex';
         document.getElementById('sent-preview').src = url;
+        if (window._moderation) {
+          document.getElementById('success-msg').textContent = 'Sua foto foi enviada e será exibida após aprovação!';
+          document.getElementById('btn-remove').style.display = 'none';
+        }
       }, 300);
 
     } catch (err) {
