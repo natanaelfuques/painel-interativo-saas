@@ -389,6 +389,17 @@
   .photo-select-label .select-dot.checked { background: var(--accent); border-color: var(--accent); }
   .photo-select { display: none; }
 
+
+  .btn-pos-active {
+    border-color: var(--border-accent) !important;
+    background: rgba(255,60,110,0.15) !important;
+    color: var(--accent) !important;
+  }
+  .btn-pos-inactive {
+    border-color: var(--border) !important;
+    background: transparent !important;
+    color: var(--muted) !important;
+  }
 </style>
 </head>
 <body>
@@ -514,18 +525,25 @@
       <h3>Link de upload</h3>
       <p>Compartilhe com os convidados para enviar fotos</p>
     </a>
-    <div class="action-card" onclick="copyQR()">
+    <div class="action-card" style="cursor:default;" onclick="event.stopPropagation()">
       <div class="action-icon">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <rect x="2" y="2" width="7" height="7" rx="1" stroke="#ff3c6e" stroke-width="1.5"/>
-          <rect x="11" y="2" width="7" height="7" rx="1" stroke="#ff3c6e" stroke-width="1.5"/>
-          <rect x="2" y="11" width="7" height="7" rx="1" stroke="#ff3c6e" stroke-width="1.5"/>
-          <rect x="13" y="13" width="3" height="3" rx="0.5" fill="#ff3c6e"/>
-          <path d="M11 14h2M14 11v2" stroke="#ff3c6e" stroke-width="1.5" stroke-linecap="round"/>
+          <rect x="2" y="3" width="16" height="14" rx="2" stroke="#ff3c6e" stroke-width="1.5"/>
+          <path d="M6 7h8M6 10h5" stroke="#ff3c6e" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </div>
-      <h3>Copiar link do QR</h3>
-      <p>Link de upload para gerar QR code personalizado</p>
+      <h3>Posição do QR code</h3>
+      <p>Onde o QR e as informações aparecem no totem</p>
+      <div style="display:flex; gap:8px; margin-top:10px;" onclick="event.stopPropagation()">
+        <button id="btn-pos-bottom" onclick="setQRPosition('bottom')"
+          style="flex:1;padding:8px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;border:1px solid var(--border-accent);background:rgba(255,60,110,0.15);color:var(--accent);">
+          ↓ Inferior
+        </button>
+        <button id="btn-pos-top" onclick="setQRPosition('top')"
+          style="flex:1;padding:8px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:transparent;color:var(--muted);">
+          ↑ Superior
+        </button>
+      </div>
     </div>
   </div>
 
@@ -680,6 +698,7 @@
       document.getElementById('toggle-paused').checked = !!d.paused;
       document.getElementById('toggle-moderation').checked = !!d.moderation;
       if (d.instagram) document.getElementById('instagram-handle').value = d.instagram;
+      updateQRPositionButtons(d.qrPosition || 'bottom');
     }
 
     // Listener de fotos em tempo real
@@ -855,6 +874,26 @@
     } catch { showToast('Erro ao salvar.'); }
     btn.disabled = false; btn.textContent = 'Salvar';
   };
+
+  window.setQRPosition = async (pos) => {
+    if (!currentUid) return;
+    await setDoc(doc(db, 'eventos', currentUid), { qrPosition: pos }, { merge: true });
+    updateQRPositionButtons(pos);
+    showToast(`✓ QR code movido para ${pos === 'top' ? 'superior' : 'inferior'}!`);
+  };
+
+  function updateQRPositionButtons(pos) {
+    const btnBottom = document.getElementById('btn-pos-bottom');
+    const btnTop = document.getElementById('btn-pos-top');
+    if (!btnBottom || !btnTop) return;
+    if (pos === 'top') {
+      btnBottom.className = 'btn-pos-inactive'; btnBottom.style.cssText = 'flex:1;padding:8px;border-radius:8px;font-family:Outfit,sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:transparent;color:var(--muted);';
+      btnTop.style.cssText = 'flex:1;padding:8px;border-radius:8px;font-family:Outfit,sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;border:1px solid rgba(255,60,110,0.25);background:rgba(255,60,110,0.15);color:var(--accent);';
+    } else {
+      btnBottom.style.cssText = 'flex:1;padding:8px;border-radius:8px;font-family:Outfit,sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;border:1px solid rgba(255,60,110,0.25);background:rgba(255,60,110,0.15);color:var(--accent);';
+      btnTop.style.cssText = 'flex:1;padding:8px;border-radius:8px;font-family:Outfit,sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;border:1px solid var(--border);background:transparent;color:var(--muted);';
+    }
+  }
 
   window.saveInstagram = async () => {
     if (!currentUid) return;

@@ -175,6 +175,17 @@
 
       if (data.eventName) document.getElementById('event-name').textContent = data.eventName;
       document.getElementById('brand-handle').textContent = data.instagram || '@nfsolucoesparaeventos';
+      // Posição do QR e overlay
+      const pos = data.qrPosition || 'bottom';
+      const overlay = document.querySelector('.overlay');
+      const qrWrap = document.querySelector('.qr-wrap');
+      if (pos === 'top') {
+        overlay.classList.add('top');
+        qrWrap.classList.add('top');
+      } else {
+        overlay.classList.remove('top');
+        qrWrap.classList.remove('top');
+      }
       if (data.slideDuration && data.slideDuration !== slideDuration) {
         slideDuration = data.slideDuration;
         startSlideshow(); // reinicia com nova duração
