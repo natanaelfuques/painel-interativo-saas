@@ -705,19 +705,27 @@
 
     if (isPremiumUser && toolbar) toolbar.classList.add('visible');
 
-    grid.innerHTML = photos.map(url => `
+    grid.innerHTML = photos.map((url, idx) => `
       <div class="photo-thumb">
         ${isPremiumUser ? `
-        <label class="photo-select-label" onclick="var cb=this.querySelector('.photo-select');cb.checked=!cb.checked;cb.dispatchEvent(new Event('change'))">
-          <input type="checkbox" class="photo-select" data-url="${url}" style="display:none"
-            onchange="updateSelectAll();document.getElementById('btn-dl-selected').disabled=!document.querySelectorAll('.photo-select:checked').length;this.closest('label').querySelector('.select-dot').classList.toggle('checked',this.checked)"/>
-          <div class="select-dot"></div>
-        </label>` : ''}
+        <div class="photo-select-label" onclick="togglePhotoSelect(${idx})">
+          <div class="select-dot" id="dot-${idx}"></div>
+        </div>
+        <input type="checkbox" class="photo-select" id="cb-${idx}" data-url="${url}" style="display:none"/>` : ''}
         <img src="${url}" loading="lazy"/>
         <button class="photo-del" onclick="deletePhoto('${url}')">✕</button>
       </div>
     `).join('');
   }
+
+  window.togglePhotoSelect = (idx) => {
+    const cb = document.getElementById(`cb-${idx}`);
+    const dot = document.getElementById(`dot-${idx}`);
+    if (!cb) return;
+    cb.checked = !cb.checked;
+    dot.classList.toggle('checked', cb.checked);
+    updateSelectAll();
+  };
 
   function updateSelectAll() {
     const all = document.querySelectorAll('.photo-select');
@@ -732,9 +740,10 @@
   }
 
   window.toggleSelectAll = (checked) => {
-    document.querySelectorAll('.photo-select').forEach(cb => {
+    document.querySelectorAll('.photo-select').forEach((cb, i) => {
       cb.checked = checked;
-      cb.closest('label').querySelector('.select-dot').classList.toggle('checked', checked);
+      const dot = document.getElementById(`dot-${i}`);
+      if (dot) dot.classList.toggle('checked', checked);
     });
     updateSelectAll();
   };
