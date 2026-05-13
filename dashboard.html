@@ -436,6 +436,14 @@
         <button class="btn-save" id="btn-save" onclick="saveEventName()" style="white-space:nowrap; padding:12px 20px;">Salvar</button>
       </div>
     </div>
+    <!-- Instagram personalizado — só premium -->
+    <div class="field premium-only" style="display:none;">
+      <label>Instagram no rodapé</label>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <input type="text" id="instagram-handle" placeholder="@seuinstagram" style="flex:1"/>
+        <button class="btn-save" onclick="saveInstagram()" style="white-space:nowrap; padding:12px 20px;">Salvar</button>
+      </div>
+    </div>
     <div class="field">
       <label>Tempo por foto (segundos)</label>
       <div class="range-wrap">
@@ -476,14 +484,6 @@
         <input type="checkbox" disabled/>
         <span class="toggle-slider"></span>
       </label>
-    </div>
-    <!-- Instagram personalizado — só premium -->
-    <div class="field premium-only" style="display:none; margin-top:8px;">
-      <label>Instagram no rodapé</label>
-      <div style="display:flex; gap:10px; align-items:center;">
-        <input type="text" id="instagram-handle" placeholder="@seuinstagram" style="flex:1"/>
-        <button class="btn-save" onclick="saveInstagram()" style="white-space:nowrap; padding:12px 20px;">Salvar</button>
-      </div>
     </div>
     <div style="margin-top:20px;">
       <button class="btn-danger" onclick="clearPhotos()">Limpar todas as fotos</button>
