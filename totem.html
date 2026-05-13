@@ -81,7 +81,9 @@
     #dots {
       position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
       display: flex; gap: 8px; z-index: 10;
+      transition: all 0.5s ease;
     }
+    #dots.top { bottom: auto; top: 100px; }
     .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: all 0.3s; }
     .dot.active { background: #ff3c6e; transform: scale(1.4); }
     .dot.new { background: #facc15; transform: scale(1.4); }
@@ -189,12 +191,15 @@
       const pos = data.qrPosition || 'bottom';
       const overlay = document.querySelector('.overlay');
       const qrWrap = document.querySelector('.qr-wrap');
+      const dots = document.getElementById('dots');
       if (pos === 'top') {
         overlay.classList.add('top');
         qrWrap.classList.add('top');
+        dots.classList.add('top');
       } else {
         overlay.classList.remove('top');
         qrWrap.classList.remove('top');
+        dots.classList.remove('top');
       }
       if (data.slideDuration && data.slideDuration !== slideDuration) {
         slideDuration = data.slideDuration;
