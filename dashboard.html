@@ -404,7 +404,8 @@
         <span class="toggle-slider"></span>
       </label>
     </div>
-    <div class="toggle-row">
+    <!-- Moderação — só premium -->
+    <div class="toggle-row premium-only" style="display:none">
       <div class="toggle-info">
         <h3>Moderação de fotos</h3>
         <p>Aprovar fotos antes de exibir</p>
@@ -413,6 +414,26 @@
         <input type="checkbox" id="toggle-moderation" onchange="autoSaveToggle('moderation', this.checked)"/>
         <span class="toggle-slider"></span>
       </label>
+    </div>
+    <div class="toggle-row premium-locked" style="display:none">
+      <div class="toggle-info">
+        <h3>Moderação de fotos
+          <span style="font-family:Outfit;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;padding:2px 8px;border-radius:99px;margin-left:8px;">Premium</span>
+        </h3>
+        <p>Disponível no plano Premium</p>
+      </div>
+      <label class="toggle" style="opacity:0.4;pointer-events:none">
+        <input type="checkbox" disabled/>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <!-- Instagram personalizado — só premium -->
+    <div class="field premium-only" style="display:none; margin-top:8px;">
+      <label>Instagram no rodapé</label>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <input type="text" id="instagram-handle" placeholder="@seuinstagram" style="flex:1"/>
+        <button class="btn-save" onclick="saveInstagram()" style="white-space:nowrap; padding:12px 20px;">Salvar</button>
+      </div>
     </div>
     <div style="margin-top:20px;">
       <button class="btn-danger" onclick="clearPhotos()">Limpar todas as fotos</button>
@@ -521,7 +542,27 @@
     // UI
     document.getElementById('nav-email').textContent = user.email;
     document.getElementById('greeting-name').textContent = userData.nome || user.email.split('@')[0];
-    document.getElementById('plan-badge').textContent = userData.plano === 'anual' ? 'Anual' : 'Mensal';
+    const plano = userData.plano || 'basico';
+    const isPremium = plano.includes('premium');
+    const badgeLabels = {
+      'basico': 'Básico Mensal',
+      'basico-anual': 'Básico Anual',
+      'premium': 'Premium Mensal',
+      'premium-anual': 'Premium Anual',
+    };
+    document.getElementById('plan-badge').textContent = badgeLabels[plano] || 'Básico';
+    if (isPremium) {
+      document.getElementById('plan-badge').style.background = 'linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.15))';
+      document.getElementById('plan-badge').style.borderColor = 'rgba(251,191,36,0.4)';
+      document.getElementById('plan-badge').style.color = '#fbbf24';
+    }
+    // Mostrar/ocultar seções premium
+    document.querySelectorAll('.premium-only').forEach(el => {
+      el.style.display = isPremium ? '' : 'none';
+    });
+    document.querySelectorAll('.premium-locked').forEach(el => {
+      el.style.display = isPremium ? 'none' : '';
+    });
 
     // Status
     if (userData.venceEm) {
@@ -547,6 +588,7 @@
       }
       document.getElementById('toggle-paused').checked = !!d.paused;
       document.getElementById('toggle-moderation').checked = !!d.moderation;
+      if (d.instagram) document.getElementById('instagram-handle').value = d.instagram;
     }
 
     // Listener de fotos em tempo real
@@ -557,6 +599,13 @@
       const moderation = data.moderation || false;
       renderPhotos(photos);
       renderPending(pending, moderation);
+      // Atualiza brand
+      const handle = data.instagram || '@nfsolucoesparaeventos';
+      const brandEl = document.getElementById('dash-brand');
+      if (brandEl) {
+        brandEl.textContent = handle;
+        brandEl.href = `https://instagram.com/${handle.replace('@','')}`;
+      }
     });
 
     document.getElementById('loading').style.display = 'none';
@@ -628,6 +677,14 @@
       showToast('✓ Nome salvo!');
     } catch { showToast('Erro ao salvar.'); }
     btn.disabled = false; btn.textContent = 'Salvar';
+  };
+
+  window.saveInstagram = async () => {
+    if (!currentUid) return;
+    const val = document.getElementById('instagram-handle').value.trim();
+    const handle = val.startsWith('@') ? val : '@' + val;
+    await setDoc(doc(db, 'eventos', currentUid), { instagram: handle }, { merge: true });
+    showToast('✓ Instagram salvo!');
   };
 
   let durationTimer = null;

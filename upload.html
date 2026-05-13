@@ -165,7 +165,7 @@
   </div>
 
 </div>
-<a class="brand" href="https://instagram.com/audiodequalidade" target="_blank">@audiodequalidade</a>
+<a class="brand" id="brand-link" href="https://instagram.com/nfsolucoesparaeventos" target="_blank">@nfsolucoesparaeventos</a>
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
@@ -191,9 +191,16 @@
     document.getElementById('form-state').style.display = 'none';
   } else {
     getDoc(doc(db, 'eventos', uid)).then(snap => {
-      const name = snap.data()?.eventName || 'Evento';
+      const data = snap.data() || {};
+      const name = data.eventName || 'Evento';
       document.getElementById('event-label').textContent = name;
       document.title = `Envie sua foto · ${name}`;
+      // Instagram personalizado (premium) ou padrão
+      const handle = data.instagram || '@nfsolucoesparaeventos';
+      const handleClean = handle.replace('@', '');
+      const brandEl = document.getElementById('brand-link');
+      brandEl.textContent = handle;
+      brandEl.href = `https://instagram.com/${handleClean}`;
     }).catch(() => {
       document.getElementById('event-label').textContent = 'Evento';
     });
