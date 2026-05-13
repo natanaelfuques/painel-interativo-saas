@@ -339,6 +339,56 @@
     padding: 24px; color: var(--muted); font-size: 13px;
   }
 
+
+  /* DOWNLOAD / SELEÇÃO DE FOTOS */
+  .photos-toolbar {
+    display: none;
+    align-items: center; justify-content: space-between;
+    margin-bottom: 14px; flex-wrap: wrap; gap: 10px;
+  }
+  .photos-toolbar.visible { display: flex; }
+  .select-dot {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid var(--muted);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; flex-shrink: 0;
+  }
+  .select-dot.checked {
+    background: var(--accent); border-color: var(--accent);
+  }
+  .select-dot.checked::after {
+    content: ''; width: 6px; height: 6px; border-radius: 50%; background: white;
+  }
+  .select-dot.partial {
+    background: rgba(255,60,110,0.3); border-color: var(--accent);
+  }
+  .toolbar-left { display: flex; align-items: center; gap: 10px; }
+  .toolbar-right { display: flex; gap: 8px; }
+  .btn-toolbar {
+    font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700;
+    padding: 8px 14px; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-dl-all {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border); color: var(--text);
+  }
+  .btn-dl-all:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-dl-selected {
+    background: rgba(255,60,110,0.1);
+    border: 1px solid var(--border-accent); color: var(--accent);
+  }
+  .btn-dl-selected:hover { background: rgba(255,60,110,0.2); }
+  .btn-dl-selected:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .photo-thumb { position: relative; }
+  .photo-select-label {
+    position: absolute; top: 6px; left: 6px; z-index: 10; cursor: pointer;
+  }
+  .photo-select-label .select-dot { width: 20px; height: 20px; background: rgba(0,0,0,0.5); border-color: rgba(255,255,255,0.5); }
+  .photo-select-label .select-dot.checked { background: var(--accent); border-color: var(--accent); }
+  .photo-select { display: none; }
+
 </style>
 </head>
 <body>
@@ -495,6 +545,31 @@
   <!-- FOTOS -->
   <div class="section-label">Fotos do evento (<span id="photo-count">0</span>)</div>
   <div class="config-card">
+    <!-- Toolbar download — só premium -->
+    <div class="photos-toolbar premium-only" id="photos-toolbar" style="display:none">
+      <div class="toolbar-left">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--muted)"
+          onclick="var cb=document.getElementById('select-all-cb');cb.checked=!cb.checked;toggleSelectAll(cb.checked)">
+          <input type="checkbox" id="select-all-cb" style="display:none"/>
+          <div id="select-all-dot" class="select-dot"></div>
+          Selecionar todas
+        </label>
+      </div>
+      <div class="toolbar-right">
+        <button class="btn-toolbar btn-dl-selected" id="btn-dl-selected" onclick="downloadSelected()" disabled>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1v8M7 9l-3-3M7 9l3-3M2 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Baixar selecionadas
+        </button>
+        <button class="btn-toolbar btn-dl-all" id="btn-dl-all" onclick="downloadAll()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M7 1v8M7 9l-3-3M7 9l3-3M2 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Baixar todas
+        </button>
+      </div>
+    </div>
     <div class="photos-grid" id="photos-grid">
       <div class="empty-photos">Nenhuma foto ainda. Compartilhe o link de upload!</div>
     </div>
@@ -557,6 +632,7 @@
       document.getElementById('plan-badge').style.color = '#fbbf24';
     }
     // Mostrar/ocultar seções premium
+    isPremiumUser = isPremium;
     document.querySelectorAll('.premium-only').forEach(el => {
       el.style.display = isPremium ? '' : 'none';
     });
@@ -612,20 +688,97 @@
     document.getElementById('main').style.display = 'block';
   });
 
+  let isPremiumUser = false;
+  let currentPhotos = [];
+
   function renderPhotos(photos) {
+    currentPhotos = photos;
     const grid = document.getElementById('photos-grid');
+    const toolbar = document.getElementById('photos-toolbar');
     document.getElementById('photo-count').textContent = photos.length;
+
     if (photos.length === 0) {
       grid.innerHTML = '<div class="empty-photos">Nenhuma foto ainda. Compartilhe o link de upload!</div>';
+      if (toolbar) toolbar.classList.remove('visible');
       return;
     }
+
+    if (isPremiumUser && toolbar) toolbar.classList.add('visible');
+
     grid.innerHTML = photos.map(url => `
       <div class="photo-thumb">
+        ${isPremiumUser ? `
+        <label class="photo-select-label" onclick="var cb=this.querySelector('.photo-select');cb.checked=!cb.checked;cb.dispatchEvent(new Event('change'))">
+          <input type="checkbox" class="photo-select" data-url="${url}" style="display:none"
+            onchange="updateSelectAll();document.getElementById('btn-dl-selected').disabled=!document.querySelectorAll('.photo-select:checked').length;this.closest('label').querySelector('.select-dot').classList.toggle('checked',this.checked)"/>
+          <div class="select-dot"></div>
+        </label>` : ''}
         <img src="${url}" loading="lazy"/>
         <button class="photo-del" onclick="deletePhoto('${url}')">✕</button>
       </div>
     `).join('');
   }
+
+  function updateSelectAll() {
+    const all = document.querySelectorAll('.photo-select');
+    const checked = document.querySelectorAll('.photo-select:checked');
+    const isAll = all.length > 0 && checked.length === all.length;
+    const isPartial = checked.length > 0 && checked.length < all.length;
+    document.getElementById('select-all-cb').checked = isAll;
+    const dot = document.getElementById('select-all-dot');
+    dot.classList.toggle('checked', isAll);
+    dot.classList.toggle('partial', isPartial);
+    document.getElementById('btn-dl-selected').disabled = checked.length === 0;
+  }
+
+  window.toggleSelectAll = (checked) => {
+    document.querySelectorAll('.photo-select').forEach(cb => {
+      cb.checked = checked;
+      cb.closest('label').querySelector('.select-dot').classList.toggle('checked', checked);
+    });
+    updateSelectAll();
+  };
+
+  window.downloadSelected = async () => {
+    const selected = [...document.querySelectorAll('.photo-select:checked')].map(cb => cb.dataset.url);
+    if (!selected.length) return;
+    const btn = document.getElementById('btn-dl-selected');
+    btn.disabled = true;
+    for (let i = 0; i < selected.length; i++) {
+      try {
+        const res = await fetch(selected[i]);
+        const blob = await res.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `foto-${String(i + 1).padStart(2, '0')}.jpg`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        await new Promise(r => setTimeout(r, 400));
+      } catch {}
+    }
+    btn.disabled = false;
+    showToast(`✓ ${selected.length} foto(s) baixada(s)!`);
+  };
+
+  window.downloadAll = async () => {
+    if (!currentPhotos.length) { showToast('Nenhuma foto para baixar.'); return; }
+    const btn = document.getElementById('btn-dl-all');
+    btn.disabled = true;
+    for (let i = 0; i < currentPhotos.length; i++) {
+      try {
+        const res = await fetch(currentPhotos[i]);
+        const blob = await res.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `foto-${String(i + 1).padStart(2, '0')}.jpg`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        await new Promise(r => setTimeout(r, 400));
+      } catch {}
+    }
+    btn.disabled = false;
+    showToast(`✓ ${currentPhotos.length} foto(s) baixada(s)!`);
+  };
 
   function renderPending(pending, moderation) {
     const section = document.getElementById('pending-section');
