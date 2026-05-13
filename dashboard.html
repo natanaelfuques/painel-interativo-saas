@@ -610,6 +610,15 @@
 
 </main>
 
+<footer style="text-align:center;padding:24px;border-top:1px solid rgba(255,255,255,0.08);margin-top:0;">
+  <a id="dash-brand" href="https://instagram.com/nfsolucoesparaeventos" target="_blank"
+    style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.25);letter-spacing:1px;text-decoration:none;transition:color 0.2s;"
+    onmouseover="this.style.color='rgba(255,255,255,0.6)'"
+    onmouseout="this.style.color='rgba(255,255,255,0.25)'">
+    @webinteratividade
+  </a>
+</footer>
+
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
   import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail }
@@ -710,7 +719,7 @@
       renderPhotos(photos);
       renderPending(pending, moderation);
       // Atualiza brand
-      const handle = data.instagram || '@nfsolucoesparaeventos';
+      const handle = data.instagram || '@webinteratividade';
       const brandEl = document.getElementById('dash-brand');
       if (brandEl) {
         brandEl.textContent = handle;
