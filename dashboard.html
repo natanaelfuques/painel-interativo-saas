@@ -1066,9 +1066,9 @@
   let upgradePagamentoId = null;
 
   // Preenche valor do upgrade no modal ao abrir
-  const upgradeValores = { 'basico': 100.00, 'basico-anual': 1000.00 };
-  const upgradeLabels  = { 'basico': 'R$ 100', 'basico-anual': 'R$ 1.000' };
-  const upgradePlanos  = { 'basico': 'upgrade', 'basico-anual': 'upgrade-anual' };
+  const upgradeValores = { 'basico': 100.00, 'mensal': 100.00, 'basico-anual': 1000.00, 'anual': 1000.00 };
+  const upgradeLabels  = { 'basico': 'R$ 100', 'mensal': 'R$ 100', 'basico-anual': 'R$ 1.000', 'anual': 'R$ 1.000' };
+  const upgradePlanos  = { 'basico': 'upgrade', 'mensal': 'upgrade', 'basico-anual': 'upgrade-anual', 'anual': 'upgrade-anual' };
 
   function atualizarModalUpgrade() {
     const p = window.planoAtual || 'basico';
