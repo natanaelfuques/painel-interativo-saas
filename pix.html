@@ -365,17 +365,37 @@
 
 <script>
   // Valores padrão — serão sobrescritos pelo Firestore
-  const teal = { cor: '#32bcad', badgeBg: 'rgba(50,188,173,0.06)', badgeBorder: 'rgba(50,188,173,0.2)' };
+  const basicoStyle  = { cor: '#ff3c6e', badgeBg: 'rgba(255,60,110,0.08)',  badgeBorder: 'rgba(255,60,110,0.3)'  };
+  const premiumStyle = { cor: '#fbbf24', badgeBg: 'rgba(251,191,36,0.08)', badgeBorder: 'rgba(251,191,36,0.3)' };
   const planos = {
-    basico:          { nome: 'Plano Básico Mensal',   valor: 289.99,  label: 'R$ 289,99',   descAcesso: 'Acesso por 30 dias',  ...teal },
-    'basico-anual':  { nome: 'Plano Básico Anual',    valor: 2989.99, label: 'R$ 2.989,99', descAcesso: 'Acesso por 12 meses', ...teal },
-    mensal:          { nome: 'Plano Básico Mensal',   valor: 289.99,  label: 'R$ 289,99',   descAcesso: 'Acesso por 30 dias',  ...teal },
-    anual:           { nome: 'Plano Básico Anual',    valor: 2989.99, label: 'R$ 2.989,99', descAcesso: 'Acesso por 12 meses', ...teal },
-    premium:         { nome: 'Plano Premium Mensal',  valor: 389.99,  label: 'R$ 389,99',   descAcesso: 'Acesso por 30 dias',  ...teal },
-    'premium-anual': { nome: 'Plano Premium Anual',   valor: 3989.99, label: 'R$ 3.989,99', descAcesso: 'Acesso por 12 meses', ...teal },
+    basico:          { nome: 'Plano Básico Mensal',   valor: 289.99,  label: 'R$ 289,99',   descAcesso: 'Acesso por 30 dias',  ...basicoStyle  },
+    'basico-anual':  { nome: 'Plano Básico Anual',    valor: 2989.99, label: 'R$ 2.989,99', descAcesso: 'Acesso por 12 meses', ...basicoStyle  },
+    mensal:          { nome: 'Plano Básico Mensal',   valor: 289.99,  label: 'R$ 289,99',   descAcesso: 'Acesso por 30 dias',  ...basicoStyle  },
+    anual:           { nome: 'Plano Básico Anual',    valor: 2989.99, label: 'R$ 2.989,99', descAcesso: 'Acesso por 12 meses', ...basicoStyle  },
+    premium:         { nome: 'Plano Premium Mensal',  valor: 389.99,  label: 'R$ 389,99',   descAcesso: 'Acesso por 30 dias',  ...premiumStyle },
+    'premium-anual': { nome: 'Plano Premium Anual',   valor: 3989.99, label: 'R$ 3.989,99', descAcesso: 'Acesso por 12 meses', ...premiumStyle },
   };
 
-  // Busca valores do Firestore e atualiza labels
+  let planoAtivo = 'basico';
+
+  function selecionarPlano(p) {
+    planoAtivo = p;
+    const info = planos[p];
+    if (!info) return;
+    document.getElementById('plano-nome').textContent  = info.nome;
+    document.getElementById('plano-valor').textContent = info.label;
+    document.getElementById('plano-valor').style.color = info.cor;
+    document.getElementById('valor-badge').style.background  = info.badgeBg;
+    document.getElementById('valor-badge').style.borderColor = info.badgeBorder;
+    const descEl = document.querySelector('#valor-badge div');
+    if (descEl) descEl.textContent = info.descAcesso;
+  }
+
+  // Aplica plano da URL imediatamente com valores padrão
+  const planoUrl = new URLSearchParams(window.location.search).get('plano');
+  if (planoUrl && planos[planoUrl]) selecionarPlano(planoUrl);
+
+  // Busca valores do Firestore e re-aplica
   (async () => {
     try {
       const res = await fetch(
@@ -387,37 +407,14 @@
       if (!v) return;
       const get = (key) => parseFloat(v[key]?.doubleValue || v[key]?.integerValue || 0);
       const fmtLabel = (val) => 'R$ ' + val.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
-      const keys = ['basico','basico-anual','mensal','anual','premium','premium-anual'];
       const fsMap = { mensal: 'basico', anual: 'basico-anual' };
-      keys.forEach(k => {
-        const fsKey = fsMap[k] || k;
-        const val = get(fsKey);
-        if (val && planos[k]) {
-          planos[k].valor = val;
-          planos[k].label = fmtLabel(val);
-        }
+      ['basico','basico-anual','mensal','anual','premium','premium-anual'].forEach(k => {
+        const val = get(fsMap[k] || k);
+        if (val && planos[k]) { planos[k].valor = val; planos[k].label = fmtLabel(val); }
       });
-      // Re-aplica plano ativo com valores atualizados
-      if (planoAtivo && planos[planoAtivo]) selecionarPlano(planoAtivo);
+      selecionarPlano(planoAtivo);
     } catch(e) {}
   })();
-
-  let planoAtivo = 'basico';
-
-  function selecionarPlano(p) {
-    planoAtivo = p;
-    const info = planos[p];
-    document.getElementById('plano-nome').textContent  = info.nome;
-    document.getElementById('plano-valor').textContent = info.label;
-    document.getElementById('plano-valor').style.color = info.cor;
-    document.getElementById('valor-badge').style.background = info.badgeBg;
-    document.getElementById('valor-badge').style.borderColor = info.badgeBorder;
-    const descEl = document.querySelector('#valor-badge div');
-    if (descEl) descEl.textContent = info.descAcesso;
-  }
-
-  const planoUrl = new URLSearchParams(window.location.search).get('plano');
-  if (planoUrl && planos[planoUrl]) selecionarPlano(planoUrl);
 
   async function gerarPix() {
     const nome  = document.getElementById('f-nome').value.trim();
