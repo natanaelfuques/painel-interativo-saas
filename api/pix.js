@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     premium:          389.99,
     'premium-anual':  3989.99,
     upgrade:          100.00,
-    'upgrade-anual':  1000.00,
+    'upgrade-anual':  1.00,
   };
   const descricoes = {
     basico:           'Painel Interativo — Plano Básico Mensal',
