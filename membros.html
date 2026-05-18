@@ -494,9 +494,11 @@
     flex: 1; padding: 13px; border-radius: 12px; border: none;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
     color: #fff; font-family: 'Outfit', sans-serif;
-    font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    letter-spacing: 0.02em;
   }
-  .btn-config-save:hover { opacity: 0.88; }
+  .btn-config-save:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 8px 20px rgba(255,60,110,0.3); }
   .btn-config-cancel {
     padding: 13px 20px; border-radius: 12px;
     border: 1px solid var(--border); background: transparent;
@@ -651,7 +653,10 @@
 
     <div class="config-actions">
       <button class="btn-config-cancel" onclick="closeConfig()">Cancelar</button>
-      <button class="btn-config-save" id="btn-cfg-save" onclick="saveConfig()">Salvar configurações</button>
+      <button class="btn-config-save" id="btn-cfg-save" onclick="saveConfig()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="cfg-save-label">Salvar configurações</span>
+      </button>
     </div>
     <div class="config-saved" id="config-saved">✓ Salvo com sucesso!</div>
   </div>
@@ -1150,7 +1155,7 @@
 
   window.saveConfig = async function() {
     const btn = document.getElementById('btn-cfg-save');
-    btn.disabled = true; btn.textContent = 'Salvando...';
+    btn.disabled = true; document.getElementById('cfg-save-label').textContent = 'Salvando...';
     try {
       await setDoc(doc(db, 'config', 'planos'), {
         valores: {
@@ -1176,7 +1181,7 @@
     } catch(e) {
       toast('Erro ao salvar: ' + e.message, 'error');
     } finally {
-      btn.disabled = false; btn.textContent = 'Salvar configurações';
+      btn.disabled = false; document.getElementById('cfg-save-label').textContent = 'Salvar configurações';
     }
   };
 </script>
