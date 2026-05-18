@@ -367,8 +367,8 @@
   /* ── PRICING ── */
   .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px; max-width: 720px; margin: 0 auto;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px; max-width: 1160px; margin: 0 auto;
   }
   .price-card {
     background: var(--card);
@@ -582,8 +582,6 @@
     /* PLANOS */
     .pricing-grid { grid-template-columns: 1fr !important; max-width: 400px; }
 
-    /* TABS DE PLANOS */
-    #tab-basico, #tab-premium { font-size: 13px; padding: 9px 20px; }
 
     /* FAQ */
     .faq-inner { padding: 0; }
@@ -940,20 +938,8 @@
     <div class="section-label reveal" style="justify-content:center;display:flex;">Planos</div>
     <div class="section-title reveal" style="margin:0 auto;text-align:center;max-width:100%;">Escolha seu <span class="accent">plano</span></div>
   </div>
-  <!-- Tabs -->
-  <div style="display:flex;justify-content:center;gap:8px;margin-bottom:36px;">
-    <button onclick="showPlanos('basico')" id="tab-basico"
-      style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:10px 24px;border-radius:99px;cursor:pointer;transition:all 0.2s;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;">
-      Básico
-    </button>
-    <button onclick="showPlanos('premium')" id="tab-premium"
-      style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;padding:10px 24px;border-radius:99px;cursor:pointer;transition:all 0.2s;background:transparent;color:var(--muted);border:1px solid var(--border);">
-      ✦ Premium
-    </button>
-  </div>
-
-  <!-- Planos Básico -->
-  <div id="planos-basico" class="pricing-grid">
+  <!-- Todos os planos em grid -->
+  <div class="pricing-grid">
     <div class="price-card reveal">
       <div class="price-plan">Básico Mensal</div>
       <div class="price-amount">
@@ -1001,10 +987,8 @@
         Pagar com Pix
       </a>
     </div>
-  </div>
 
   <!-- Planos Premium -->
-  <div id="planos-premium" class="pricing-grid" style="display:none">
     <div class="price-card reveal" style="border-color:rgba(251,191,36,0.2);">
       <div class="price-plan" style="color:#fbbf24;">Premium Mensal</div>
       <div class="price-amount">
@@ -1109,31 +1093,7 @@
 </script>
 
 <script>
-  function showPlanos(tipo) {
-    const basico = document.getElementById('planos-basico');
-    const premium = document.getElementById('planos-premium');
-    const tabBasico = document.getElementById('tab-basico');
-    const tabPremium = document.getElementById('tab-premium');
-    if (tipo === 'basico') {
-      basico.style.display = '';
-      premium.style.display = 'none';
-      tabBasico.style.background = 'linear-gradient(135deg,var(--accent),var(--accent2))';
-      tabBasico.style.color = '#fff';
-      tabBasico.style.border = 'none';
-      tabPremium.style.background = 'transparent';
-      tabPremium.style.color = 'var(--muted)';
-      tabPremium.style.border = '1px solid var(--border)';
-    } else {
-      basico.style.display = 'none';
-      premium.style.display = '';
-      tabPremium.style.background = 'linear-gradient(135deg,#f59e0b,#fbbf24)';
-      tabPremium.style.color = '#0a0a0f';
-      tabPremium.style.border = 'none';
-      tabBasico.style.background = 'transparent';
-      tabBasico.style.color = 'var(--muted)';
-      tabBasico.style.border = '1px solid var(--border)';
-    }
-  }
+
 </script>
 </body>
 </html>
