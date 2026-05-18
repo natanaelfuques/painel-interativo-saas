@@ -185,12 +185,14 @@
 
   const db = getFirestore(app);
   const uid = new URLSearchParams(window.location.search).get('uid');
+  const slot = new URLSearchParams(window.location.search).get('slot') || '1';
+  const eventId = uid ? `${uid}_slot${slot}` : null;
 
-  if (!uid) {
+  if (!uid || !eventId) {
     document.getElementById('invalid-uid').style.display = 'flex';
     document.getElementById('form-state').style.display = 'none';
   } else {
-    getDoc(doc(db, 'eventos', uid)).then(snap => {
+    getDoc(doc(db, 'eventos', eventId)).then(snap => {
       const data = snap.data() || {};
       const name = data.eventName || 'Evento';
       document.getElementById('event-label').textContent = name;
@@ -268,14 +270,14 @@
       const url = data.data.url;
 
       // Verifica se moderação está ativa
-      const eventSnap = await getDoc(doc(db, 'eventos', uid));
+      const eventSnap = await getDoc(doc(db, 'eventos', eventId));
       const moderation = eventSnap.data()?.moderation || false;
 
       // Salva na fila certa
       if (moderation) {
-        await updateDoc(doc(db, 'eventos', uid), { pendingPhotos: arrayUnion(url) });
+        await updateDoc(doc(db, 'eventos', eventId), { pendingPhotos: arrayUnion(url) });
       } else {
-        await updateDoc(doc(db, 'eventos', uid), { photos: arrayUnion(url) });
+        await updateDoc(doc(db, 'eventos', eventId), { photos: arrayUnion(url) });
       }
       uploadedUrl = url;
       window._moderation = moderation;
@@ -308,7 +310,7 @@
     const btn = document.getElementById('btn-remove');
     btn.disabled = true; btn.textContent = 'Removendo...';
     try {
-      await updateDoc(doc(db, 'eventos', uid), { photos: arrayRemove(uploadedUrl) });
+      await updateDoc(doc(db, 'eventos', eventId), { photos: arrayRemove(uploadedUrl) });
       btn.textContent = 'Foto removida ✓';
       document.getElementById('sent-preview').style.opacity = '0.3';
       document.getElementById('remove-status').textContent = 'Sua foto foi removida da tela.';

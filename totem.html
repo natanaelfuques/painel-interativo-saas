@@ -164,18 +164,20 @@
 
   // Pega UID da URL
   const uid = new URLSearchParams(window.location.search).get('uid');
-  if (!uid) {
+  const slot = new URLSearchParams(window.location.search).get('slot') || '1';
+  const eventId = uid ? `${uid}_slot${slot}` : null;
+  if (!uid || !eventId) {
     document.getElementById('uid-error').style.display = 'flex';
     document.getElementById('empty').style.display = 'none';
   } else {
     // Gera QR code apontando para upload.html?uid=...
-    const uploadUrl = `${window.location.origin}${window.location.pathname.replace('totem.html','upload.html')}?uid=${uid}`;
+    const uploadUrl = `${window.location.origin}${window.location.pathname.replace('totem.html','upload.html')}?uid=${uid}&slot=${slot}`;
     document.getElementById('qr-img').src =
       `https://quickchart.io/qr?text=${encodeURIComponent(uploadUrl)}&size=320&margin=2`;
 
     // ── PRESENÇA ── registra esta tela como ativa
     const sessionId = Math.random().toString(36).slice(2);
-    const presencaRef = doc(db, 'eventos', uid, 'presencas', sessionId);
+    const presencaRef = doc(db, 'eventos', eventId, 'presencas', sessionId);
     const registrarPresenca = () => setDoc(presencaRef, {
       sessionId,
       ultimoHeartbeat: Date.now(),
@@ -202,7 +204,7 @@
     let newPhotoIndices = new Set();
 
     // Listener em tempo real do Firestore
-    onSnapshot(doc(db, 'eventos', uid), (snap) => {
+    onSnapshot(doc(db, 'eventos', eventId), (snap) => {
       if (!snap.exists()) return;
       const data = snap.data();
 
