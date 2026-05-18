@@ -142,6 +142,7 @@
   .btn-ghost:hover { border-color: rgba(255,60,110,0.4); color: var(--accent); }
 
   /* ── DEMO MOCKUP ── */
+  /* TOTEM MOCKUP */
   .demo-wrap {
     padding: 60px 5% 20px;
     display: flex; justify-content: center;
@@ -149,46 +150,115 @@
   }
   .demo-screen {
     width: 100%; max-width: 820px;
-    background: var(--card);
+    background: #000;
     border: 1px solid var(--border);
     border-radius: 20px; overflow: hidden;
     box-shadow: 0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,60,110,0.05);
+    position: relative;
   }
   .demo-bar {
-    background: var(--card2);
-    padding: 14px 20px;
+    background: rgba(255,255,255,0.05);
+    padding: 10px 16px;
     display: flex; align-items: center; gap: 8px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
   .demo-dot { width: 10px; height: 10px; border-radius: 50%; }
   .demo-bar-title {
     margin-left: auto;
     font-family: 'Outfit', sans-serif;
-    font-size: 12px; color: var(--muted);
+    font-size: 12px; color: rgba(255,255,255,0.3);
     letter-spacing: 0.06em;
   }
   .demo-content {
-    padding: 32px;
+    padding: 24px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+    gap: 12px;
+    position: relative;
   }
   .demo-photo {
-    aspect-ratio: 3/4; border-radius: 12px;
+    aspect-ratio: 3/4; border-radius: 14px;
     display: flex; flex-direction: column;
-    align-items: center; justify-content: flex-end;
-    padding: 12px; position: relative; overflow: hidden;
-    border: 1px solid var(--border);
+    align-items: flex-start; justify-content: flex-end;
+    padding: 14px; position: relative; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
   }
   .demo-photo::before {
     content: ''; position: absolute; inset: 0;
-    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.65));
+    background: linear-gradient(to bottom, transparent 45%, rgba(0,0,0,0.82));
   }
-  .demo-photo-name { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700; color: white; z-index: 1; }
-  .demo-photo-time { font-size: 10px; color: rgba(255,255,255,0.5); z-index: 1; }
+  .demo-card-bottom {
+    position: absolute; bottom: 12px; left: 12px; z-index: 2;
+  }
+  .demo-event-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800; color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .demo-event-brand {
+    font-size: 10px; color: rgba(255,255,255,0.45);
+    letter-spacing: 1px; margin-top: 2px;
+    font-family: 'Outfit', sans-serif; font-weight: 600;
+  }
+  .demo-qr-mini {
+    position: absolute; bottom: 10px; right: 10px; z-index: 2;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .demo-qr-label { display: none; }
+  .demo-qr-svg {
+    background: white; border-radius: 6px; padding: 5px;
+    width: 44px; height: 44px;
+  }
+  .demo-event-name {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800; color: white;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .demo-event-brand {
+    font-size: 9px; color: rgba(255,255,255,0.45);
+    letter-spacing: 1px; margin-top: 2px;
+    font-family: 'Outfit', sans-serif; font-weight: 600;
+  }
   .dp1 { background: url("https://raw.githubusercontent.com/natanaelfuques/painel-interativo-saas/main/images/foto%2002.jpg") center/cover no-repeat; }
-  .dp2 { background: url("https://raw.githubusercontent.com/natanaelfuques/painel-interativo-saas/main/images/foto%2003.jpg") center/cover no-repeat; margin-top: -18px; }
+  .dp2 { background: url("https://raw.githubusercontent.com/natanaelfuques/painel-interativo-saas/main/images/foto%2003.jpg") center/cover no-repeat; transform: scale(1.04); box-shadow: 0 0 0 2px #ff3c6e; }
   .dp3 { background: url("https://raw.githubusercontent.com/natanaelfuques/painel-interativo-saas/main/images/foto%2004.avif") center/cover no-repeat; }
+
+  /* QR CODE NO CANTO */
+  .demo-qr {
+    position: absolute; bottom: 36px; right: 36px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    z-index: 10;
+  }
+  .demo-qr-label {
+    font-size: 10px; color: rgba(255,255,255,0.5);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    font-family: 'Outfit', sans-serif; font-weight: 600;
+    order: -1;
+  }
+  .demo-qr-box {
+    background: white; border-radius: 10px; padding: 8px;
+    width: 80px; height: 80px;
+    display: grid; grid-template-columns: repeat(7,1fr); gap: 2px;
+  }
+  .demo-qr-box .qp { border-radius: 1px; }
+
+  /* OVERLAY DO EVENTO */
+  .demo-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 20px 24px;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+    display: flex; align-items: flex-end; justify-content: space-between;
+  }
+  .demo-event-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 20px; font-weight: 800; color: white;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  }
+  .demo-event-brand {
+    font-size: 11px; color: rgba(255,255,255,0.4);
+    letter-spacing: 1.5px; margin-top: 3px;
+    font-family: 'Outfit', sans-serif; font-weight: 600;
+  }
   .demo-live {
     grid-column: 1/-1;
     background: rgba(255,60,110,0.07);
@@ -480,7 +550,6 @@
   </div>
   <div style="display:flex;align-items:center;gap:10px;">
     <a href="login.html" style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:var(--muted);text-decoration:none;padding:9px 18px;border:1px solid var(--border);border-radius:10px;transition:all .2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Entrar</a>
-    <a href="#planos" class="nav-cta">Ver planos</a>
   </div>
 </nav>
 
@@ -505,21 +574,114 @@
       <div class="demo-dot" style="background:#ff5f57"></div>
       <div class="demo-dot" style="background:#febc2e"></div>
       <div class="demo-dot" style="background:#28c840"></div>
-      <span class="demo-bar-title">Interatividade</span>
+      <span class="demo-bar-title">Tela do evento · ao vivo</span>
     </div>
     <div class="demo-content">
+
+      <!-- Card 1 -->
       <div class="demo-photo dp1">
-        <div class="demo-photo-name">Festas</div>
-        
+        <div class="demo-card-bottom">
+          <div class="demo-event-name" style="font-size:12px;">Festas</div>
+          <div class="demo-event-brand">@nfsolucoesparaeventos</div>
+        </div>
+        <div class="demo-qr-mini">
+          <div class="demo-qr-label">Envie sua foto</div>
+          <div class="demo-qr-svg">
+            <svg viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+              <rect x="0" y="0" width="7" height="7" rx="1" fill="#000"/><rect x="1" y="1" width="5" height="5" rx="0.5" fill="white"/><rect x="2" y="2" width="3" height="3" fill="#000"/>
+              <rect x="14" y="0" width="7" height="7" rx="1" fill="#000"/><rect x="15" y="1" width="5" height="5" rx="0.5" fill="white"/><rect x="16" y="2" width="3" height="3" fill="#000"/>
+              <rect x="0" y="14" width="7" height="7" rx="1" fill="#000"/><rect x="1" y="15" width="5" height="5" rx="0.5" fill="white"/><rect x="2" y="16" width="3" height="3" fill="#000"/>
+              <rect x="9" y="0" width="1" height="1" fill="#000"/><rect x="11" y="1" width="1" height="1" fill="#000"/><rect x="9" y="2" width="2" height="1" fill="#000"/>
+              <rect x="8" y="4" width="1" height="2" fill="#000"/><rect x="10" y="3" width="2" height="1" fill="#000"/><rect x="11" y="5" width="1" height="2" fill="#000"/>
+              <rect x="8" y="8" width="2" height="1" fill="#000"/><rect x="11" y="8" width="2" height="1" fill="#000"/>
+              <rect x="9" y="9" width="1" height="2" fill="#000"/><rect x="8" y="11" width="3" height="1" fill="#000"/>
+              <rect x="0" y="8" width="2" height="1" fill="#000"/><rect x="3" y="8" width="2" height="1" fill="#000"/>
+              <rect x="5" y="9" width="1" height="2" fill="#000"/><rect x="1" y="10" width="2" height="1" fill="#000"/>
+              <rect x="0" y="11" width="3" height="1" fill="#000"/><rect x="5" y="11" width="2" height="1" fill="#000"/>
+              <rect x="9" y="14" width="1" height="2" fill="#000"/><rect x="11" y="14" width="2" height="1" fill="#000"/>
+              <rect x="10" y="16" width="1" height="1" fill="#000"/><rect x="12" y="15" width="1" height="2" fill="#000"/>
+              <rect x="9" y="18" width="2" height="1" fill="#000"/><rect x="12" y="18" width="1" height="1" fill="#000"/>
+              <rect x="14" y="8" width="1" height="2" fill="#000"/><rect x="16" y="8" width="1" height="1" fill="#000"/>
+              <rect x="18" y="9" width="2" height="1" fill="#000"/><rect x="15" y="10" width="2" height="1" fill="#000"/>
+              <rect x="14" y="12" width="1" height="1" fill="#000"/><rect x="16" y="11" width="3" height="1" fill="#000"/>
+              <rect x="14" y="14" width="2" height="1" fill="#000"/><rect x="17" y="15" width="1" height="2" fill="#000"/>
+              <rect x="15" y="16" width="1" height="1" fill="#000"/><rect x="14" y="18" width="2" height="1" fill="#000"/>
+              <rect x="18" y="17" width="2" height="2" fill="#000"/>
+            </svg>
+          </div>
+        </div>
       </div>
+
+      <!-- Card 2 (destaque) -->
       <div class="demo-photo dp2">
-        <div class="demo-photo-name">Turma do Noivo</div>
-        
+        <div class="demo-card-bottom">
+          <div class="demo-event-name" style="font-size:12px;">Turma do Noivo</div>
+          <div class="demo-event-brand">@nfsolucoesparaeventos</div>
+        </div>
+        <div class="demo-qr-mini">
+          <div class="demo-qr-label">Envie sua foto</div>
+          <div class="demo-qr-svg">
+            <svg viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+              <rect x="0" y="0" width="7" height="7" rx="1" fill="#000"/><rect x="1" y="1" width="5" height="5" rx="0.5" fill="white"/><rect x="2" y="2" width="3" height="3" fill="#000"/>
+              <rect x="14" y="0" width="7" height="7" rx="1" fill="#000"/><rect x="15" y="1" width="5" height="5" rx="0.5" fill="white"/><rect x="16" y="2" width="3" height="3" fill="#000"/>
+              <rect x="0" y="14" width="7" height="7" rx="1" fill="#000"/><rect x="1" y="15" width="5" height="5" rx="0.5" fill="white"/><rect x="2" y="16" width="3" height="3" fill="#000"/>
+              <rect x="9" y="1" width="2" height="1" fill="#000"/><rect x="12" y="0" width="1" height="1" fill="#000"/>
+              <rect x="9" y="3" width="1" height="2" fill="#000"/><rect x="11" y="2" width="2" height="2" fill="#000"/>
+              <rect x="10" y="5" width="2" height="1" fill="#000"/><rect x="8" y="6" width="1" height="1" fill="#000"/>
+              <rect x="8" y="8" width="3" height="1" fill="#000"/><rect x="12" y="9" width="1" height="2" fill="#000"/>
+              <rect x="9" y="10" width="2" height="1" fill="#000"/><rect x="8" y="12" width="2" height="1" fill="#000"/>
+              <rect x="1" y="8" width="1" height="2" fill="#000"/><rect x="3" y="9" width="2" height="1" fill="#000"/>
+              <rect x="0" y="10" width="2" height="1" fill="#000"/><rect x="4" y="11" width="2" height="1" fill="#000"/>
+              <rect x="0" y="12" width="3" height="1" fill="#000"/>
+              <rect x="8" y="14" width="2" height="2" fill="#000"/><rect x="11" y="15" width="2" height="1" fill="#000"/>
+              <rect x="9" y="17" width="1" height="1" fill="#000"/><rect x="11" y="17" width="1" height="2" fill="#000"/>
+              <rect x="8" y="19" width="2" height="1" fill="#000"/>
+              <rect x="15" y="8" width="2" height="1" fill="#000"/><rect x="18" y="8" width="2" height="2" fill="#000"/>
+              <rect x="14" y="10" width="3" height="1" fill="#000"/><rect x="17" y="11" width="2" height="1" fill="#000"/>
+              <rect x="14" y="12" width="2" height="1" fill="#000"/>
+              <rect x="15" y="14" width="1" height="2" fill="#000"/><rect x="17" y="14" width="3" height="1" fill="#000"/>
+              <rect x="14" y="16" width="2" height="1" fill="#000"/><rect x="18" y="15" width="1" height="2" fill="#000"/>
+              <rect x="16" y="18" width="3" height="1" fill="#000"/>
+            </svg>
+          </div>
+        </div>
       </div>
+
+      <!-- Card 3 -->
       <div class="demo-photo dp3">
-        <div class="demo-photo-name">Formaturas</div>
-        
+        <div class="demo-card-bottom">
+          <div class="demo-event-name" style="font-size:12px;">Formaturas</div>
+          <div class="demo-event-brand">@nfsolucoesparaeventos</div>
+        </div>
+        <div class="demo-qr-mini">
+          <div class="demo-qr-label">Envie sua foto</div>
+          <div class="demo-qr-svg">
+            <svg viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+              <rect x="0" y="0" width="7" height="7" rx="1" fill="#000"/><rect x="1" y="1" width="5" height="5" rx="0.5" fill="white"/><rect x="2" y="2" width="3" height="3" fill="#000"/>
+              <rect x="14" y="0" width="7" height="7" rx="1" fill="#000"/><rect x="15" y="1" width="5" height="5" rx="0.5" fill="white"/><rect x="16" y="2" width="3" height="3" fill="#000"/>
+              <rect x="0" y="14" width="7" height="7" rx="1" fill="#000"/><rect x="1" y="15" width="5" height="5" rx="0.5" fill="white"/><rect x="2" y="16" width="3" height="3" fill="#000"/>
+              <rect x="10" y="0" width="1" height="2" fill="#000"/><rect x="8" y="1" width="1" height="1" fill="#000"/>
+              <rect x="12" y="1" width="1" height="2" fill="#000"/><rect x="9" y="3" width="3" height="1" fill="#000"/>
+              <rect x="8" y="5" width="2" height="1" fill="#000"/><rect x="11" y="4" width="1" height="2" fill="#000"/>
+              <rect x="9" y="8" width="1" height="1" fill="#000"/><rect x="11" y="8" width="1" height="2" fill="#000"/>
+              <rect x="8" y="9" width="2" height="1" fill="#000"/><rect x="9" y="11" width="3" height="1" fill="#000"/>
+              <rect x="0" y="9" width="2" height="1" fill="#000"/><rect x="4" y="8" width="2" height="1" fill="#000"/>
+              <rect x="1" y="11" width="1" height="1" fill="#000"/><rect x="3" y="10" width="2" height="1" fill="#000"/>
+              <rect x="0" y="12" width="4" height="1" fill="#000"/><rect x="5" y="10" width="1" height="2" fill="#000"/>
+              <rect x="8" y="15" width="3" height="1" fill="#000"/><rect x="12" y="14" width="1" height="2" fill="#000"/>
+              <rect x="9" y="16" width="2" height="1" fill="#000"/><rect x="8" y="18" width="1" height="1" fill="#000"/>
+              <rect x="11" y="17" width="1" height="2" fill="#000"/>
+              <rect x="14" y="9" width="2" height="1" fill="#000"/><rect x="17" y="8" width="2" height="2" fill="#000"/>
+              <rect x="15" y="11" width="1" height="1" fill="#000"/><rect x="18" y="10" width="1" height="2" fill="#000"/>
+              <rect x="14" y="12" width="3" height="1" fill="#000"/>
+              <rect x="14" y="14" width="1" height="3" fill="#000"/><rect x="16" y="14" width="2" height="1" fill="#000"/>
+              <rect x="15" y="16" width="3" height="1" fill="#000"/><rect x="19" y="15" width="1" height="2" fill="#000"/>
+              <rect x="14" y="18" width="4" height="1" fill="#000"/>
+            </svg>
+          </div>
+        </div>
       </div>
+
       <div class="demo-live">
         <div class="live-dot"></div>
         <span class="live-text">Transmitindo ao vivo</span>
