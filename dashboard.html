@@ -1097,11 +1097,17 @@
             clearInterval(upgradePolling);
             upgradePolling = null;
             // Atualiza plano via API
-            await fetch('/api/upgrade', {
+            const idToken = await user.getIdToken();
+            const upgradeRes = await fetch('/api/upgrade', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ uid: user.uid, pagamentoId: upgradePagamentoId }),
+              body: JSON.stringify({ uid: user.uid, pagamentoId: upgradePagamentoId, idToken }),
             });
+            const upgradeData = await upgradeRes.json();
+            console.log('Upgrade response:', upgradeRes.status, upgradeData);
+            if (!upgradeRes.ok) {
+              console.error('Erro upgrade:', upgradeData);
+            }
             document.getElementById('upgrade-qr').style.display     = 'none';
             document.getElementById('upgrade-sucesso').style.display = 'block';
           }
