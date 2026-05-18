@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Token não configurado' });
   }
 
-  const valores = { basico: 289.99, premium: 389.99 };
+  const valores = { basico: 1.00, premium: 389.99 };
   const descricoes = {
     basico:  'Painel Interativo — Plano Básico Mensal',
     premium: 'Painel Interativo — Plano Premium Mensal',
