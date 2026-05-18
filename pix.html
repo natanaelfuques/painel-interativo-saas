@@ -85,6 +85,7 @@
     /* ── VALOR ── */
     .valor-badge {
       display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: nowrap; gap: 12px;
       background: rgba(50,188,173,0.06);
       border: 1px solid rgba(50,188,173,0.2);
       border-radius: 14px; padding: 14px 18px;
@@ -95,6 +96,7 @@
     .valor-num {
       font-family: 'Outfit', sans-serif;
       font-size: 24px; font-weight: 800; color: var(--pix);
+      white-space: nowrap; flex-shrink: 0;
     }
 
     /* ── FORM ── */
@@ -362,12 +364,43 @@
 <a class="brand" href="index.html">Painel Interativo</a>
 
 <script>
+  // Valores padrão — serão sobrescritos pelo Firestore
+  const teal = { cor: '#32bcad', badgeBg: 'rgba(50,188,173,0.06)', badgeBorder: 'rgba(50,188,173,0.2)' };
   const planos = {
-    basico:          { nome: 'Plano Básico Mensal',   valor: 289.99,  label: 'R$ 289,99',   descAcesso: 'Acesso por 30 dias',  cor: 'var(--accent)',  badgeBg: 'rgba(255,60,110,0.06)',  badgeBorder: 'rgba(255,60,110,0.2)'  },
-    'basico-anual':  { nome: 'Plano Básico Anual',    valor: 2989.99, label: 'R$ 2.989,99', descAcesso: 'Acesso por 12 meses', cor: 'var(--accent)',  badgeBg: 'rgba(255,60,110,0.06)',  badgeBorder: 'rgba(255,60,110,0.2)'  },
-    premium:         { nome: 'Plano Premium Mensal',  valor: 389.99,  label: 'R$ 389,99',   descAcesso: 'Acesso por 30 dias',  cor: '#fbbf24',        badgeBg: 'rgba(251,191,36,0.06)',  badgeBorder: 'rgba(251,191,36,0.25)' },
-    'premium-anual': { nome: 'Plano Premium Anual',   valor: 3989.99, label: 'R$ 3.989,99', descAcesso: 'Acesso por 12 meses', cor: '#fbbf24',        badgeBg: 'rgba(251,191,36,0.06)',  badgeBorder: 'rgba(251,191,36,0.25)' },
+    basico:          { nome: 'Plano Básico Mensal',   valor: 289.99,  label: 'R$ 289,99',   descAcesso: 'Acesso por 30 dias',  ...teal },
+    'basico-anual':  { nome: 'Plano Básico Anual',    valor: 2989.99, label: 'R$ 2.989,99', descAcesso: 'Acesso por 12 meses', ...teal },
+    mensal:          { nome: 'Plano Básico Mensal',   valor: 289.99,  label: 'R$ 289,99',   descAcesso: 'Acesso por 30 dias',  ...teal },
+    anual:           { nome: 'Plano Básico Anual',    valor: 2989.99, label: 'R$ 2.989,99', descAcesso: 'Acesso por 12 meses', ...teal },
+    premium:         { nome: 'Plano Premium Mensal',  valor: 389.99,  label: 'R$ 389,99',   descAcesso: 'Acesso por 30 dias',  ...teal },
+    'premium-anual': { nome: 'Plano Premium Anual',   valor: 3989.99, label: 'R$ 3.989,99', descAcesso: 'Acesso por 12 meses', ...teal },
   };
+
+  // Busca valores do Firestore e atualiza labels
+  (async () => {
+    try {
+      const res = await fetch(
+        'https://firestore.googleapis.com/v1/projects/painel-interativo-saas/databases/(default)/documents/config/planos'
+      );
+      if (!res.ok) return;
+      const data = await res.json();
+      const v = data.fields?.valores?.mapValue?.fields;
+      if (!v) return;
+      const get = (key) => parseFloat(v[key]?.doubleValue || v[key]?.integerValue || 0);
+      const fmtLabel = (val) => 'R$ ' + val.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+      const keys = ['basico','basico-anual','mensal','anual','premium','premium-anual'];
+      const fsMap = { mensal: 'basico', anual: 'basico-anual' };
+      keys.forEach(k => {
+        const fsKey = fsMap[k] || k;
+        const val = get(fsKey);
+        if (val && planos[k]) {
+          planos[k].valor = val;
+          planos[k].label = fmtLabel(val);
+        }
+      });
+      // Re-aplica plano ativo com valores atualizados
+      if (planoAtivo && planos[planoAtivo]) selecionarPlano(planoAtivo);
+    } catch(e) {}
+  })();
 
   let planoAtivo = 'basico';
 
