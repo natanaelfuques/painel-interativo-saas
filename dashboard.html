@@ -810,6 +810,14 @@
       el.style.display = isPremium ? 'none' : 'flex';
     });
 
+    // Slots — habilita 2 e 3 para premium
+    if (isPremium) {
+      document.getElementById('slot-btn-2').disabled = false;
+      document.getElementById('slot-btn-3').disabled = false;
+    } else {
+      document.getElementById('slots-locked').style.display = 'flex';
+    }
+
     // Status
     if (userData.venceEm) {
       const vence = userData.venceEm.toDate ? userData.venceEm.toDate() : new Date(userData.venceEm);
