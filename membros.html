@@ -1081,6 +1081,70 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
   };
+
+  // ── CONFIGURAÇÕES ──
+  window.openConfig = async function() {
+    document.getElementById('config-overlay').classList.add('open');
+    document.getElementById('config-saved').style.display = 'none';
+    try {
+      const snap = await getDoc(doc(db, 'config', 'planos'));
+      if (snap.exists()) {
+        const d = snap.data();
+        if (d.valores) {
+          document.getElementById('cfg-val-basico').value          = d.valores.basico          ?? '';
+          document.getElementById('cfg-val-basico-anual').value    = d.valores['basico-anual'] ?? '';
+          document.getElementById('cfg-val-premium').value         = d.valores.premium         ?? '';
+          document.getElementById('cfg-val-premium-anual').value   = d.valores['premium-anual']?? '';
+          document.getElementById('cfg-val-upgrade').value         = d.valores.upgrade         ?? '';
+          document.getElementById('cfg-val-upgrade-anual').value   = d.valores['upgrade-anual']?? '';
+        }
+        if (d.descricoes) {
+          document.getElementById('cfg-desc-basico').value         = d.descricoes.basico          ?? '';
+          document.getElementById('cfg-desc-basico-anual').value   = d.descricoes['basico-anual'] ?? '';
+          document.getElementById('cfg-desc-premium').value        = d.descricoes.premium         ?? '';
+          document.getElementById('cfg-desc-premium-anual').value  = d.descricoes['premium-anual']?? '';
+          document.getElementById('cfg-desc-upgrade').value        = d.descricoes.upgrade         ?? '';
+          document.getElementById('cfg-desc-upgrade-anual').value  = d.descricoes['upgrade-anual']?? '';
+        }
+      }
+    } catch(e) { console.error('Erro ao carregar config:', e); }
+  };
+
+  window.closeConfig = function() {
+    document.getElementById('config-overlay').classList.remove('open');
+  };
+
+  window.saveConfig = async function() {
+    const btn = document.getElementById('btn-cfg-save');
+    btn.disabled = true; btn.textContent = 'Salvando...';
+    try {
+      await setDoc(doc(db, 'config', 'planos'), {
+        valores: {
+          basico:          parseFloat(document.getElementById('cfg-val-basico').value)          || 289.99,
+          'basico-anual':  parseFloat(document.getElementById('cfg-val-basico-anual').value)   || 2989.99,
+          premium:         parseFloat(document.getElementById('cfg-val-premium').value)        || 389.99,
+          'premium-anual': parseFloat(document.getElementById('cfg-val-premium-anual').value)  || 3989.99,
+          upgrade:         parseFloat(document.getElementById('cfg-val-upgrade').value)        || 100.00,
+          'upgrade-anual': parseFloat(document.getElementById('cfg-val-upgrade-anual').value)  || 1000.00,
+        },
+        descricoes: {
+          basico:          document.getElementById('cfg-desc-basico').value          || 'Painel Interativo — Plano Básico Mensal',
+          'basico-anual':  document.getElementById('cfg-desc-basico-anual').value   || 'Painel Interativo — Plano Básico Anual',
+          premium:         document.getElementById('cfg-desc-premium').value        || 'Painel Interativo — Plano Premium Mensal',
+          'premium-anual': document.getElementById('cfg-desc-premium-anual').value  || 'Painel Interativo — Plano Premium Anual',
+          upgrade:         document.getElementById('cfg-desc-upgrade').value        || 'Painel Interativo — Upgrade para Premium',
+          'upgrade-anual': document.getElementById('cfg-desc-upgrade-anual').value  || 'Painel Interativo — Upgrade para Premium Anual',
+        },
+        atualizadoEm: serverTimestamp(),
+      });
+      document.getElementById('config-saved').style.display = 'block';
+      toast('Configurações salvas!');
+    } catch(e) {
+      toast('Erro ao salvar: ' + e.message, 'error');
+    } finally {
+      btn.disabled = false; btn.textContent = 'Salvar configurações';
+    }
+  };
 </script>
 </body>
 </html>
