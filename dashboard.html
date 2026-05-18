@@ -147,6 +147,10 @@
 
   .telas-count.zero { color: var(--muted); }
 
+  @media (max-width: 600px) {
+    .cards-row { grid-template-columns: 1fr !important; }
+  }
+
   /* SECTION TITLE */
   .section-label {
     font-family: 'Outfit', sans-serif;
@@ -458,31 +462,34 @@
   </div>
   <p class="greeting-sub" id="greeting-sub">Gerencie seu evento abaixo.</p>
 
-  <!-- STATUS -->
-  <div class="status-card">
-    <div class="status-info">
-      <div class="status-dot" id="status-dot"></div>
-      <div>
-        <div class="status-label" id="status-label">Assinatura ativa</div>
-        <div class="status-detail" id="status-detail"></div>
+  <!-- STATUS + TELAS na mesma linha -->
+  <div class="cards-row" style="display:grid; grid-template-columns:1fr auto; gap:12px; margin-bottom:28px; align-items:stretch;">
+    <div class="status-card" style="margin-bottom:0;">
+      <div class="status-info">
+        <div class="status-dot" id="status-dot"></div>
+        <div>
+          <div class="status-label" id="status-label">Assinatura ativa</div>
+          <div class="status-detail" id="status-detail"></div>
+        </div>
       </div>
+      <div class="plan-badge" id="plan-badge">Mensal</div>
     </div>
-    <div class="plan-badge" id="plan-badge">Mensal</div>
+    <div class="telas-card" style="margin-bottom:0; min-width:220px;">
+      <div class="telas-info">
+        <div class="telas-icon" id="telas-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <rect x="1" y="2" width="16" height="11" rx="2" stroke="#22c55e" stroke-width="1.5"/>
+            <path d="M6 16h6M9 13v3" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <div class="telas-label">Telas ativas agora</div>
+          <div class="telas-sub" id="telas-sub">Nenhuma tela aberta</div>
+        </div>
+      </div>
+      <div class="telas-count zero" id="telas-count">0</div>
+    </div>
   </div>
-
-  <!-- TELAS ATIVAS -->
-  <div class="telas-card">
-    <div class="telas-info">
-      <div class="telas-icon" id="telas-icon">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-          <rect x="1" y="2" width="16" height="11" rx="2" stroke="#22c55e" stroke-width="1.5"/>
-          <path d="M6 16h6M9 13v3" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div>
-        <div class="telas-label">Telas ativas agora</div>
-        <div class="telas-sub" id="telas-sub">Nenhuma tela aberta</div>
-      </div>
     </div>
     <div class="telas-count zero" id="telas-count">0</div>
   </div>
@@ -773,6 +780,9 @@
       const brandEl = document.getElementById('dash-brand');
       if (brandEl) {
         brandEl.textContent = handle;
+        brandEl.href = `https://instagram.com/${handle.replace('@','')}`;
+      }
+    });
 
     // ── Listener de telas ativas ──
     onSnapshot(collection(db, 'eventos', currentUid, 'presencas'), (snap) => {
@@ -797,9 +807,6 @@
           <path d="M6 16h6M9 13v3" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round"/>
         </svg>`;
         subEl.textContent = total === 1 ? '1 dispositivo conectado' : `${total} dispositivos conectados`;
-      }
-    });
-        brandEl.href = `https://instagram.com/${handle.replace('@','')}`;
       }
     });
 
