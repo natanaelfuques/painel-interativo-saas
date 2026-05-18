@@ -987,17 +987,26 @@
     window.planoAtual = plano;
     const isPremium = plano.includes('premium');
     const badgeLabels = {
-      'basico': 'Básico Mensal',
-      'basico-anual': 'Básico Anual',
-      'premium': 'Premium Mensal',
+      'basico':        'Básico Mensal',
+      'mensal':        'Básico Mensal',
+      'basico-anual':  'Básico Anual',
+      'anual':         'Básico Anual',
+      'premium':       'Premium Mensal',
       'premium-anual': 'Premium Anual',
     };
     document.getElementById('plan-badge').textContent = badgeLabels[plano] || 'Básico';
-    if (isPremium) {
-      document.getElementById('plan-badge').style.background = 'linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.15))';
-      document.getElementById('plan-badge').style.borderColor = 'rgba(251,191,36,0.4)';
-      document.getElementById('plan-badge').style.color = '#fbbf24';
-    }
+    const badgeStyles = {
+      'basico':          { bg: 'rgba(255,60,110,0.1)',                                                border: 'rgba(255,60,110,0.35)',  color: '#ff3c6e' },
+      'mensal':          { bg: 'rgba(255,60,110,0.1)',                                                border: 'rgba(255,60,110,0.35)',  color: '#ff3c6e' },
+      'basico-anual':    { bg: 'linear-gradient(135deg,rgba(255,60,110,0.12),rgba(255,140,66,0.12))', border: 'rgba(255,140,66,0.4)',   color: '#ff8c42' },
+      'anual':           { bg: 'linear-gradient(135deg,rgba(255,60,110,0.12),rgba(255,140,66,0.12))', border: 'rgba(255,140,66,0.4)',   color: '#ff8c42' },
+      'premium':         { bg: 'linear-gradient(135deg,rgba(251,191,36,0.15),rgba(245,158,11,0.15))', border: 'rgba(251,191,36,0.4)',   color: '#fbbf24' },
+      'premium-anual':   { bg: 'linear-gradient(135deg,rgba(251,191,36,0.2),rgba(245,158,11,0.2))',   border: 'rgba(251,191,36,0.55)',  color: '#fbbf24' },
+    };
+    const bs = badgeStyles[plano] || badgeStyles['basico'];
+    document.getElementById('plan-badge').style.background   = bs.bg;
+    document.getElementById('plan-badge').style.borderColor  = bs.border;
+    document.getElementById('plan-badge').style.color        = bs.color;
     // Mostrar/ocultar seções premium
     isPremiumUser = isPremium;
     document.querySelectorAll('.premium-only').forEach(el => {
