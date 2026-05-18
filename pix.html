@@ -422,6 +422,9 @@
       document.getElementById('form-section').style.display = 'none';
       document.getElementById('qr-result').style.display = 'block';
 
+      // Polling — verifica status a cada 5s
+      iniciarPolling(data.id, planoAtivo);
+
     } catch(e) {
       showErr(e.message);
       btn.disabled = false;
@@ -444,6 +447,7 @@
   }
 
   function novaCobranca() {
+    if (pollingInterval) { clearInterval(pollingInterval); pollingInterval = null; }
     document.getElementById('qr-result').style.display = 'none';
     document.getElementById('form-section').style.display = 'block';
     const btn = document.getElementById('btn-gerar');
@@ -451,6 +455,34 @@
     document.getElementById('btn-label').style.display = 'block';
     document.getElementById('spinner').style.display = 'none';
     document.getElementById('error-box').style.display = 'none';
+  }
+
+  let pollingInterval = null;
+
+  function iniciarPolling(pagamentoId, plano) {
+    let tentativas = 0;
+    const maxTentativas = 72; // 6 minutos (72 x 5s)
+
+    pollingInterval = setInterval(async () => {
+      tentativas++;
+      if (tentativas > maxTentativas) {
+        clearInterval(pollingInterval);
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/pix-status?id=${pagamentoId}`);
+        const data = await res.json();
+
+        if (data.status === 'approved') {
+          clearInterval(pollingInterval);
+          // Redireciona para sucesso com o plano correto
+          window.location.href = `sucesso.html?plano=${plano === 'premium' ? 'premium' : 'mensal'}`;
+        }
+      } catch(e) {
+        // Ignora erros de rede e continua tentando
+      }
+    }, 5000);
   }
 
   function showErr(msg) {
