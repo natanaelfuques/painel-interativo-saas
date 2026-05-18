@@ -230,7 +230,7 @@
       const snap = await getDoc(doc(db, 'usuarios', cred.user.uid));
       if (!snap.exists() || snap.data().status !== 'ativo') {
         await auth.signOut();
-        errEl.textContent = 'Sua conta está inativa. Entre em contato via WhatsApp.';
+        errEl.innerHTML = 'Sua conta está inativa. <a href="https://wa.me/5547991536771?text=Ol%C3%A1!%20Minha%20conta%20est%C3%A1%20inativa%20e%20preciso%20de%20ajuda." target="_blank" style="color:#ef4444;font-weight:700;text-decoration:underline;">Falar no WhatsApp</a>';
         errEl.style.display = 'block';
         btn.disabled = false; btn.innerHTML = 'Entrar';
         return;
