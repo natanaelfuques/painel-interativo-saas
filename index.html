@@ -944,7 +944,7 @@
     <div class="price-card reveal">
       <div class="price-plan">Básico Mensal</div>
       <div class="price-amount">
-        <span class="price-currency">R$</span>289<span class="price-cents">,99</span>
+        <span class="price-currency">R$</span><span id="preco-basico-int">289</span><span class="price-cents" id="preco-basico-dec">,99</span>
       </div>
       <div class="price-period">por mês · cancele quando quiser</div>
       <div style="height:20px;margin-bottom:28px;"></div>
@@ -968,10 +968,10 @@
       <div class="price-badge">Melhor custo-benefício</div>
       <div class="price-plan">Básico Anual</div>
       <div class="price-amount">
-        <span class="price-currency">R$</span>249<span class="price-cents">,17</span>
+        <span class="price-currency">R$</span><span id="preco-basico-anual-int">249</span><span class="price-cents" id="preco-basico-anual-dec">,17</span>
       </div>
-      <div class="price-period">por mês · R$ 2.989,99 cobrado anualmente</div>
-      <div class="price-economy">✦ Economia de R$ 498,89 por ano</div>
+      <div class="price-period" id="periodo-basico-anual">por mês · R$ 2.989,99 cobrado anualmente</div>
+      <div class="price-economy" id="economia-basico-anual">✦ Economia de R$ 498,89 por ano</div>
       <ul class="price-features">
         <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Tudo do plano mensal</li>
         <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 meses grátis</li>
@@ -993,7 +993,7 @@
     <div class="price-card reveal" style="border-color:rgba(251,191,36,0.2);">
       <div class="price-plan" style="color:#fbbf24;">Premium Mensal</div>
       <div class="price-amount">
-        <span class="price-currency">R$</span>389<span class="price-cents">,99</span>
+        <span class="price-currency">R$</span><span id="preco-premium-int">389</span><span class="price-cents" id="preco-premium-dec">,99</span>
       </div>
       <div class="price-period">por mês · cancele quando quiser</div>
       <div style="height:20px;margin-bottom:28px;"></div>
@@ -1015,10 +1015,10 @@
       <div class="price-badge" style="background:linear-gradient(135deg,#f59e0b,#fbbf24);">Melhor custo-benefício</div>
       <div class="price-plan" style="color:#fbbf24;">Premium Anual</div>
       <div class="price-amount">
-        <span class="price-currency">R$</span>332<span class="price-cents">,50</span>
+        <span class="price-currency">R$</span><span id="preco-premium-anual-int">332</span><span class="price-cents" id="preco-premium-anual-dec">,50</span>
       </div>
-      <div class="price-period">por mês · R$ 3.989,99 cobrado anualmente</div>
-      <div class="price-economy">✦ Economia de R$ 690,89 por ano</div>
+      <div class="price-period" id="periodo-premium-anual">por mês · R$ 3.989,99 cobrado anualmente</div>
+      <div class="price-economy" id="economia-premium-anual">✦ Economia de R$ 690,89 por ano</div>
       <ul class="price-features">
         <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Tudo do plano básico anual</li>
         <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>3 eventos simultâneos com tela exclusiva</li>
@@ -1095,6 +1095,80 @@
 
 <script>
 
+</script>
+
+<script>
+// Busca preços do Firestore e atualiza os cards
+(async () => {
+  try {
+    const res = await fetch(
+      'https://firestore.googleapis.com/v1/projects/painel-interativo-saas/databases/(default)/documents/config/planos'
+    );
+    if (!res.ok) return;
+    const data = await res.json();
+    const v = data.fields?.valores?.mapValue?.fields;
+    if (!v) return;
+
+    const get = (key) => parseFloat(v[key]?.doubleValue || v[key]?.integerValue || 0);
+
+    const basico        = get('basico');
+    const basicoAnual   = get('basico-anual');
+    const premium       = get('premium');
+    const premiumAnual  = get('premium-anual');
+
+    // Formata: separa inteiro e centavos
+    function fmt(val) {
+      const [int, dec] = val.toFixed(2).split('.');
+      return { int: int.replace(/\B(?=(\d{3})+(?!\d))/g, '.'), dec: ',' + dec };
+    }
+
+    // Básico mensal
+    if (basico) {
+      const f = fmt(basico);
+      document.getElementById('preco-basico-int').textContent = f.int;
+      document.getElementById('preco-basico-dec').textContent = f.dec;
+    }
+
+    // Básico anual (exibe preço mensal = total/12)
+    if (basicoAnual) {
+      const mensal = basicoAnual / 12;
+      const f = fmt(mensal);
+      document.getElementById('preco-basico-anual-int').textContent = f.int;
+      document.getElementById('preco-basico-anual-dec').textContent = f.dec;
+      document.getElementById('periodo-basico-anual').textContent =
+        `por mês · R$ ${basicoAnual.toLocaleString('pt-BR', {minimumFractionDigits:2})} cobrado anualmente`;
+      // Economia = basico*12 - basicoAnual
+      if (basico) {
+        const economia = (basico * 12) - basicoAnual;
+        document.getElementById('economia-basico-anual').textContent =
+          `✦ Economia de R$ ${economia.toLocaleString('pt-BR', {minimumFractionDigits:2})} por ano`;
+      }
+    }
+
+    // Premium mensal
+    if (premium) {
+      const f = fmt(premium);
+      document.getElementById('preco-premium-int').textContent = f.int;
+      document.getElementById('preco-premium-dec').textContent = f.dec;
+    }
+
+    // Premium anual
+    if (premiumAnual) {
+      const mensal = premiumAnual / 12;
+      const f = fmt(mensal);
+      document.getElementById('preco-premium-anual-int').textContent = f.int;
+      document.getElementById('preco-premium-anual-dec').textContent = f.dec;
+      document.getElementById('periodo-premium-anual').textContent =
+        `por mês · R$ ${premiumAnual.toLocaleString('pt-BR', {minimumFractionDigits:2})} cobrado anualmente`;
+      if (premium) {
+        const economia = (premium * 12) - premiumAnual;
+        document.getElementById('economia-premium-anual').textContent =
+          `✦ Economia de R$ ${economia.toLocaleString('pt-BR', {minimumFractionDigits:2})} por ano`;
+      }
+    }
+
+  } catch(e) { /* mantém valores padrão */ }
+})();
 </script>
 </body>
 </html>
