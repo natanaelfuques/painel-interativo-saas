@@ -15,18 +15,20 @@ export default async function handler(req, res) {
   }
 
   const valores = {
-    basico:          289.99,
-    'basico-anual':  2989.99,
-    premium:         389.99,
-    'premium-anual': 3989.99,
-    upgrade:         100.00,
+    basico:           289.99,
+    'basico-anual':   2989.99,
+    premium:          389.99,
+    'premium-anual':  3989.99,
+    upgrade:          100.00,
+    'upgrade-anual':  1000.00,
   };
   const descricoes = {
-    basico:          'Painel Interativo — Plano Básico Mensal',
-    'basico-anual':  'Painel Interativo — Plano Básico Anual',
-    premium:         'Painel Interativo — Plano Premium Mensal',
-    'premium-anual': 'Painel Interativo — Plano Premium Anual',
-    upgrade:         'Painel Interativo — Upgrade para Premium',
+    basico:           'Painel Interativo — Plano Básico Mensal',
+    'basico-anual':   'Painel Interativo — Plano Básico Anual',
+    premium:          'Painel Interativo — Plano Premium Mensal',
+    'premium-anual':  'Painel Interativo — Plano Premium Anual',
+    upgrade:          'Painel Interativo — Upgrade para Premium',
+    'upgrade-anual':  'Painel Interativo — Upgrade para Premium Anual',
   };
 
   const valor     = valores[plano]    || valores.basico;
