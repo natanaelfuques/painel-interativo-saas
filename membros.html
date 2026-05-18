@@ -464,11 +464,16 @@
   <p>Acesso restrito ao administrador</p>
   <div id="login-error"></div>
   <div class="field">
-    <input type="password" id="admin-pass" placeholder="Senha de acesso"
+    <input type="email" id="admin-email" placeholder="Email"
+      onkeydown="if(event.key==='Enter') doLogin()" autocomplete="email">
+  </div>
+  <div class="field">
+    <input type="password" id="admin-pass" placeholder="Senha"
       onkeydown="if(event.key==='Enter') doLogin()" autocomplete="current-password">
   </div>
   <button class="btn btn-primary" style="width:100%;padding:13px" onclick="doLogin()">
-    Entrar
+    <span id="login-label">Entrar</span>
+    <div class="spinner" id="login-spinner" style="display:none;width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;margin:0 auto"></div>
   </button>
 </div>
 
@@ -624,8 +629,8 @@
     appId:             "1:962909096330:web:d446a082bce21a0447a073",
   };
 
-  // Senha local do painel (não precisa ser Firebase)
-  const ADMIN_PASSWORD = "admin123"; // ← troque para sua senha
+  // Email do administrador — único com acesso permitido
+  const ADMIN_EMAIL = "natanael.fuques@gmail.com";
 
   const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
@@ -637,19 +642,57 @@
   let presencas = {};
   let unsubPresencas = {};
 
-  // ═══════════════════════════════
-  //  LOGIN LOCAL
-  // ═══════════════════════════════
-  window.doLogin = function() {
-    const pass = document.getElementById('admin-pass').value;
-    const err  = document.getElementById('login-error');
-    if (pass === ADMIN_PASSWORD) {
+  // Verifica se já está logado
+  auth.onAuthStateChanged(user => {
+    if (user && user.email === ADMIN_EMAIL) {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('app').style.display = 'block';
       carregarMembros();
-    } else {
-      err.textContent = 'Senha incorreta.';
+    }
+  });
+
+  // ═══════════════════════════════
+  //  LOGIN FIREBASE
+  // ═══════════════════════════════
+  window.doLogin = async function() {
+    const email = document.getElementById('admin-email').value.trim();
+    const pass  = document.getElementById('admin-pass').value;
+    const err   = document.getElementById('login-error');
+    const label   = document.getElementById('login-label');
+    const spinner = document.getElementById('login-spinner');
+    err.style.display = 'none';
+
+    if (!email || !pass) {
+      err.textContent = 'Preencha email e senha.';
       err.style.display = 'block';
+      return;
+    }
+
+    label.style.display = 'none';
+    spinner.style.display = 'block';
+
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, pass);
+      if (cred.user.email !== ADMIN_EMAIL) {
+        await auth.signOut();
+        throw { code: 'auth/unauthorized' };
+      }
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      carregarMembros();
+    } catch(e) {
+      const msgs = {
+        'auth/invalid-credential':  'Email ou senha incorretos.',
+        'auth/user-not-found':      'Email ou senha incorretos.',
+        'auth/wrong-password':      'Email ou senha incorretos.',
+        'auth/invalid-email':       'Email inválido.',
+        'auth/unauthorized':        'Acesso não permitido para este email.',
+        'auth/too-many-requests':   'Muitas tentativas. Tente novamente mais tarde.',
+      };
+      err.textContent = msgs[e.code] || 'Erro ao entrar. Tente novamente.';
+      err.style.display = 'block';
+      label.style.display = 'block';
+      spinner.style.display = 'none';
     }
   };
 
