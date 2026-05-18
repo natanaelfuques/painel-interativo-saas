@@ -217,8 +217,8 @@
     .badge-ativo    { background: rgba(34,197,94,.12);  border: 1px solid rgba(34,197,94,.3);  color: var(--green); }
     .badge-inativo  { background: rgba(239,68,68,.12);  border: 1px solid rgba(239,68,68,.3);  color: var(--red); }
     .badge-mensal   { background: rgba(255,60,110,.1);  border: 1px solid rgba(255,60,110,.25); color: var(--accent); }
-    .badge-anual    { background: rgba(250,204,21,.1);  border: 1px solid rgba(250,204,21,.3);  color: var(--yellow); }
-    .badge-premium  { background: rgba(168,85,247,.12); border: 1px solid rgba(168,85,247,.3);  color: #c084fc; }
+    .badge-anual    { background: rgba(255,60,110,.1);  border: 1px solid rgba(255,60,110,.25); color: var(--accent); }
+    .badge-premium  { background: rgba(250,204,21,.1);  border: 1px solid rgba(250,204,21,.3);  color: var(--yellow); }
     .badge-vencido  { background: rgba(239,68,68,.08);  border: 1px solid rgba(239,68,68,.2);  color: #f87171; }
 
     .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
@@ -916,7 +916,7 @@
         // ── EDITAR ──
         const dados = { nome, plano, status };
         if (venceEm) dados.venceEm = venceEm;
-        await updateDoc(doc(db, 'usuarios', editUID), dados);
+        await setDoc(doc(db, 'usuarios', editUID), dados, { merge: true });
         const idx = members.findIndex(m => m.uid === editUID);
         if (idx !== -1) members[idx] = { ...members[idx], ...dados };
         toast('Membro atualizado!', 'success');
@@ -961,13 +961,17 @@
   //  TOGGLE STATUS
   // ═══════════════════════════════
   window.toggleStatus = async function(uid, novoStatus) {
-    await updateDoc(doc(db, 'usuarios', uid), { status: novoStatus });
-    const m = members.find(x => x.uid === uid);
-    if (m) m.status = novoStatus;
-    atualizarStats();
-    renderTable();
-    toast(novoStatus === 'ativo' ? 'Membro ativado!' : 'Membro desativado!',
-          novoStatus === 'ativo' ? 'success' : 'error');
+    try {
+      await setDoc(doc(db, 'usuarios', uid), { status: novoStatus }, { merge: true });
+      const m = members.find(x => x.uid === uid);
+      if (m) m.status = novoStatus;
+      atualizarStats();
+      renderTable();
+      toast(novoStatus === 'ativo' ? 'Membro ativado!' : 'Membro desativado!',
+            novoStatus === 'ativo' ? 'success' : 'error');
+    } catch(e) {
+      toast('Erro ao atualizar: ' + (e.code || e.message), 'error');
+    }
   };
 
   // ═══════════════════════════════
