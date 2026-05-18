@@ -402,7 +402,8 @@
         </svg>
       </div>
       <h3>Conta criada!</h3>
-      <p>Seu acesso está <strong style="color:var(--text)">aguardando ativação</strong>. Você receberá uma confirmação via WhatsApp em breve.</p>
+      <p>Seu acesso está <strong style="color:var(--green)">ativo</strong>. Acesse agora o seu painel!</p>
+      <a href="login.html" style="display:inline-block;margin-top:8px;padding:13px 24px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;border-radius:12px;text-decoration:none;">Acessar o painel →</a>
     </div>
   </div>
 
@@ -501,7 +502,7 @@
         email,
         nome,
         plano,
-        status:   'inativo',
+        status:   'ativo',
         criadoEm: serverTimestamp(),
         venceEm:  calcVencimento(),
       });
