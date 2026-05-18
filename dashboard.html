@@ -886,7 +886,7 @@
           <strong>Upgrade para Premium</strong>
           Diferença do seu plano atual
         </div>
-        <div class="upgrade-preco-valor">R$ 100</div>
+        <div class="upgrade-preco-valor" id="upgrade-preco-valor">R$ 100</div>
       </div>
       <button class="btn-upgrade-pix" id="btn-gerar-upgrade" onclick="gerarQrUpgrade()">
         <img src="data:image/png;base64,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" width="16" height="16" style="display:inline-block;vertical-align:middle;filter:brightness(0);">
@@ -984,6 +984,7 @@
     document.getElementById('nav-email').textContent = user.email;
     document.getElementById('greeting-name').textContent = userData.nome || user.email.split('@')[0];
     const plano = userData.plano || 'basico';
+    window.planoAtual = plano;
     const isPremium = plano.includes('premium');
     const badgeLabels = {
       'basico': 'Básico Mensal',
@@ -1012,9 +1013,9 @@
       document.getElementById('slot-btn-3').style.opacity = '0.4';
       // Badge e status-card abrem modal de upgrade
       document.getElementById('plan-badge').style.cursor = 'pointer';
-      document.getElementById('plan-badge').onclick = () => document.getElementById('upgrade-overlay').classList.add('open');
+      document.getElementById('plan-badge').onclick = () => document.getElementById('upgrade-overlay').classList.add('open'); atualizarModalUpgrade();
       document.querySelector('.status-card').style.cursor = 'pointer';
-      document.querySelector('.status-card').onclick = () => document.getElementById('upgrade-overlay').classList.add('open');
+      document.querySelector('.status-card').onclick = () => document.getElementById('upgrade-overlay').classList.add('open'); atualizarModalUpgrade();
     }
 
     // Status
@@ -1055,6 +1056,17 @@
   let upgradePolling = null;
   let upgradePagamentoId = null;
 
+  // Preenche valor do upgrade no modal ao abrir
+  const upgradeValores = { 'basico': 100.00, 'basico-anual': 1000.00 };
+  const upgradeLabels  = { 'basico': 'R$ 100', 'basico-anual': 'R$ 1.000' };
+  const upgradePlanos  = { 'basico': 'upgrade', 'basico-anual': 'upgrade-anual' };
+
+  function atualizarModalUpgrade() {
+    const p = window.planoAtual || 'basico';
+    const el = document.getElementById('upgrade-preco-valor');
+    if (el) el.textContent = upgradeLabels[p] || 'R$ 100';
+  }
+
   window.gerarQrUpgrade = async function() {
     const btn    = document.getElementById('btn-gerar-upgrade');
     const label  = document.getElementById('upgrade-btn-label');
@@ -1065,6 +1077,8 @@
     label.style.display = 'none';
     spin.style.display  = 'block';
 
+    const planoUpgrade = upgradePlanos[window.planoAtual] || 'upgrade';
+
     try {
       const user = auth.currentUser;
       const res = await fetch('/api/pix', {
@@ -1074,7 +1088,7 @@
           nome:     user.displayName || user.email,
           email:    user.email,
           telefone: '00000000000',
-          plano:    'upgrade',
+          plano:    planoUpgrade,
         }),
       });
 
@@ -1101,7 +1115,7 @@
             const upgradeRes = await fetch('/api/upgrade', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ uid: user.uid, pagamentoId: upgradePagamentoId, idToken }),
+              body: JSON.stringify({ uid: user.uid, pagamentoId: upgradePagamentoId, idToken, planoAtual: window.planoAtual }),
             });
             const upgradeData = await upgradeRes.json();
             console.log('Upgrade response:', upgradeRes.status, upgradeData);
@@ -1140,7 +1154,7 @@
   window.trocarSlot = async function(slot) {
     if (slot === currentSlot) return;
     if (slot > 1 && !isPremiumUser) {
-      document.getElementById('upgrade-overlay').classList.add('open');
+      document.getElementById('upgrade-overlay').classList.add('open'); atualizarModalUpgrade();
       return;
     }
     currentSlot = slot;
