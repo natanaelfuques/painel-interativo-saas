@@ -623,6 +623,40 @@
 
 </div>
 
+<!-- ── MODAL CONFIGURAÇÕES ── -->
+<div class="config-overlay" id="config-overlay" onclick="if(event.target===this)closeConfig()">
+  <div class="config-modal">
+    <h3>⚙️ Configurações</h3>
+    <div class="cm-sub">Edite os valores e textos dos planos. Salvos automaticamente no Firestore.</div>
+
+    <div class="config-section-title">Valores dos Planos (R$)</div>
+    <div class="config-grid">
+      <div class="config-field"><label>Básico Mensal</label><input id="cfg-val-basico" type="number" step="0.01" placeholder="289.99"/></div>
+      <div class="config-field"><label>Básico Anual</label><input id="cfg-val-basico-anual" type="number" step="0.01" placeholder="2989.99"/></div>
+      <div class="config-field"><label>Premium Mensal</label><input id="cfg-val-premium" type="number" step="0.01" placeholder="389.99"/></div>
+      <div class="config-field"><label>Premium Anual</label><input id="cfg-val-premium-anual" type="number" step="0.01" placeholder="3989.99"/></div>
+      <div class="config-field"><label>Upgrade Mensal→Premium</label><input id="cfg-val-upgrade" type="number" step="0.01" placeholder="100.00"/></div>
+      <div class="config-field"><label>Upgrade Anual→Premium Anual</label><input id="cfg-val-upgrade-anual" type="number" step="0.01" placeholder="1000.00"/></div>
+    </div>
+
+    <div class="config-section-title">Descrições (texto no QR Pix)</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div class="config-field"><label>Básico Mensal</label><input id="cfg-desc-basico" type="text" placeholder="Painel Interativo — Plano Básico Mensal"/></div>
+      <div class="config-field"><label>Básico Anual</label><input id="cfg-desc-basico-anual" type="text" placeholder="Painel Interativo — Plano Básico Anual"/></div>
+      <div class="config-field"><label>Premium Mensal</label><input id="cfg-desc-premium" type="text" placeholder="Painel Interativo — Plano Premium Mensal"/></div>
+      <div class="config-field"><label>Premium Anual</label><input id="cfg-desc-premium-anual" type="text" placeholder="Painel Interativo — Plano Premium Anual"/></div>
+      <div class="config-field"><label>Upgrade Mensal</label><input id="cfg-desc-upgrade" type="text" placeholder="Painel Interativo — Upgrade para Premium"/></div>
+      <div class="config-field"><label>Upgrade Anual</label><input id="cfg-desc-upgrade-anual" type="text" placeholder="Painel Interativo — Upgrade para Premium Anual"/></div>
+    </div>
+
+    <div class="config-actions">
+      <button class="btn-config-cancel" onclick="closeConfig()">Cancelar</button>
+      <button class="btn-config-save" id="btn-cfg-save" onclick="saveConfig()">Salvar configurações</button>
+    </div>
+    <div class="config-saved" id="config-saved">✓ Salvo com sucesso!</div>
+  </div>
+</div>
+
 <!-- ── MODAL NOVO / EDITAR ── -->
 <div class="overlay" id="overlay" onclick="closeModal(event)">
   <div class="modal">
