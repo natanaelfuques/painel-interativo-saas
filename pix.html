@@ -288,11 +288,7 @@
       <div class="valor-num" id="plano-valor">R$ 289,99</div>
     </div>
 
-    <!-- Seletor de plano -->
-    <div id="toggle-planos" style="display:flex;gap:8px;margin-bottom:20px;">
-      <button class="btn-plano active" id="btn-basico" onclick="selecionarPlano('basico')">Básico</button>
-      <button class="btn-plano" id="btn-premium" onclick="selecionarPlano('premium')">✦ Premium</button>
-    </div>
+    
 
     <div class="error-box" id="error-box"></div>
 
@@ -369,15 +365,7 @@
 
 <script>
   const planoUrl = new URLSearchParams(window.location.search).get('plano');
-  if (planoUrl === 'premium') {
-    selecionarPlano('premium');
-    // Oculta completamente o toggle de seleção
-    document.getElementById('toggle-planos').style.display = 'none';
-  } else if (planoUrl === 'basico') {
-    selecionarPlano('basico');
-    // Remove o botão Premium do toggle, deixa só Básico visível
-    document.getElementById('btn-premium').style.display = 'none';
-  }
+  if (planoUrl === 'premium') selecionarPlano('premium');
 
   const planos = {
     basico:  { nome: 'Plano Básico Mensal',  valor: 289.99, label: 'R$ 289,99', cor: 'var(--accent)',  badgeBg: 'rgba(255,60,110,0.06)',  badgeBorder: 'rgba(255,60,110,0.2)'  },
@@ -394,9 +382,6 @@
     document.getElementById('plano-valor').style.color = info.cor;
     document.getElementById('valor-badge').style.background = info.badgeBg;
     document.getElementById('valor-badge').style.borderColor = info.badgeBorder;
-
-    document.getElementById('btn-basico').className  = 'btn-plano' + (p === 'basico'  ? ' active' : '');
-    document.getElementById('btn-premium').className = 'btn-plano' + (p === 'premium' ? ' active-premium' : '');
   }
 
   async function gerarPix() {
