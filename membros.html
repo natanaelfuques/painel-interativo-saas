@@ -614,8 +614,8 @@
           <th>Plano</th>
           <th>Status</th>
           <th>Telas</th>
-          <th>Vencimento</th>
           <th>Cadastro</th>
+          <th>Vencimento</th>
           <th></th>
         </tr>
       </thead>
@@ -935,22 +935,16 @@
             <div class="user-info">
               <span class="user-name">${m.nome || '—'}</span>
               <span class="user-email">${m.email || '—'}</span>
-              ${m.telefone ? `<span style="color:var(--muted);font-size:11px;margin-top:2px;">${m.telefone}</span>` : ''}
+              ${m.telefone ? `<a href="https://wa.me/55${m.telefone.replace(/\\D/g,'')}" target="_blank" style="display:inline-flex;align-items:center;gap:5px;margin-top:4px;color:#25d366;font-size:12px;font-weight:600;text-decoration:none;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.25);border-radius:8px;padding:3px 8px;" title="Abrir WhatsApp"><svg width="12" height="12" viewBox="0 0 20 20" fill="none"><path d="M10 1.5C5.31 1.5 1.5 5.31 1.5 10c0 1.5.39 2.9 1.07 4.13L1.5 18.5l4.5-1.05A8.47 8.47 0 0010 18.5c4.69 0 8.5-3.81 8.5-8.5S14.69 1.5 10 1.5z" stroke="#25d366" stroke-width="1.4" stroke-linejoin="round"/><path d="M7.5 6.5s-.5 1 .5 2.5c.67 1 1.5 1.83 2.5 2.5 1.5 1 2.5.5 2.5.5l.5-1.5-1.5-.5-.5.5s-.5.5-1.5-.5S9 8.5 9 8.5l.5-.5-.5-1.5-1.5.5z" stroke="#25d366" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>${m.telefone}</a>` : '<span style="color:var(--muted);font-size:11px;display:block;margin-top:3px;">—</span>'}
             </div>
           </td>
           <td>${badgePlano}</td>
           <td>${badgeStatus}</td>
           <td id="telas-${m.uid}" style="color:var(--muted);font-size:14px">${presencas[m.uid] > 0 ? `<span style="color:var(--green);font-weight:700">${presencas[m.uid]}</span>` : '—'}</td>
-          <td class="${venceClass}">${venceStr}</td>
           <td style="color:var(--muted);font-size:13px">${criadoStr}</td>
+          <td class="${venceClass}">${venceStr}</td>
           <td>
             <div class="actions">
-              ${m.telefone ? `<a href="https://wa.me/55${m.telefone.replace(/\D/g,'')}" target="_blank" class="btn btn-icon" title="WhatsApp" style="color:#25d366;border-color:rgba(37,211,102,0.3);background:rgba(37,211,102,0.06);">
-                <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                  <path d="M10 1.5C5.31 1.5 1.5 5.31 1.5 10c0 1.5.39 2.9 1.07 4.13L1.5 18.5l4.5-1.05A8.47 8.47 0 0010 18.5c4.69 0 8.5-3.81 8.5-8.5S14.69 1.5 10 1.5z" stroke="#25d366" stroke-width="1.4" stroke-linejoin="round"/>
-                  <path d="M7.5 6.5s-.5 1 .5 2.5c.67 1 1.5 1.83 2.5 2.5 1.5 1 2.5.5 2.5.5l.5-1.5-1.5-.5-.5.5s-.5.5-1.5-.5S9 8.5 9 8.5l.5-.5-.5-1.5-1.5.5z" stroke="#25d366" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>` : ''}
               <button class="btn btn-icon" title="Editar" onclick="openEdit('${m.uid}')">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M9.5 2l2.5 2.5-7 7H2.5V9L9.5 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
