@@ -1066,14 +1066,30 @@
   let upgradePagamentoId = null;
 
   // Preenche valor do upgrade no modal ao abrir
-  const upgradeValores = { 'basico': 100.00, 'mensal': 100.00, 'basico-anual': 1000.00, 'anual': 1000.00 };
-  const upgradeLabels  = { 'basico': 'R$ 100', 'mensal': 'R$ 100', 'basico-anual': 'R$ 1.000', 'anual': 'R$ 1.000' };
   const upgradePlanos  = { 'basico': 'upgrade', 'mensal': 'upgrade', 'basico-anual': 'upgrade-anual', 'anual': 'upgrade-anual' };
 
-  function atualizarModalUpgrade() {
+  // Valores padrão de fallback
+  const upgradeValoresPadrao = { 'basico': 100.00, 'mensal': 100.00, 'basico-anual': 1000.00, 'anual': 1000.00 };
+
+  function formatarValor(v) {
+    return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+  }
+
+  async function atualizarModalUpgrade() {
     const p = window.planoAtual || 'basico';
+    const planoUpgrade = upgradePlanos[p] || 'upgrade';
     const el = document.getElementById('upgrade-preco-valor');
-    if (el) el.textContent = upgradeLabels[p] || 'R$ 100';
+    if (!el) return;
+    // Busca valor do Firestore
+    try {
+      const snap = await getDoc(doc(db, 'config', 'planos'));
+      if (snap.exists() && snap.data().valores?.[planoUpgrade] !== undefined) {
+        el.textContent = formatarValor(snap.data().valores[planoUpgrade]);
+        return;
+      }
+    } catch(e) {}
+    // Fallback
+    el.textContent = formatarValor(upgradeValoresPadrao[p] || 100);
   }
 
   window.gerarQrUpgrade = async function() {
