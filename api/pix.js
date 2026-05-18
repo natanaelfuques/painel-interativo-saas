@@ -14,11 +14,19 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Token não configurado' });
   }
 
-  const valores = { basico: 1.00, premium: 389.99, upgrade: 2.00 };
+  const valores = {
+    basico:          1.00,
+    'basico-anual':  1.00,
+    premium:         389.99,
+    'premium-anual': 3989.99,
+    upgrade:         2.00,
+  };
   const descricoes = {
-    basico:  'Painel Interativo — Plano Básico Mensal',
-    premium: 'Painel Interativo — Plano Premium Mensal',
-    upgrade: 'Painel Interativo — Upgrade para Premium',
+    basico:          'Painel Interativo — Plano Básico Mensal',
+    'basico-anual':  'Painel Interativo — Plano Básico Anual',
+    premium:         'Painel Interativo — Plano Premium Mensal',
+    'premium-anual': 'Painel Interativo — Plano Premium Anual',
+    upgrade:         'Painel Interativo — Upgrade para Premium',
   };
 
   const valor     = valores[plano]    || valores.basico;
