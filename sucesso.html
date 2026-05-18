@@ -224,6 +224,133 @@
   @media (max-width: 480px) {
     .card { padding: 36px 24px; }
   }
+
+  /* FORMULÁRIO DE CADASTRO */
+  .cadastro-wrap {
+    margin-top: 28px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    opacity: 0; animation: fadeUp 0.5s 1.2s forwards;
+  }
+
+  .cadastro-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+
+  .cadastro-titulo {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px; font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .cadastro-sub {
+    font-size: 12px; color: var(--muted);
+    margin-bottom: 18px; line-height: 1.5;
+  }
+
+  .plano-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 99px;
+    margin-bottom: 18px;
+  }
+
+  .plano-badge.basico {
+    background: rgba(255,60,110,0.1);
+    border: 1px solid rgba(255,60,110,0.25);
+    color: var(--accent);
+  }
+
+  .plano-badge.premium {
+    background: rgba(251,191,36,0.1);
+    border: 1px solid rgba(251,191,36,0.3);
+    color: #fbbf24;
+  }
+
+  .field-cad { margin-bottom: 12px; text-align: left; }
+  .field-cad label {
+    display: block;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--muted); margin-bottom: 6px;
+  }
+
+  .field-cad input {
+    width: 100%;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .field-cad input:focus { border-color: rgba(255,60,110,0.5); }
+  .field-cad input::placeholder { color: var(--muted); }
+
+  .btn-cadastrar {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 700;
+    border: none; border-radius: 12px;
+    cursor: pointer; transition: all 0.2s;
+    margin-top: 4px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-cadastrar:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn-cadastrar:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .cad-error {
+    display: none;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #f87171;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12px;
+    margin-bottom: 12px;
+    text-align: left;
+  }
+
+  .cad-sucesso {
+    display: none;
+    flex-direction: column; align-items: center; gap: 10px;
+    padding: 20px 0 8px;
+    text-align: center;
+  }
+
+  .cad-sucesso .cs-icon {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--green-bg); border: 1px solid var(--green-border);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .cad-sucesso h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px; font-weight: 800;
+  }
+
+  .cad-sucesso p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -239,61 +366,168 @@
   </div>
 
   <h1>Pagamento confirmado!</h1>
-  <p class="subtitle">Seu acesso ao Painel Interativo está quase pronto. Siga os passos abaixo.</p>
+  <p class="subtitle" style="margin-bottom:20px;">Seu pagamento foi confirmado. Crie sua conta abaixo para acessar o painel.</p>
 
-  <div class="steps-label">O que acontece agora</div>
+  <!-- CADASTRO RÁPIDO -->
+  <div class="cadastro-wrap" style="margin-top:0;border-top:none;padding-top:0;">
+    <div id="plano-badge-wrap" style="margin-bottom:16px;"></div>
+    <div class="cadastro-titulo" style="font-size:18px;margin-bottom:6px;">Crie sua conta agora</div>
+    <div class="cadastro-sub">Já aprovamos seu pagamento. Cadastre-se para acessar o painel.</div>
 
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-content">
-        <h3>Confirmamos seu pagamento</h3>
-        <p>O MercadoPago já processou. Você também recebe a confirmação por email.</p>
+    <div class="cad-error" id="cad-error"></div>
+
+    <div id="cad-form">
+      <div class="field-cad">
+        <label>Nome completo</label>
+        <input type="text" id="cad-nome" placeholder="Seu nome">
       </div>
+      <div class="field-cad">
+        <label>Email</label>
+        <input type="email" id="cad-email" placeholder="seu@email.com">
+      </div>
+      <div class="field-cad">
+        <label>Senha</label>
+        <input type="password" id="cad-senha" placeholder="Mínimo 6 caracteres">
+      </div>
+      <button class="btn-cadastrar" id="btn-cadastrar" onclick="criarConta()">
+        <span id="btn-label">Criar minha conta</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
     </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-content">
-        <h3>Enviamos seu acesso</h3>
-        <p>Em até <strong style="color:var(--text)">2 horas</strong> você recebe o link do seu painel exclusivo via WhatsApp.</p>
+
+    <div class="cad-sucesso" id="cad-sucesso">
+      <div class="cs-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+          <path d="M5 11l4 4 8-8" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
-    </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-content">
-        <h3>Comece a usar</h3>
-        <p>Configure o nome do evento, coloque a tela para rodar e surpreenda seus clientes.</p>
-      </div>
+      <h3>Conta criada!</h3>
+      <p>Seu acesso está <strong style="color:var(--text)">aguardando ativação</strong>. Você receberá uma confirmação via WhatsApp em breve.</p>
     </div>
   </div>
 
-  <div class="prazo">
-    <div class="prazo-icon">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-        <circle cx="9" cy="9" r="7.5" stroke="#ff3c6e" stroke-width="1.4"/>
-        <path d="M9 5.5v4l2.5 2.5" stroke="#ff3c6e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <div style="border-top:1px solid var(--border);margin-top:24px;padding-top:20px;opacity:0;animation:fadeUp 0.5s 1.1s forwards;">
+    <a
+      href="https://wa.me/5547991536771?text=Ol%C3%A1!%20Acabei%20de%20assinar%20o%20Painel%20Interativo%20e%20gostaria%20de%20receber%20meu%20acesso."
+      target="_blank"
+      class="btn-whatsapp"
+      style="margin-bottom:10px;"
+    >
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <path d="M10 1.5C5.31 1.5 1.5 5.31 1.5 10c0 1.5.39 2.9 1.07 4.13L1.5 18.5l4.5-1.05A8.47 8.47 0 0010 18.5c4.69 0 8.5-3.81 8.5-8.5S14.69 1.5 10 1.5z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
+        <path d="M7.5 6.5s-.5 1 .5 2.5c.67 1 1.5 1.83 2.5 2.5 1.5 1 2.5.5 2.5.5l.5-1.5-1.5-.5-.5.5s-.5.5-1.5-.5S9 8.5 9 8.5l.5-.5-.5-1.5-1.5.5z" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-    </div>
-    <p><strong>Atendimento em horário comercial.</strong> Pedidos fora desse horário serão atendidos na manhã seguinte.</p>
+      Dúvidas? Fale no WhatsApp
+    </a>
+    <a href="index.html" class="btn-voltar">← Voltar para o início</a>
   </div>
-
-  <a
-    href="https://wa.me/5547991536771?text=Ol%C3%A1!%20Acabei%20de%20assinar%20o%20Painel%20Interativo%20e%20gostaria%20de%20receber%20meu%20acesso."
-    target="_blank"
-    class="btn-whatsapp"
-  >
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-      <path d="M10 1.5C5.31 1.5 1.5 5.31 1.5 10c0 1.5.39 2.9 1.07 4.13L1.5 18.5l4.5-1.05A8.47 8.47 0 0010 18.5c4.69 0 8.5-3.81 8.5-8.5S14.69 1.5 10 1.5z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
-      <path d="M7.5 6.5s-.5 1 .5 2.5c.67 1 1.5 1.83 2.5 2.5 1.5 1 2.5.5 2.5.5l.5-1.5-1.5-.5-.5.5s-.5.5-1.5-.5S9 8.5 9 8.5l.5-.5-.5-1.5-1.5.5z" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-    Falar no WhatsApp
-  </a>
-
-  <a href="index.html" class="btn-voltar">← Voltar para o início</a>
 
 </div>
 
 <a class="brand" href="https://instagram.com/audiodequalidade" target="_blank">@audiodequalidade</a>
 
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
+  import { getAuth, createUserWithEmailAndPassword }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
+  import { getFirestore, doc, setDoc, serverTimestamp, Timestamp }
+    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+
+  const app = initializeApp({
+    apiKey: "AIzaSyAuPS32OoQtQIQBO6LfEfYn2T5J6xTTxHY",
+    authDomain: "painel-interativo-saas.firebaseapp.com",
+    projectId: "painel-interativo-saas",
+    storageBucket: "painel-interativo-saas.firebasestorage.app",
+    messagingSenderId: "962909096330",
+    appId: "1:962909096330:web:d446a082bce21a0447a073"
+  });
+
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  // Detecta plano pela URL (?plano=premium, mensal, anual, premium-anual)
+  const params = new URLSearchParams(window.location.search);
+  const plano  = params.get('plano') || 'mensal';
+
+  const planoLabels = {
+    'mensal':        'Básico Mensal',
+    'anual':         'Básico Anual',
+    'premium':       'Premium Mensal',
+    'premium-anual': 'Premium Anual',
+  };
+
+  const isPremium = plano.includes('premium');
+
+  // Renderiza badge do plano
+  const badgeWrap = document.getElementById('plano-badge-wrap');
+  badgeWrap.innerHTML = `
+    <div class="plano-badge ${isPremium ? 'premium' : 'basico'}">
+      ${isPremium ? '★ ' : ''}${planoLabels[plano] || 'Básico Mensal'}
+    </div>`;
+
+  // Vencimento automático: mensal = +30 dias, anual = +365 dias
+  function calcVencimento() {
+    const d = new Date();
+    d.setDate(d.getDate() + (plano.includes('anual') ? 365 : 30));
+    return Timestamp.fromDate(d);
+  }
+
+  window.criarConta = async function() {
+    const nome  = document.getElementById('cad-nome').value.trim();
+    const email = document.getElementById('cad-email').value.trim();
+    const senha = document.getElementById('cad-senha').value;
+    const errEl = document.getElementById('cad-error');
+    errEl.style.display = 'none';
+
+    if (!nome)          return showErr('Preencha seu nome.');
+    if (!email)         return showErr('Preencha seu email.');
+    if (senha.length < 6) return showErr('Senha mínima de 6 caracteres.');
+
+    const btn     = document.getElementById('btn-cadastrar');
+    const label   = document.getElementById('btn-label');
+    const spinner = document.getElementById('spinner');
+    btn.disabled = true;
+    label.style.display = 'none';
+    spinner.style.display = 'block';
+
+    try {
+      // 1. Cria no Firebase Auth
+      const cred = await createUserWithEmailAndPassword(auth, email, senha);
+      const uid  = cred.user.uid;
+
+      // 2. Cria documento no Firestore — status inativo (aguarda ativação manual)
+      await setDoc(doc(db, 'usuarios', uid), {
+        email,
+        nome,
+        plano,
+        status:   'inativo',
+        criadoEm: serverTimestamp(),
+        venceEm:  calcVencimento(),
+      });
+
+      // Sucesso
+      document.getElementById('cad-form').style.display = 'none';
+      const s = document.getElementById('cad-sucesso');
+      s.style.display = 'flex';
+
+    } catch(e) {
+      const msgs = {
+        'auth/email-already-in-use': 'Este email já possui uma conta. Tente fazer login.',
+        'auth/invalid-email':        'Email inválido.',
+        'auth/weak-password':        'Senha muito fraca.',
+      };
+      showErr(msgs[e.code] || 'Erro ao criar conta. Tente novamente.');
+      btn.disabled = false;
+      label.style.display = 'block';
+      spinner.style.display = 'none';
+    }
+  };
+
+  function showErr(msg) {
+    const el = document.getElementById('cad-error');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+</script>
 </body>
 </html>
