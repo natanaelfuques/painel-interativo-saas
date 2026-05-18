@@ -363,8 +363,10 @@
 
 <script>
   const planos = {
-    basico:  { nome: 'Plano Básico Mensal',  valor: 289.99, label: 'R$ 289,99', cor: 'var(--accent)',  badgeBg: 'rgba(255,60,110,0.06)',  badgeBorder: 'rgba(255,60,110,0.2)'  },
-    premium: { nome: 'Plano Premium Mensal', valor: 389.99, label: 'R$ 389,99', cor: '#fbbf24',        badgeBg: 'rgba(251,191,36,0.06)',  badgeBorder: 'rgba(251,191,36,0.25)' },
+    basico:          { nome: 'Plano Básico Mensal',   valor: 289.99,  label: 'R$ 289,99',   descAcesso: 'Acesso por 30 dias',  cor: 'var(--accent)',  badgeBg: 'rgba(255,60,110,0.06)',  badgeBorder: 'rgba(255,60,110,0.2)'  },
+    'basico-anual':  { nome: 'Plano Básico Anual',    valor: 2989.99, label: 'R$ 2.989,99', descAcesso: 'Acesso por 12 meses', cor: 'var(--accent)',  badgeBg: 'rgba(255,60,110,0.06)',  badgeBorder: 'rgba(255,60,110,0.2)'  },
+    premium:         { nome: 'Plano Premium Mensal',  valor: 389.99,  label: 'R$ 389,99',   descAcesso: 'Acesso por 30 dias',  cor: '#fbbf24',        badgeBg: 'rgba(251,191,36,0.06)',  badgeBorder: 'rgba(251,191,36,0.25)' },
+    'premium-anual': { nome: 'Plano Premium Anual',   valor: 3989.99, label: 'R$ 3.989,99', descAcesso: 'Acesso por 12 meses', cor: '#fbbf24',        badgeBg: 'rgba(251,191,36,0.06)',  badgeBorder: 'rgba(251,191,36,0.25)' },
   };
 
   let planoAtivo = 'basico';
@@ -377,10 +379,12 @@
     document.getElementById('plano-valor').style.color = info.cor;
     document.getElementById('valor-badge').style.background = info.badgeBg;
     document.getElementById('valor-badge').style.borderColor = info.badgeBorder;
+    const descEl = document.querySelector('#valor-badge div');
+    if (descEl) descEl.textContent = info.descAcesso;
   }
 
   const planoUrl = new URLSearchParams(window.location.search).get('plano');
-  if (planoUrl === 'premium') selecionarPlano('premium');
+  if (planoUrl && planos[planoUrl]) selecionarPlano(planoUrl);
 
   async function gerarPix() {
     const nome  = document.getElementById('f-nome').value.trim();
@@ -477,7 +481,7 @@
         if (data.status === 'approved') {
           clearInterval(pollingInterval);
           // Redireciona para sucesso com o plano correto
-          window.location.href = `sucesso.html?plano=${plano === 'premium' ? 'premium' : 'mensal'}`;
+          window.location.href = `sucesso.html?plano=${plano}`;
         }
       } catch(e) {
         // Ignora erros de rede e continua tentando
