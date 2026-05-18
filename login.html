@@ -172,11 +172,11 @@
 <a class="brand" href="index.html">Painel Interativo</a>
 
 <script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
-  import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged }
-    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, setPersistence, inMemoryPersistence }
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
   import { getFirestore, doc, getDoc }
-    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const app = initializeApp({
     apiKey: "AIzaSyAuPS32OoQtQIQBO6LfEfYn2T5J6xTTxHY",
@@ -188,6 +188,7 @@
   });
 
   const auth = getAuth(app);
+  setPersistence(auth, inMemoryPersistence);
   const db = getFirestore(app);
 
   // Se já logado e ativo, redireciona direto

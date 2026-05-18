@@ -824,11 +824,11 @@
 </footer>
 
 <script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
-  import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail }
-    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail, setPersistence, inMemoryPersistence }
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
   import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, arrayRemove, arrayUnion, collection, getDocs, deleteDoc }
-    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const app = initializeApp({
     apiKey: "AIzaSyAuPS32OoQtQIQBO6LfEfYn2T5J6xTTxHY",
@@ -840,6 +840,7 @@
   });
 
   const auth = getAuth(app);
+  setPersistence(auth, inMemoryPersistence);
   const db = getFirestore(app);
   let currentUid = null;
   let currentSlot = 1;
