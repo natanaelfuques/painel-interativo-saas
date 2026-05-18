@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   }
 
   // Define plano destino baseado no plano atual do cliente
-  const planoDestino = planoAtual === 'basico-anual' ? 'premium-anual' : 'premium';
+  const planoDestino = (planoAtual === 'basico-anual' || planoAtual === 'anual') ? 'premium-anual' : 'premium';
 
   const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
   if (!ACCESS_TOKEN) return res.status(500).json({ error: 'Token MP não configurado' });
