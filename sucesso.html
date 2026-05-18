@@ -428,7 +428,7 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
-  import { getAuth, createUserWithEmailAndPassword }
+  import { getAuth, createUserWithEmailAndPassword, initializeAuth }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
   import { getFirestore, doc, setDoc, serverTimestamp, Timestamp }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
@@ -442,7 +442,7 @@
     appId: "1:962909096330:web:d446a082bce21a0447a073"
   });
 
-  const auth = getAuth(app);
+  const auth = initializeAuth(app, { popupRedirectResolver: undefined });
   const db   = getFirestore(app);
 
   // Detecta plano pela URL (?plano=premium, mensal, anual, premium-anual)
