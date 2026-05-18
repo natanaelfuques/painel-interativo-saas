@@ -427,11 +427,11 @@
 <a class="brand" href="https://instagram.com/audiodequalidade" target="_blank">@audiodequalidade</a>
 
 <script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
-  import { getAuth, createUserWithEmailAndPassword, initializeAuth }
-    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, createUserWithEmailAndPassword }
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
   import { getFirestore, doc, setDoc, serverTimestamp, Timestamp }
-    from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const app = initializeApp({
     apiKey: "AIzaSyAuPS32OoQtQIQBO6LfEfYn2T5J6xTTxHY",
@@ -442,7 +442,7 @@
     appId: "1:962909096330:web:d446a082bce21a0447a073"
   });
 
-  const auth = initializeAuth(app, { popupRedirectResolver: undefined });
+  const auth = getAuth(app);
   const db   = getFirestore(app);
 
   // Detecta plano pela URL (?plano=premium, mensal, anual, premium-anual)
@@ -516,7 +516,7 @@
         'auth/invalid-email':        'Email inválido.',
         'auth/weak-password':        'Senha muito fraca.',
       };
-      showErr(msgs[e.code] || 'Erro ao criar conta. Tente novamente.');
+      showErr(msgs[e.code] || `Erro: ${e.code || e.message}`);
       btn.disabled = false;
       label.style.display = 'block';
       spinner.style.display = 'none';
