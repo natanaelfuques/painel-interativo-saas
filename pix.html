@@ -316,7 +316,7 @@
         <circle cx="8" cy="8" r="6.5" stroke="#facc15" stroke-width="1.3"/>
         <path d="M8 5v4M8 10.5v.5" stroke="#facc15" stroke-width="1.3" stroke-linecap="round"/>
       </svg>
-      <span>Após o pagamento, sua conta será criada e ativada em até <strong style="color:var(--text)">2 horas</strong> via WhatsApp.</span>
+      <span>Após o pagamento, sua conta será criada e ativada em até <strong style="color:var(--text)">24 horas</strong> via WhatsApp.</span>
     </div>
   </div>
 
@@ -353,7 +353,7 @@
         <circle cx="8" cy="8" r="6.5" stroke="#facc15" stroke-width="1.3"/>
         <path d="M8 5v4M8 10.5v.5" stroke="#facc15" stroke-width="1.3" stroke-linecap="round"/>
       </svg>
-      <span>Após pagar, aguarde a confirmação. Sua conta será ativada em até <strong style="color:var(--text)">2 horas</strong> via WhatsApp.</span>
+      <span>Após pagar, aguarde a confirmação. Sua conta será ativada em até <strong style="color:var(--text)">24 horas</strong> via WhatsApp.</span>
     </div>
 
     <button class="btn-novo" onclick="novaCobranca()">← Gerar novo QR code</button>
@@ -364,9 +364,6 @@
 <a class="brand" href="index.html">Painel Interativo</a>
 
 <script>
-  const planoUrl = new URLSearchParams(window.location.search).get('plano');
-  if (planoUrl === 'premium') selecionarPlano('premium');
-
   const planos = {
     basico:  { nome: 'Plano Básico Mensal',  valor: 289.99, label: 'R$ 289,99', cor: 'var(--accent)',  badgeBg: 'rgba(255,60,110,0.06)',  badgeBorder: 'rgba(255,60,110,0.2)'  },
     premium: { nome: 'Plano Premium Mensal', valor: 389.99, label: 'R$ 389,99', cor: '#fbbf24',        badgeBg: 'rgba(251,191,36,0.06)',  badgeBorder: 'rgba(251,191,36,0.25)' },
@@ -383,6 +380,9 @@
     document.getElementById('valor-badge').style.background = info.badgeBg;
     document.getElementById('valor-badge').style.borderColor = info.badgeBorder;
   }
+
+  const planoUrl = new URLSearchParams(window.location.search).get('plano');
+  if (planoUrl === 'premium') selecionarPlano('premium');
 
   async function gerarPix() {
     const nome  = document.getElementById('f-nome').value.trim();
