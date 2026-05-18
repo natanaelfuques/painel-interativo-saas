@@ -353,6 +353,68 @@
   .btn-danger:hover { background: rgba(239,68,68,0.2); }
 
   /* MODAL PREMIUM */
+  /* MODAL UPGRADE */
+  .upgrade-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+    z-index: 200; align-items: center; justify-content: center; padding: 20px;
+  }
+  .upgrade-overlay.open { display: flex; }
+  .upgrade-modal {
+    background: var(--card);
+    border: 1px solid rgba(251,191,36,0.3);
+    border-radius: 24px; padding: 32px 28px;
+    max-width: 400px; width: 100%;
+    text-align: center;
+    animation: pmIn 0.25s ease;
+    position: relative;
+  }
+  .upgrade-modal .um-icon {
+    width: 54px; height: 54px; border-radius: 16px; margin: 0 auto 18px;
+    background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.15));
+    border: 1px solid rgba(251,191,36,0.3);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .upgrade-modal h3 {
+    font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .upgrade-modal .um-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+  .upgrade-modal .um-feature {
+    background: var(--card2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 11px 14px;
+    display: flex; align-items: center; gap: 10px;
+    text-align: left; margin-bottom: 8px; font-size: 13px;
+  }
+  .upgrade-modal .um-feature svg { flex-shrink: 0; }
+  .upgrade-preco {
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 14px; padding: 16px;
+    margin: 20px 0 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .upgrade-preco-label { font-size: 12px; color: var(--muted); text-align: left; }
+  .upgrade-preco-label strong { display: block; color: var(--text); font-size: 13px; margin-bottom: 2px; }
+  .upgrade-preco-valor {
+    font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 800; color: #fbbf24;
+  }
+  .btn-upgrade-pix {
+    width: 100%; padding: 14px; border-radius: 12px; border: none;
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    color: #0a0a0f; font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 800; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: opacity .2s, transform .15s; margin-bottom: 10px;
+  }
+  .btn-upgrade-pix:hover { opacity: .88; transform: translateY(-1px); }
+  .btn-upgrade-dismiss {
+    display: block; width: 100%; background: none; border: none;
+    font-size: 12px; color: var(--muted); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: color .2s;
+  }
+  .btn-upgrade-dismiss:hover { color: var(--text); }
+
   .premium-overlay {
     display: none; position: fixed; inset: 0;
     background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
@@ -788,6 +850,44 @@
 </main>
 
 <!-- MODAL PREMIUM SLOTS -->
+<!-- MODAL UPGRADE PREMIUM -->
+<div class="upgrade-overlay" id="upgrade-overlay" onclick="if(event.target===this)fecharUpgrade()">
+  <div class="upgrade-modal">
+    <button style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:8px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;" onclick="fecharUpgrade()">×</button>
+    <div class="um-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2L14.5 9H22L16 13.5L18.5 20.5L12 16L5.5 20.5L8 13.5L2 9H9.5L12 2Z" stroke="#fbbf24" stroke-width="1.8" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <h3>Fazer upgrade para Premium</h3>
+    <div class="um-sub">Desbloqueie todos os recursos e gerencie múltiplos eventos simultaneamente.</div>
+    <div class="um-feature">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="6" height="5" rx="1.5" stroke="#fbbf24" stroke-width="1.4"/><rect x="9" y="2" width="6" height="5" rx="1.5" stroke="#fbbf24" stroke-width="1.4"/><rect x="1" y="9" width="6" height="5" rx="1.5" stroke="#fbbf24" stroke-width="1.4"/><rect x="9" y="9" width="6" height="5" rx="1.5" stroke="#fbbf24" stroke-width="1.4"/></svg>
+      <span>3 eventos simultâneos com tela exclusiva</span>
+    </div>
+    <div class="um-feature">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#fbbf24" stroke-width="1.4"/><path d="M5 8l2 2 4-4" stroke="#fbbf24" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Moderação de fotos antes de exibir</span>
+    </div>
+    <div class="um-feature">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="#fbbf24" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Download de todas as fotos do evento</span>
+    </div>
+    <div class="upgrade-preco">
+      <div class="upgrade-preco-label">
+        <strong>Upgrade para Premium</strong>
+        Diferença do seu plano atual
+      </div>
+      <div class="upgrade-preco-valor">R$ 100</div>
+    </div>
+    <a href="https://painel-interativo-saas.vercel.app/pix.html?plano=upgrade" class="btn-upgrade-pix" target="_blank">
+      <svg width="16" height="16" viewBox="0 0 512 512" fill="#0a0a0f"><path d="M392.6 160.3c-14 0-27.2 5.5-37.1 15.4l-73.8 73.8c-5.2 5.2-12 8-19.4 8s-14.2-2.8-19.4-8l-74-74c-9.9-9.9-23.1-15.4-37.1-15.4h-14.5l93.4-93.4c30-30 78.6-30 108.6 0l93.6 93.6h-20.9zM119.4 351.7c14 0 27.2-5.5 37.1-15.4l74-74c5.2-5.2 12-8 19.4-8s14.2 2.8 19.4 8l73.8 73.8c9.9 9.9 23.1 15.4 37.1 15.4h20.8l-93.6 93.6c-30 30-78.6 30-108.6 0l-93.4-93.4h14zM64 256l43.5-43.5h24.4c7.4 0 14.4 2.9 19.6 8.1l74 74c9.7 9.7 22.6 15 36.3 15s26.6-5.3 36.3-15l73.8-73.8c5.2-5.2 12.2-8.1 19.6-8.1h27.2L462 256l-43.5 43.5h-27.2c-7.4 0-14.4-2.9-19.6-8.1l-73.8-73.8c-9.7-9.7-22.6-15-36.3-15s-26.6 5.3-36.3 15l-74 74c-5.2 5.2-12.2 8.1-19.6 8.1h-24.4L64 256z"/></svg>
+      Pagar R$ 100 via Pix
+    </a>
+    <button class="btn-upgrade-dismiss" onclick="fecharUpgrade()">Agora não</button>
+  </div>
+</div>
+
 <div class="premium-overlay" id="premium-overlay" onclick="if(event.target===this)fecharModalPremium()">
   <div class="premium-modal">
     <div class="pm-icon">
@@ -892,9 +992,13 @@
 
     // Slots — habilita 2 e 3 para premium
     if (!isPremium) {
-      // botões clicáveis mas abrirão o modal — estilo visual diferente
       document.getElementById('slot-btn-2').style.opacity = '0.4';
       document.getElementById('slot-btn-3').style.opacity = '0.4';
+      // Badge e status-card abrem modal de upgrade
+      document.getElementById('plan-badge').style.cursor = 'pointer';
+      document.getElementById('plan-badge').onclick = () => document.getElementById('upgrade-overlay').classList.add('open');
+      document.querySelector('.status-card').style.cursor = 'pointer';
+      document.querySelector('.status-card').onclick = () => document.getElementById('upgrade-overlay').classList.add('open');
     }
 
     // Status
@@ -923,6 +1027,10 @@
   });
 
   // ── MODAL PREMIUM ──
+  window.fecharUpgrade = function() {
+    document.getElementById('upgrade-overlay').classList.remove('open');
+  };
+
   window.fecharModalPremium = function() {
     document.getElementById('premium-overlay').classList.remove('open');
   };

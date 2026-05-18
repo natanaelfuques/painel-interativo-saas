@@ -449,13 +449,15 @@
 
   // Detecta plano pela URL (?plano=premium, mensal, anual, premium-anual)
   const params = new URLSearchParams(window.location.search);
-  const plano  = params.get('plano') || 'mensal';
+  const planoParam = params.get('plano') || 'mensal';
+  const plano = planoParam === 'upgrade' ? 'premium' : planoParam;
 
   const planoLabels = {
     'mensal':        'Básico Mensal',
     'anual':         'Básico Anual',
     'premium':       'Premium Mensal',
     'premium-anual': 'Premium Anual',
+    'upgrade':       'Upgrade Premium',
   };
 
   const isPremium = plano.includes('premium');
