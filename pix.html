@@ -289,7 +289,7 @@
     </div>
 
     <!-- Seletor de plano -->
-    <div style="display:flex;gap:8px;margin-bottom:20px;">
+    <div id="toggle-planos" style="display:flex;gap:8px;margin-bottom:20px;">
       <button class="btn-plano active" id="btn-basico" onclick="selecionarPlano('basico')">Básico</button>
       <button class="btn-plano" id="btn-premium" onclick="selecionarPlano('premium')">✦ Premium</button>
     </div>
@@ -370,6 +370,17 @@
 <a class="brand" href="index.html">Painel Interativo</a>
 
 <script>
+  const planoUrl = new URLSearchParams(window.location.search).get('plano');
+  if (planoUrl === 'premium') {
+    selecionarPlano('premium');
+    // Oculta completamente o toggle de seleção
+    document.getElementById('toggle-planos').style.display = 'none';
+  } else if (planoUrl === 'basico') {
+    selecionarPlano('basico');
+    // Remove o botão Premium do toggle, deixa só Básico visível
+    document.getElementById('btn-premium').style.display = 'none';
+  }
+
   const planos = {
     basico:  { nome: 'Plano Básico Mensal',  valor: 289.99, label: 'R$ 289,99', cor: 'var(--accent)',  badgeBg: 'rgba(255,60,110,0.06)',  badgeBorder: 'rgba(255,60,110,0.2)'  },
     premium: { nome: 'Plano Premium Mensal', valor: 389.99, label: 'R$ 389,99', cor: '#fbbf24',        badgeBg: 'rgba(251,191,36,0.06)',  badgeBorder: 'rgba(251,191,36,0.25)' },
