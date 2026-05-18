@@ -42,7 +42,7 @@
 
     .overlay {
       position: fixed; bottom: 0; left: 0; right: 0;
-      padding: 32px 48px; z-index: 10;
+      padding: 46px 70px; z-index: 10;
       display: flex; align-items: flex-end; justify-content: space-between;
       background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%);
       transition: all 0.5s ease;
@@ -52,49 +52,49 @@
       align-items: flex-start;
       background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, transparent 100%);
     }
-    .event-name { font-size: 28px; font-weight: 800; letter-spacing: -0.5px; opacity: 0.9; }
-    .brand { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; margin-top: 4px; }
+    .event-name { font-size: 40px; font-weight: 800; letter-spacing: -0.5px; opacity: 0.9; }
+    .brand { font-size: 20px; font-weight: 600; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; margin-top: 6px; }
 
     .qr-wrap {
-      position: fixed; bottom: 24px; right: 48px; z-index: 10;
+      position: fixed; bottom: 35px; right: 70px; z-index: 10;
       text-align: center; display: flex; flex-direction: column; align-items: center;
       transition: all 0.5s ease;
     }
     .qr-wrap.top {
-      bottom: auto; top: 24px;
+      bottom: auto; top: 35px;
     }
-    .qr-wrap img { width: 110px; height: 110px; border-radius: 10px; border: 3px solid #fff; display: block; }
-    .qr-label { font-size: 11px; margin-bottom: 6px; opacity: 0.7; letter-spacing: 0.5px; order: -1; }
+    .qr-wrap img { width: 160px; height: 160px; border-radius: 14px; border: 4px solid #fff; display: block; }
+    .qr-label { font-size: 16px; margin-bottom: 9px; opacity: 0.7; letter-spacing: 0.5px; order: -1; }
 
     #empty {
       position: fixed; inset: 0;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px;
       background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,60,110,0.15) 0%, transparent 70%);
     }
     #empty h2 {
-      font-size: 42px; font-weight: 800;
+      font-size: 60px; font-weight: 800;
       background: linear-gradient(135deg, #fff 30%, rgba(255,255,255,0.4));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    #empty p { font-size: 20px; opacity: 0.5; }
+    #empty p { font-size: 29px; opacity: 0.5; }
 
     #dots {
-      position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 8px; z-index: 10;
+      position: fixed; bottom: 145px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 12px; z-index: 10;
       transition: all 0.5s ease;
     }
-    #dots.top { bottom: auto; top: 100px; }
-    .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: all 0.3s; }
+    #dots.top { bottom: auto; top: 145px; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: all 0.3s; }
     .dot.active { background: #ff3c6e; transform: scale(1.4); }
     .dot.new { background: #facc15; transform: scale(1.4); }
 
     #flash { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 100; transition: opacity 0.1s; }
 
     #new-badge {
-      position: fixed; top: 32px; left: 48px;
+      position: fixed; top: 46px; left: 70px;
       background: linear-gradient(135deg, #ff3c6e, #ff8c42);
-      padding: 8px 20px; border-radius: 99px;
-      font-size: 14px; font-weight: 700; z-index: 20;
+      padding: 12px 28px; border-radius: 99px;
+      font-size: 20px; font-weight: 700; z-index: 20;
       opacity: 0; transform: translateY(-10px);
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -171,7 +171,7 @@
     // Gera QR code apontando para upload.html?uid=...
     const uploadUrl = `${window.location.origin}${window.location.pathname.replace('totem.html','upload.html')}?uid=${uid}`;
     document.getElementById('qr-img').src =
-      `https://quickchart.io/qr?text=${encodeURIComponent(uploadUrl)}&size=240&margin=2`;
+      `https://quickchart.io/qr?text=${encodeURIComponent(uploadUrl)}&size=320&margin=2`;
 
     // ── PRESENÇA ── registra esta tela como ativa
     const sessionId = Math.random().toString(36).slice(2);
