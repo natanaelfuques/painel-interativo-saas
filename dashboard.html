@@ -1013,9 +1013,9 @@
       document.getElementById('slot-btn-3').style.opacity = '0.4';
       // Badge e status-card abrem modal de upgrade
       document.getElementById('plan-badge').style.cursor = 'pointer';
-      document.getElementById('plan-badge').onclick = () => document.getElementById('upgrade-overlay').classList.add('open'); atualizarModalUpgrade();
+      document.getElementById('plan-badge').onclick = () => { document.getElementById('upgrade-overlay').classList.add('open'); atualizarModalUpgrade(); };
       document.querySelector('.status-card').style.cursor = 'pointer';
-      document.querySelector('.status-card').onclick = () => document.getElementById('upgrade-overlay').classList.add('open'); atualizarModalUpgrade();
+      document.querySelector('.status-card').onclick = () => { document.getElementById('upgrade-overlay').classList.add('open'); atualizarModalUpgrade(); };
     }
 
     // Status
