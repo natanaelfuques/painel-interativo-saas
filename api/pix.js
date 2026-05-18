@@ -14,15 +14,16 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Token não configurado' });
   }
 
-  const valores = {
+  // Valores e descrições padrão (fallback se não houver config no Firestore)
+  const valoresPadrao = {
     basico:           289.99,
     'basico-anual':   2989.99,
     premium:          389.99,
     'premium-anual':  3989.99,
     upgrade:          100.00,
-    'upgrade-anual':  1.00,
+    'upgrade-anual':  1000.00,
   };
-  const descricoes = {
+  const descricoesPadrao = {
     basico:           'Painel Interativo — Plano Básico Mensal',
     'basico-anual':   'Painel Interativo — Plano Básico Anual',
     premium:          'Painel Interativo — Plano Premium Mensal',
@@ -31,8 +32,30 @@ export default async function handler(req, res) {
     'upgrade-anual':  'Painel Interativo — Upgrade para Premium Anual',
   };
 
-  const valor     = valores[plano]    || valores.basico;
-  const descricao = descricoes[plano] || descricoes.basico;
+  // Busca config do Firestore (se disponível)
+  let valores    = valoresPadrao;
+  let descricoes = descricoesPadrao;
+  try {
+    const FIREBASE_API_KEY = process.env.FIREBASE_API_KEY;
+    const cfgRes = await fetch(
+      `https://firestore.googleapis.com/v1/projects/painel-interativo-saas/databases/(default)/documents/config/planos?key=${FIREBASE_API_KEY}`
+    );
+    if (cfgRes.ok) {
+      const cfgData = await cfgRes.json();
+      const fields = cfgData.fields || {};
+      if (fields.valores?.mapValue?.fields) {
+        const v = fields.valores.mapValue.fields;
+        valores = Object.fromEntries(Object.entries(v).map(([k, val]) => [k, parseFloat(val.doubleValue || val.integerValue || 0)]));
+      }
+      if (fields.descricoes?.mapValue?.fields) {
+        const d = fields.descricoes.mapValue.fields;
+        descricoes = Object.fromEntries(Object.entries(d).map(([k, val]) => [k, val.stringValue || '']));
+      }
+    }
+  } catch(e) { /* usa fallback */ }
+
+  const valor     = valores[plano]    ?? valoresPadrao[plano]    ?? valoresPadrao.basico;
+  const descricao = descricoes[plano] ?? descricoesPadrao[plano] ?? descricoesPadrao.basico;
 
   try {
     const response = await fetch('https://api.mercadopago.com/v1/payments', {
