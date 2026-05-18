@@ -1,1 +1,69 @@
+export default async function handler(req, res) {
+  // Apenas POST
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
+  const { nome, email, telefone, plano } = req.body;
+
+  if (!nome || !email || !telefone) {
+    return res.status(400).json({ error: 'Campos obrigatórios: nome, email, telefone' });
+  }
+
+  const valores = { basico: 289.99, premium: 389.99 };
+  const descricoes = {
+    basico:  'Painel Interativo — Plano Básico Mensal',
+    premium: 'Painel Interativo — Plano Premium Mensal',
+  };
+
+  const valor     = valores[plano]    || valores.basico;
+  const descricao = descricoes[plano] || descricoes.basico;
+
+  const ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
+
+  if (!ACCESS_TOKEN) {
+    return res.status(500).json({ error: 'Token não configurado' });
+  }
+
+  try {
+    const payload = {
+      transaction_amount: valor,
+      description: descricao,
+      payment_method_id: 'pix',
+      payer: {
+        email,
+        first_name: nome.split(' ')[0],
+        last_name: nome.split(' ').slice(1).join(' ') || nome,
+        identification: { type: 'CPF', number: '00000000000' },
+      },
+      metadata: { telefone, nome, email },
+    };
+
+    const response = await fetch('https://api.mercadopago.com/v1/payments', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${ACCESS_TOKEN}`,
+        'Content-Type': 'application/json',
+        'X-Idempotency-Key': `${email}-${Date.now()}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: data.message || 'Erro no MP', detail: data });
+    }
+
+    return res.status(200).json({
+      id: data.id,
+      status: data.status,
+      qr_code: data.point_of_interaction?.transaction_data?.qr_code,
+      qr_code_base64: data.point_of_interaction?.transaction_data?.qr_code_base64,
+      expiracao: data.date_of_expiration,
+    });
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
