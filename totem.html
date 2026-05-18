@@ -137,7 +137,7 @@
 <div class="overlay">
   <div>
     <div class="event-name" id="event-name">Painel Interativo</div>
-    <div class="brand" id="brand-handle">@webinteratividade</div>
+    <div class="brand" id="brand-handle">@nfsolucoesparaeventos</div>
   </div>
 </div>
 
@@ -209,7 +209,7 @@
       const data = snap.data();
 
       if (data.eventName) document.getElementById('event-name').textContent = data.eventName;
-      document.getElementById('brand-handle').textContent = data.instagram || '@webinteratividade';
+      document.getElementById('brand-handle').textContent = data.instagram || '@nfsolucoesparaeventos';
       // Posição do QR e overlay
       const pos = data.qrPosition || 'bottom';
       const overlay = document.querySelector('.overlay');
