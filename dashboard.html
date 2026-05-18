@@ -680,7 +680,7 @@
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
   import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
-  import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, arrayRemove, arrayUnion, collection }
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, arrayRemove, arrayUnion, collection, getDocs, deleteDoc }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
 
   const app = initializeApp({
@@ -783,6 +783,18 @@
         brandEl.href = `https://instagram.com/${handle.replace('@','')}`;
       }
     });
+
+    // ── Limpa presenças expiradas (heartbeat > 60s atrás) ──
+    async function limparPresencasExpiradas() {
+      const snap = await getDocs(collection(db, 'eventos', currentUid, 'presencas'));
+      const agora = Date.now();
+      snap.forEach(d => {
+        const hb = d.data().ultimoHeartbeat || 0;
+        if (agora - hb > 60000) deleteDoc(d.ref);
+      });
+    }
+    limparPresencasExpiradas();
+    setInterval(limparPresencasExpiradas, 30000);
 
     // ── Listener de telas ativas ──
     onSnapshot(collection(db, 'eventos', currentUid, 'presencas'), (snap) => {

@@ -178,20 +178,21 @@
     const presencaRef = doc(db, 'eventos', uid, 'presencas', sessionId);
     const registrarPresenca = () => setDoc(presencaRef, {
       sessionId,
-      entrou: new Date().toISOString(),
+      ultimoHeartbeat: Date.now(),
       userAgent: navigator.userAgent.slice(0, 80),
     });
     registrarPresenca();
-    // Remove ao fechar
-    window.addEventListener('beforeunload', () => {
-      // beacon para garantir que executa mesmo ao fechar aba
-      navigator.sendBeacon && navigator.sendBeacon(
-        `https://firestore.googleapis.com/v1/projects/painel-interativo-saas/databases/(default)/documents/eventos/${uid}/presencas/${sessionId}?key=AIzaSyAuPS32OoQtQIQBO6LfEfYn2T5J6xTTxHY`,
-      );
-      deleteDoc(presencaRef);
+
+    // Tenta remover ao fechar (melhor esforço)
+    window.addEventListener('beforeunload', () => { deleteDoc(presencaRef); });
+    window.addEventListener('pagehide',      () => { deleteDoc(presencaRef); });
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') deleteDoc(presencaRef);
+      else registrarPresenca();
     });
-    // Heartbeat a cada 30s para garantir presença (caso beforeunload falhe)
-    setInterval(registrarPresenca, 30000);
+
+    // Heartbeat a cada 20s
+    setInterval(registrarPresenca, 20000);
 
     let photos = [];
     let currentIndex = 0;
