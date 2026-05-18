@@ -114,6 +114,39 @@
     color: var(--accent); padding: 5px 14px; border-radius: 99px;
   }
 
+  .telas-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; margin-bottom: 16px;
+  }
+
+  .telas-info { display: flex; align-items: center; gap: 14px; }
+
+  .telas-icon {
+    width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+    background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.25);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .telas-icon.offline {
+    background: rgba(107,107,128,0.1); border-color: rgba(107,107,128,0.2);
+  }
+
+  .telas-label {
+    font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700;
+  }
+
+  .telas-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .telas-count {
+    font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800;
+    color: var(--green); line-height: 1;
+  }
+
+  .telas-count.zero { color: var(--muted); }
+
   /* SECTION TITLE */
   .section-label {
     font-family: 'Outfit', sans-serif;
@@ -437,6 +470,23 @@
     <div class="plan-badge" id="plan-badge">Mensal</div>
   </div>
 
+  <!-- TELAS ATIVAS -->
+  <div class="telas-card">
+    <div class="telas-info">
+      <div class="telas-icon" id="telas-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect x="1" y="2" width="16" height="11" rx="2" stroke="#22c55e" stroke-width="1.5"/>
+          <path d="M6 16h6M9 13v3" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="telas-label">Telas ativas agora</div>
+        <div class="telas-sub" id="telas-sub">Nenhuma tela aberta</div>
+      </div>
+    </div>
+    <div class="telas-count zero" id="telas-count">0</div>
+  </div>
+
   <!-- CONFIGURAÇÃO DO EVENTO -->
   <div class="section-label">Configurações do evento</div>
   <div class="config-card">
@@ -623,7 +673,7 @@
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
   import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-auth.js';
-  import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, arrayRemove, arrayUnion }
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, arrayRemove, arrayUnion, collection }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
 
   const app = initializeApp({
@@ -723,6 +773,32 @@
       const brandEl = document.getElementById('dash-brand');
       if (brandEl) {
         brandEl.textContent = handle;
+
+    // ── Listener de telas ativas ──
+    onSnapshot(collection(db, 'eventos', currentUid, 'presencas'), (snap) => {
+      const total = snap.size;
+      const countEl = document.getElementById('telas-count');
+      const subEl   = document.getElementById('telas-sub');
+      const iconEl  = document.getElementById('telas-icon');
+      countEl.textContent = total;
+      if (total === 0) {
+        countEl.classList.add('zero');
+        iconEl.classList.add('offline');
+        iconEl.innerHTML = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect x="1" y="2" width="16" height="11" rx="2" stroke="#6b6b80" stroke-width="1.5"/>
+          <path d="M6 16h6M9 13v3" stroke="#6b6b80" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>`;
+        subEl.textContent = 'Nenhuma tela aberta';
+      } else {
+        countEl.classList.remove('zero');
+        iconEl.classList.remove('offline');
+        iconEl.innerHTML = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect x="1" y="2" width="16" height="11" rx="2" stroke="#22c55e" stroke-width="1.5"/>
+          <path d="M6 16h6M9 13v3" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>`;
+        subEl.textContent = total === 1 ? '1 dispositivo conectado' : `${total} dispositivos conectados`;
+      }
+    });
         brandEl.href = `https://instagram.com/${handle.replace('@','')}`;
       }
     });

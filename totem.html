@@ -148,7 +148,7 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js';
-  import { getFirestore, doc, onSnapshot }
+  import { getFirestore, doc, onSnapshot, setDoc, deleteDoc, collection }
     from 'https://www.gstatic.com/firebasejs/11.0.0/firebase-firestore.js';
 
   const app = initializeApp({
@@ -172,6 +172,26 @@
     const uploadUrl = `${window.location.origin}${window.location.pathname.replace('totem.html','upload.html')}?uid=${uid}`;
     document.getElementById('qr-img').src =
       `https://quickchart.io/qr?text=${encodeURIComponent(uploadUrl)}&size=240&margin=2`;
+
+    // ── PRESENÇA ── registra esta tela como ativa
+    const sessionId = Math.random().toString(36).slice(2);
+    const presencaRef = doc(db, 'eventos', uid, 'presencas', sessionId);
+    const registrarPresenca = () => setDoc(presencaRef, {
+      sessionId,
+      entrou: new Date().toISOString(),
+      userAgent: navigator.userAgent.slice(0, 80),
+    });
+    registrarPresenca();
+    // Remove ao fechar
+    window.addEventListener('beforeunload', () => {
+      // beacon para garantir que executa mesmo ao fechar aba
+      navigator.sendBeacon && navigator.sendBeacon(
+        `https://firestore.googleapis.com/v1/projects/painel-interativo-saas/databases/(default)/documents/eventos/${uid}/presencas/${sessionId}?key=AIzaSyAuPS32OoQtQIQBO6LfEfYn2T5J6xTTxHY`,
+      );
+      deleteDoc(presencaRef);
+    });
+    // Heartbeat a cada 30s para garantir presença (caso beforeunload falhe)
+    setInterval(registrarPresenca, 30000);
 
     let photos = [];
     let currentIndex = 0;
