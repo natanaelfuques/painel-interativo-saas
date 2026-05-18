@@ -173,7 +173,7 @@
 
 <script type="module">
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, setPersistence, inMemoryPersistence }
+  import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, setPersistence, browserSessionPersistence }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
   import { getFirestore, doc, getDoc }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -188,7 +188,7 @@
   });
 
   const auth = getAuth(app);
-  setPersistence(auth, inMemoryPersistence);
+  setPersistence(auth, browserSessionPersistence);
   const db = getFirestore(app);
 
   // Se já logado e ativo, redireciona direto
