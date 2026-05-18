@@ -282,8 +282,8 @@
 
     <div class="valor-badge" id="valor-badge">
       <div>
-        <div class="valor-label" id="plano-nome">Plano Básico Mensal</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px">Acesso por 30 dias</div>
+        <div id="plano-nome" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px">Plano Básico Mensal</div>
+        <div class="valor-label" style="text-transform:none;letter-spacing:0;font-size:12px">Acesso por 30 dias</div>
       </div>
       <div class="valor-num" id="plano-valor">R$ 289,99</div>
     </div>
@@ -387,7 +387,7 @@
     document.getElementById('plano-valor').style.color = info.cor;
     document.getElementById('valor-badge').style.background  = info.badgeBg;
     document.getElementById('valor-badge').style.borderColor = info.badgeBorder;
-    const descEl = document.querySelector('#valor-badge div');
+    const descEl = document.querySelector('#valor-badge > div > div:last-child');
     if (descEl) descEl.textContent = info.descAcesso;
   }
 
