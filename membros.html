@@ -449,6 +449,65 @@
       .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
       .stat-value { font-size: 22px; }
     }
+
+  /* ── CONFIG MODAL ── */
+  .config-overlay {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .config-overlay.open { display: flex; }
+  .config-modal {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 32px 28px;
+    width: 100%; max-width: 520px;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .config-modal h3 {
+    font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800;
+    margin-bottom: 4px;
+  }
+  .config-modal .cm-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+  .config-section-title {
+    font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin: 20px 0 12px;
+  }
+  .config-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+  .config-field label {
+    display: block; font-family: 'Outfit', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+  }
+  .config-field input {
+    width: 100%; padding: 10px 14px;
+    background: var(--card2); border: 1px solid var(--border);
+    border-radius: 10px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .config-field input:focus { border-color: rgba(255,60,110,0.5); }
+  .config-actions { display: flex; gap: 10px; margin-top: 24px; }
+  .btn-config-save {
+    flex: 1; padding: 13px; border-radius: 12px; border: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff; font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-config-save:hover { opacity: 0.88; }
+  .btn-config-cancel {
+    padding: 13px 20px; border-radius: 12px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--muted); font-family: 'Outfit', sans-serif;
+    font-size: 14px; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-config-cancel:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+  .config-saved {
+    display: none; text-align: center; font-size: 13px;
+    color: var(--green); margin-top: 10px;
+  }
   </style>
 </head>
 <body>
@@ -487,12 +546,18 @@
       <h1>Membros</h1>
       <div class="subtitle">Gerencie usuários, planos e acessos</div>
     </div>
-    <button class="btn btn-primary" onclick="openModal()">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-      Novo membro
-    </button>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <button class="btn" style="background:var(--card);border:1px solid var(--border);color:var(--muted);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;padding:10px 18px;border-radius:10px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;" onclick="openConfig()" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1a6 6 0 100 12A6 6 0 007 1zM7 4v3l2 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Configurações
+      </button>
+      <button class="btn btn-primary" onclick="openModal()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Novo membro
+      </button>
+    </div>
   </div>
 
   <!-- Stats -->
