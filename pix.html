@@ -546,19 +546,28 @@
         return;
       }
 
+      let statusData;
       try {
         const res = await fetch(`/api/pix-status?id=${pagamentoId}`);
-        const data = await res.json();
-
-        if (data.status === 'approved') {
-          clearInterval(pollingInterval);
-          // Salva no Firestore e envia link via WhatsApp para o cliente
-          await salvarPagamentoENotificar(pagamentoId);
-          // Redireciona para sucesso com token
-          window.location.href = `sucesso.html?plano=${plano}&token=${pagamentoId}`;
-        }
+        statusData = await res.json();
       } catch(e) {
-        // Ignora erros de rede e continua tentando
+        // Erro de rede — continua tentando
+        return;
+      }
+
+      if (statusData.status === 'approved') {
+        clearInterval(pollingInterval);
+
+        // Salva no Firestore — erros aparecem no console
+        try {
+          await salvarPagamentoENotificar(pagamentoId);
+          console.log('✅ Pagamento salvo no Firestore:', pagamentoId);
+        } catch(e) {
+          console.error('❌ Erro ao salvar no Firestore:', e.code, e.message);
+        }
+
+        // Redireciona independentemente (para não deixar o cliente preso)
+        window.location.href = `sucesso.html?plano=${plano}&token=${pagamentoId}`;
       }
     }, 5000);
   }
