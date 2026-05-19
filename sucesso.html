@@ -435,7 +435,7 @@
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getAuth, createUserWithEmailAndPassword, setPersistence, browserSessionPersistence }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-  import { getFirestore, doc, setDoc, serverTimestamp, Timestamp }
+  import { getFirestore, doc, setDoc, getDoc, serverTimestamp, Timestamp }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const app = initializeApp({
@@ -455,6 +455,22 @@
   const params = new URLSearchParams(window.location.search);
   const planoParam = params.get('plano') || 'mensal';
   const plano = planoParam === 'upgrade' ? 'premium' : planoParam;
+  const token = params.get('token') || null;
+
+  // Se veio com token, busca dados do pagamento e pré-preenche o formulário
+  if (token) {
+    (async () => {
+      try {
+        const snap = await getDoc(doc(db, 'pagamentos_pendentes', token));
+        if (snap.exists()) {
+          const d = snap.data();
+          if (d.nome)     document.getElementById('cad-nome').value     = d.nome;
+          if (d.email)    document.getElementById('cad-email').value    = d.email;
+          if (d.telefone) document.getElementById('cad-telefone').value = d.telefone;
+        }
+      } catch(e) { /* silencioso */ }
+    })();
+  }
 
   const planoLabels = {
     'mensal':        'Básico Mensal',

@@ -363,7 +363,24 @@
 
 <a class="brand" href="index.html">Painel Interativo</a>
 
-<script>
+<script type="module">
+  import { initializeApp }    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getFirestore, doc, setDoc, serverTimestamp }
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+  const _app = initializeApp({
+    apiKey:            "AIzaSyAuPS32OoQtQIQBO6LfEfYn2T5J6xTTxHY",
+    authDomain:        "painel-interativo-saas.firebaseapp.com",
+    projectId:         "painel-interativo-saas",
+    storageBucket:     "painel-interativo-saas.firebasestorage.app",
+    messagingSenderId: "962909096330",
+    appId:             "1:962909096330:web:d446a082bce21a0447a073",
+  });
+  const _db = getFirestore(_app);
+
+  // ── NÚMERO DO WHATSAPP DO SUPORTE ──
+  const SUPORTE_WA = '5547991536771';
+
   // Valores padrão — serão sobrescritos pelo Firestore
   const basicoStyle  = { cor: '#ff3c6e', badgeBg: 'rgba(255,60,110,0.08)',  badgeBorder: 'rgba(255,60,110,0.3)'  };
   const premiumStyle = { cor: '#fbbf24', badgeBg: 'rgba(251,191,36,0.08)', badgeBorder: 'rgba(251,191,36,0.3)' };
@@ -416,6 +433,9 @@
     } catch(e) {}
   })();
 
+  // Dados do lead preenchidos no formulário
+  let _leadNome = '', _leadEmail = '', _leadTel = '', _leadPlano = '';
+
   async function gerarPix() {
     const nome  = document.getElementById('f-nome').value.trim();
     const email = document.getElementById('f-email').value.trim();
@@ -426,6 +446,12 @@
     if (!nome)  return showErr('Preencha seu nome.');
     if (!email) return showErr('Preencha seu email.');
     if (!tel)   return showErr('Preencha seu WhatsApp.');
+
+    // Guarda localmente para usar após confirmação
+    _leadNome  = nome;
+    _leadEmail = email;
+    _leadTel   = tel;
+    _leadPlano = planoAtivo;
 
     const btn     = document.getElementById('btn-gerar');
     const label   = document.getElementById('btn-label');
@@ -465,6 +491,34 @@
       label.style.display = 'block';
       spinner.style.display = 'none';
     }
+  }
+
+  async function salvarPagamentoENotificar(pagamentoId) {
+    try {
+      // 1. Salva dados no Firestore
+      await setDoc(doc(_db, 'pagamentos_pendentes', pagamentoId), {
+        nome:      _leadNome,
+        email:     _leadEmail,
+        telefone:  _leadTel,
+        plano:     _leadPlano,
+        status:    'pago',
+        criadoEm: serverTimestamp(),
+      });
+    } catch(e) {
+      console.error('Erro ao salvar pagamento:', e);
+    }
+
+    // 2. Monta link de sucesso com o token
+    const base = window.location.origin + window.location.pathname.replace('pix.html', '');
+    const link = `${base}sucesso.html?plano=${_leadPlano}&token=${pagamentoId}`;
+
+    // 3. Envia link via WhatsApp para o cliente
+    const telLimpo = _leadTel.replace(/\D/g, '');
+    const numero = telLimpo.length === 11 ? `55${telLimpo}` : telLimpo.length === 13 ? telLimpo : `55${telLimpo}`;
+    const msg = encodeURIComponent(
+      `Olá, ${_leadNome}! 🎉 Seu pagamento foi confirmado!\n\nClique no link abaixo para criar sua conta e acessar o Painel Interativo:\n${link}`
+    );
+    window.open(`https://wa.me/${numero}?text=${msg}`, '_blank');
   }
 
   function copiarCodigo() {
@@ -510,8 +564,10 @@
 
         if (data.status === 'approved') {
           clearInterval(pollingInterval);
-          // Redireciona para sucesso com o plano correto
-          window.location.href = `sucesso.html?plano=${plano}`;
+          // Salva no Firestore e envia link via WhatsApp para o cliente
+          await salvarPagamentoENotificar(pagamentoId);
+          // Redireciona para sucesso com token
+          window.location.href = `sucesso.html?plano=${plano}&token=${pagamentoId}`;
         }
       } catch(e) {
         // Ignora erros de rede e continua tentando
@@ -524,6 +580,11 @@
     el.textContent = msg;
     el.style.display = 'block';
   }
+
+  // Expõe funções para os onclick do HTML
+  window.gerarPix      = gerarPix;
+  window.copiarCodigo  = copiarCodigo;
+  window.novaCobranca  = novaCobranca;
 </script>
 </body>
 </html>
