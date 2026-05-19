@@ -112,6 +112,14 @@
     background: rgba(255,60,110,0.1);
     border: 1px solid var(--border-accent);
     color: var(--accent); padding: 5px 14px; border-radius: 99px;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .plan-badge.clickable {
+    cursor: pointer;
+  }
+  .plan-badge.clickable:hover {
+    opacity: 0.8;
+    transform: translateY(-1px);
   }
 
   .telas-card {
@@ -731,7 +739,7 @@
     <div class="toggle-row premium-locked" style="display:none">
       <div class="toggle-info">
         <h3>Moderação de fotos
-          <span style="font-family:Outfit;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;padding:2px 8px;border-radius:99px;margin-left:8px;">Premium</span>
+          <span onclick="document.getElementById('upgrade-overlay').classList.add('open');atualizarModalUpgrade()" style="font-family:Outfit;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;padding:2px 8px;border-radius:99px;margin-left:8px;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">Premium</span>
         </h3>
         <p>Disponível no plano Premium</p>
       </div>
@@ -816,7 +824,7 @@
           </svg>
           Baixar fotos
         </button>
-        <span style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;padding:3px 10px;border-radius:99px;">
+        <span onclick="document.getElementById('upgrade-overlay').classList.add('open');atualizarModalUpgrade()" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;padding:3px 10px;border-radius:99px;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
           Recurso Premium
         </span>
       </div>
@@ -1022,9 +1030,8 @@
       document.getElementById('slot-btn-3').style.opacity = '0.4';
       // Badge e status-card abrem modal de upgrade
       document.getElementById('plan-badge').style.cursor = 'pointer';
+      document.getElementById('plan-badge').classList.add('clickable');
       document.getElementById('plan-badge').onclick = () => { document.getElementById('upgrade-overlay').classList.add('open'); atualizarModalUpgrade(); };
-      document.querySelector('.status-card').style.cursor = 'pointer';
-      document.querySelector('.status-card').onclick = () => { document.getElementById('upgrade-overlay').classList.add('open'); atualizarModalUpgrade(); };
     }
 
     // Status
