@@ -495,30 +495,18 @@
 
   async function salvarPagamentoENotificar(pagamentoId) {
     try {
-      // 1. Salva dados no Firestore
+      // Salva dados no Firestore com status pendente_cadastro
       await setDoc(doc(_db, 'pagamentos_pendentes', pagamentoId), {
         nome:      _leadNome,
         email:     _leadEmail,
         telefone:  _leadTel,
         plano:     _leadPlano,
-        status:    'pago',
+        status:    'pendente_cadastro',
         criadoEm: serverTimestamp(),
       });
     } catch(e) {
       console.error('Erro ao salvar pagamento:', e);
     }
-
-    // 2. Monta link de sucesso com o token
-    const base = window.location.origin + window.location.pathname.replace('pix.html', '');
-    const link = `${base}sucesso.html?plano=${_leadPlano}&token=${pagamentoId}`;
-
-    // 3. Envia link via WhatsApp para o cliente
-    const telLimpo = _leadTel.replace(/\D/g, '');
-    const numero = telLimpo.length === 11 ? `55${telLimpo}` : telLimpo.length === 13 ? telLimpo : `55${telLimpo}`;
-    const msg = encodeURIComponent(
-      `Olá, ${_leadNome}! 🎉 Seu pagamento foi confirmado!\n\nClique no link abaixo para criar sua conta e acessar o Painel Interativo:\n${link}`
-    );
-    window.open(`https://wa.me/${numero}?text=${msg}`, '_blank');
   }
 
   function copiarCodigo() {

@@ -435,7 +435,7 @@
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getAuth, createUserWithEmailAndPassword, setPersistence, browserSessionPersistence }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-  import { getFirestore, doc, setDoc, getDoc, serverTimestamp, Timestamp }
+  import { getFirestore, doc, setDoc, getDoc, updateDoc, serverTimestamp, Timestamp }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const app = initializeApp({
@@ -533,6 +533,13 @@
       });
 
       // Sucesso
+      // Se veio com token, marca pagamento como concluído
+      if (token) {
+        try {
+          await updateDoc(doc(db, 'pagamentos_pendentes', token), { status: 'concluido' });
+        } catch(e) { /* silencioso */ }
+      }
+
       document.getElementById('cad-form').style.display = 'none';
       const s = document.getElementById('cad-sucesso');
       s.style.display = 'flex';

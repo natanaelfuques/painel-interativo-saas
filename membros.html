@@ -428,6 +428,37 @@
     #toast.success { border-color: rgba(34,197,94,.4); color: var(--green); }
     #toast.error   { border-color: rgba(239,68,68,.4); color: var(--red); }
 
+    /* ── PAGAMENTOS PENDENTES ── */
+    .pendentes-section { margin-bottom: 28px; }
+    .pendentes-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .pendentes-badge {
+      font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700;
+      background: rgba(250,204,21,0.15); border: 1px solid rgba(250,204,21,0.35);
+      color: #facc15; padding: 3px 10px; border-radius: 99px;
+    }
+    .pendentes-table-wrap {
+      background: var(--card); border: 1px solid rgba(250,204,21,0.2);
+      border-radius: 20px; overflow: hidden;
+    }
+    .pendentes-table-wrap table { width: 100%; border-collapse: collapse; }
+    .pendentes-table-wrap thead th {
+      padding: 13px 20px; text-align: left; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+      border-bottom: 1px solid var(--border);
+    }
+    .pendentes-table-wrap tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+    .pendentes-table-wrap tbody tr:last-child { border-bottom: none; }
+    .pendentes-table-wrap tbody tr:hover { background: rgba(255,255,255,0.02); }
+    .pendentes-table-wrap tbody td { padding: 14px 20px; font-size: 14px; vertical-align: middle; }
+    .btn-enviar-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 10px; font-size: 12px; font-weight: 700;
+      font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all .2s;
+      background: rgba(37,211,102,0.08); border: 1px solid rgba(37,211,102,0.3);
+      color: #25d366; text-decoration: none; white-space: nowrap;
+    }
+    .btn-enviar-link:hover { background: rgba(37,211,102,0.18); }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 700px) {
       body { padding: 20px 16px; }
@@ -582,6 +613,27 @@
     </div>
   </div>
 
+  <!-- Pagamentos Pendentes -->
+  <div class="pendentes-section" id="pendentes-section" style="display:none">
+    <div class="pendentes-header">
+      <div class="subtitle" style="margin:0;font-weight:700;font-size:13px;color:var(--text)">Pagamentos pendentes de cadastro</div>
+      <span class="pendentes-badge" id="pendentes-count">0</span>
+    </div>
+    <div class="pendentes-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Plano</th>
+            <th>Pago em</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="pendentes-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
   <!-- Toolbar -->
   <div class="toolbar">
     <div class="search-wrap">
@@ -727,7 +779,7 @@
   import { initializeApp }                         from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
                                                    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-  import { getFirestore, collection, getDocs, getDoc, doc, setDoc, updateDoc, deleteDoc, serverTimestamp, Timestamp, onSnapshot }
+  import { getFirestore, collection, getDocs, getDoc, doc, setDoc, updateDoc, deleteDoc, serverTimestamp, Timestamp, onSnapshot, query, where, orderBy }
                                                    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   // ── CONFIG — substitua pelos seus valores do firebase.js ──
@@ -816,6 +868,76 @@
     atualizarStats();
     renderTable();
     members.forEach(m => escutarPresenca(m.uid));
+    carregarPendentes();
+  }
+
+  // ═══════════════════════════════
+  //  PAGAMENTOS PENDENTES
+  // ═══════════════════════════════
+  async function carregarPendentes() {
+    try {
+      const q = query(
+        collection(db, 'pagamentos_pendentes'),
+        where('status', '==', 'pendente_cadastro')
+      );
+      const snap = await getDocs(q);
+      const pendentes = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      const section = document.getElementById('pendentes-section');
+      const badge   = document.getElementById('pendentes-count');
+      const tbody   = document.getElementById('pendentes-tbody');
+
+      if (!pendentes.length) { section.style.display = 'none'; return; }
+
+      section.style.display = 'block';
+      badge.textContent = pendentes.length;
+
+      const planoLabels = {
+        'mensal': 'Básico Mensal', 'basico': 'Básico Mensal',
+        'anual': 'Básico Anual', 'basico-anual': 'Básico Anual',
+        'premium': 'Premium Mensal', 'premium-anual': 'Premium Anual',
+      };
+
+      const BASE = window.location.origin + window.location.pathname.replace('membros.html', '');
+
+      tbody.innerHTML = pendentes.map(p => {
+        const criadoStr = p.criadoEm
+          ? (p.criadoEm.toDate ? p.criadoEm.toDate() : new Date(p.criadoEm)).toLocaleDateString('pt-BR')
+          : '—';
+        const telLimpo = (p.telefone || '').replace(/\D/g, '');
+        const numero   = telLimpo.startsWith('55') ? telLimpo : `55${telLimpo}`;
+        const link     = `${BASE}sucesso.html?plano=${p.plano}&token=${p.id}`;
+        const msg      = encodeURIComponent(
+          `Olá, ${p.nome}! 🎉 Seu pagamento foi confirmado!\n\nClique no link abaixo para criar sua conta e acessar o Painel Interativo:\n${link}`
+        );
+        const waUrl = `https://wa.me/${numero}?text=${msg}`;
+
+        return `<tr>
+          <td>
+            <div style="font-weight:600;font-size:14px">${p.nome || '—'}</div>
+            <div style="color:var(--muted);font-size:12px">${p.email || '—'}</div>
+            <div style="color:var(--muted);font-size:11px;margin-top:2px">${p.telefone || '—'}</div>
+          </td>
+          <td>
+            <span style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:rgba(255,60,110,0.1);border:1px solid rgba(255,60,110,0.3);color:#ff3c6e;padding:3px 10px;border-radius:99px;">
+              ${planoLabels[p.plano] || p.plano || '—'}
+            </span>
+          </td>
+          <td style="color:var(--muted);font-size:13px">${criadoStr}</td>
+          <td>
+            <a href="${waUrl}" target="_blank" class="btn-enviar-link">
+              <svg width="13" height="13" viewBox="0 0 20 20" fill="none">
+                <path d="M10 1.5C5.31 1.5 1.5 5.31 1.5 10c0 1.5.39 2.9 1.07 4.13L1.5 18.5l4.5-1.05A8.47 8.47 0 0010 18.5c4.69 0 8.5-3.81 8.5-8.5S14.69 1.5 10 1.5z" stroke="#25d366" stroke-width="1.4" stroke-linejoin="round"/>
+                <path d="M7.5 6.5s-.5 1 .5 2.5c.67 1 1.5 1.83 2.5 2.5 1.5 1 2.5.5 2.5.5l.5-1.5-1.5-.5-.5.5s-.5.5-1.5-.5S9 8.5 9 8.5l.5-.5-.5-1.5-1.5.5z" stroke="#25d366" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Enviar link
+            </a>
+          </td>
+        </tr>`;
+      }).join('');
+    } catch(e) {
+      console.error('Erro ao carregar pendentes:', e);
+    }
   }
 
   function escutarPresenca(uid) {
