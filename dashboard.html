@@ -999,7 +999,13 @@
 
     // UI
     document.getElementById('nav-email').textContent = user.email;
-    document.getElementById('greeting-name').textContent = userData.nome || user.email.split('@')[0];
+
+    // Apelidos — se o usuário tiver um array de apelidos, sorteia um aleatório
+    const apelidos = userData.apelidos;
+    const nomeExibido = (Array.isArray(apelidos) && apelidos.length > 0)
+      ? apelidos[Math.floor(Math.random() * apelidos.length)]
+      : (userData.nome || user.email.split('@')[0]);
+    document.getElementById('greeting-name').textContent = nomeExibido;
     const plano = userData.plano || 'basico';
     window.planoAtual = plano;
     const isPremium = plano.includes('premium');
