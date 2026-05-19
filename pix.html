@@ -566,6 +566,9 @@
           console.error('❌ Erro ao salvar no Firestore:', e.code, e.message);
         }
 
+        // Aguarda 800ms para garantir que o Firestore finalizou antes de navegar
+        await new Promise(r => setTimeout(r, 800));
+
         // Redireciona independentemente (para não deixar o cliente preso)
         window.location.href = `sucesso.html?plano=${plano}&token=${pagamentoId}`;
       }
