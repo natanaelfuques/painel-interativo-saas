@@ -767,24 +767,20 @@
       <h3>Link de upload</h3>
       <p>Compartilhe com os convidados para enviar fotos</p>
     </a>
-    <div class="action-card" style="cursor:default;" onclick="event.stopPropagation()">
+    <div class="action-card" style="cursor:default;position:relative;" onclick="event.stopPropagation()">
       <div class="action-icon">
         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
           <rect x="2" y="3" width="16" height="14" rx="2" stroke="#ff3c6e" stroke-width="1.5"/>
           <path d="M6 7h8M6 10h5" stroke="#ff3c6e" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </div>
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
-        <div>
-          <h3>Posição do QR code</h3>
-          <p>Onde o QR e as informações aparecem no totem</p>
-        </div>
-        <button id="btn-toggle-dots" onclick="toggleDots(event)"
-          title="Mostrar/ocultar pontos de progresso no totem"
-          style="flex-shrink:0;width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--muted);cursor:pointer;font-size:14px;font-weight:700;letter-spacing:1px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;line-height:1;">
-          ···
-        </button>
-      </div>
+      <h3>Posição do QR code</h3>
+      <p>Onde o QR e as informações aparecem no totem</p>
+      <button id="btn-toggle-dots" onclick="toggleDots(event)"
+        title="Mostrar/ocultar pontos de progresso no totem"
+        style="position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--muted);cursor:pointer;font-size:14px;font-weight:700;letter-spacing:1px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;line-height:1;">
+        ···
+      </button>
       <div style="display:flex; gap:8px; margin-top:10px;" onclick="event.stopPropagation()">
         <button id="btn-pos-bottom" onclick="setQRPosition('bottom')"
           style="flex:1;padding:8px;border-radius:8px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;border:1px solid var(--border-accent);background:rgba(255,60,110,0.15);color:var(--accent);">
