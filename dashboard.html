@@ -1249,7 +1249,7 @@
       document.getElementById('toggle-moderation').checked = !!d.moderation;
       if (d.instagram && igEl) igEl.value = d.instagram;
       updateQRPositionButtons(d.qrPosition || 'bottom');
-      updateDotsButton(!!d.dotsHidden);
+      updateDotsButton(!d.dotsHidden);
     }
 
     // Remove listeners anteriores
@@ -1455,27 +1455,27 @@
     e.stopPropagation();
     if (!currentUid) return;
     const btn = document.getElementById("btn-toggle-dots");
-    const currentlyHidden = btn.dataset.dotsHidden === "true";
-    const newHidden = !currentlyHidden;
-    await setDoc(currentEventRef, { dotsHidden: newHidden }, { merge: true });
-    updateDotsButton(newHidden);
-    showToast(newHidden ? "✓ Pontos ocultados no totem" : "✓ Pontos visíveis no totem");
+    const currentlyVisible = btn.dataset.dotsVisible === "true";
+    const newVisible = !currentlyVisible;
+    await setDoc(currentEventRef, { dotsHidden: !newVisible }, { merge: true });
+    updateDotsButton(newVisible);
+    showToast(newVisible ? "✓ Pontos visíveis no totem" : "✓ Pontos ocultados no totem");
   };
 
-  function updateDotsButton(hidden) {
+  function updateDotsButton(visible) {
     const btn = document.getElementById("btn-toggle-dots");
     if (!btn) return;
-    btn.dataset.dotsHidden = hidden ? "true" : "false";
-    if (hidden) {
+    btn.dataset.dotsVisible = visible ? "true" : "false";
+    if (visible) {
       btn.style.borderColor = "rgba(255,60,110,0.4)";
       btn.style.background = "rgba(255,60,110,0.12)";
       btn.style.color = "var(--accent)";
-      btn.title = "Pontos ocultos — clique para mostrar";
+      btn.title = "Pontos visíveis — clique para ocultar";
     } else {
       btn.style.borderColor = "var(--border)";
       btn.style.background = "rgba(255,255,255,0.04)";
       btn.style.color = "var(--muted)";
-      btn.title = "Clique para ocultar os pontos de progresso no totem";
+      btn.title = "Clique para mostrar os pontos de progresso no totem";
     }
   }
 
