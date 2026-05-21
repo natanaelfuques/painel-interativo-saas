@@ -224,6 +224,7 @@
         qrWrap.classList.remove('top');
         dots.classList.remove('top');
       }
+      dots.style.visibility = data.dotsHidden ? 'hidden' : '';
       if (data.slideDuration && data.slideDuration !== slideDuration) {
         slideDuration = data.slideDuration;
         startSlideshow(); // reinicia com nova duração
