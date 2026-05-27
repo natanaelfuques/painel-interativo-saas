@@ -651,11 +651,25 @@
       <div class="status-info">
         <div class="status-dot" id="status-dot"></div>
         <div>
-          <div class="status-label" id="status-label">Assinatura ativa</div>
+          <div class="status-label" id="status-label">Conta ativa</div>
           <div class="status-detail" id="status-detail"></div>
         </div>
       </div>
-      <div class="plan-badge" id="plan-badge">Mensal</div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <!-- SALDO DE CRÉDITOS -->
+        <div id="credito-badge" style="display:flex;align-items:center;gap:8px;background:rgba(255,60,110,0.08);border:1px solid rgba(255,60,110,0.25);border-radius:12px;padding:8px 14px;cursor:pointer;transition:all 0.2s;" onclick="abrirModalCredito()" title="Comprar mais créditos">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <rect x="1" y="3" width="13" height="9" rx="2" stroke="#ff3c6e" stroke-width="1.3"/>
+            <circle cx="7.5" cy="7.5" r="2.5" stroke="#ff3c6e" stroke-width="1.3"/>
+          </svg>
+          <span style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:800;color:var(--accent);" id="credito-saldo-badge">0</span>
+          <span style="font-size:11px;font-weight:600;color:var(--muted);">crédito(s)</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-left:2px;opacity:.5">
+            <path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="plan-badge" id="plan-badge">Básico</div>
+      </div>
     </div>
 
     <!-- CARD SLOTS -->
@@ -739,7 +753,7 @@
     <div class="toggle-row premium-locked" style="display:none">
       <div class="toggle-info">
         <h3>Moderação de fotos
-          <span onclick="document.getElementById('upgrade-overlay').classList.add('open');atualizarModalUpgrade()" style="font-family:Outfit;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;padding:2px 8px;border-radius:99px;margin-left:8px;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">Premium</span>
+          <span onclick="window.abrirModalCredito()" style="font-family:Outfit;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;padding:2px 8px;border-radius:99px;margin-left:8px;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">Premium</span>
         </h3>
         <p>Disponível no plano Premium</p>
       </div>
@@ -829,7 +843,7 @@
           </svg>
           Baixar fotos
         </button>
-        <span onclick="document.getElementById('upgrade-overlay').classList.add('open');atualizarModalUpgrade()" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;padding:3px 10px;border-radius:99px;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
+        <span onclick="window.abrirModalCredito()" style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.3);color:#fbbf24;padding:3px 10px;border-radius:99px;cursor:pointer;transition:opacity .2s;" onmouseover="this.style.opacity='.7'" onmouseout="this.style.opacity='1'">
           Recurso Premium
         </span>
       </div>
@@ -867,44 +881,51 @@
 
 </main>
 
-<!-- MODAL PREMIUM SLOTS -->
-<!-- MODAL UPGRADE PREMIUM -->
+<!-- MODAL COMPRAR CRÉDITO -->
 <div class="upgrade-overlay" id="upgrade-overlay" onclick="if(event.target===this)fecharUpgrade()">
   <div class="upgrade-modal">
     <button style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:8px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;" onclick="fecharUpgrade()">×</button>
 
-    <!-- TELA 1: benefícios -->
+    <!-- TELA 1: info do crédito -->
     <div id="upgrade-info">
-      <div class="um-icon">
+      <div class="um-icon" style="background:rgba(255,60,110,0.1);border-color:rgba(255,60,110,0.3);">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2L14.5 9H22L16 13.5L18.5 20.5L12 16L5.5 20.5L8 13.5L2 9H9.5L12 2Z" stroke="#fbbf24" stroke-width="1.8" stroke-linejoin="round"/>
+          <rect x="2" y="6" width="20" height="14" rx="3" stroke="#ff3c6e" stroke-width="1.8"/>
+          <circle cx="12" cy="13" r="4" stroke="#ff3c6e" stroke-width="1.8"/>
+          <path d="M8 6l2-3h4l2 3" stroke="#ff3c6e" stroke-width="1.8" stroke-linejoin="round"/>
         </svg>
       </div>
-      <h3>Fazer upgrade para Premium</h3>
-      <div class="um-sub">Desbloqueie todos os recursos e gerencie múltiplos eventos simultaneamente.</div>
+      <h3>Comprar crédito de evento</h3>
+      <div class="um-sub">Cada crédito libera 1 evento por <strong style="color:var(--text)">24 horas</strong> a partir da data que você escolher.</div>
+
       <div class="um-feature">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="6" height="5" rx="1.5" stroke="#fbbf24" stroke-width="1.4"/><rect x="9" y="2" width="6" height="5" rx="1.5" stroke="#fbbf24" stroke-width="1.4"/><rect x="1" y="9" width="6" height="5" rx="1.5" stroke="#fbbf24" stroke-width="1.4"/><rect x="9" y="9" width="6" height="5" rx="1.5" stroke="#fbbf24" stroke-width="1.4"/></svg>
-        <span>3 eventos simultâneos com tela exclusiva</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="2" stroke="#ff3c6e" stroke-width="1.4"/><circle cx="8" cy="8" r="2.5" stroke="#ff3c6e" stroke-width="1.4"/></svg>
+        <span>Tela do evento ativa por 24h completas</span>
       </div>
       <div class="um-feature">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#fbbf24" stroke-width="1.4"/><path d="M5 8l2 2 4-4" stroke="#fbbf24" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Moderação de fotos antes de exibir</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" rx="1" stroke="#ff3c6e" stroke-width="1.4"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="#ff3c6e" stroke-width="1.4"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="#ff3c6e" stroke-width="1.4"/><path d="M9 11.5h5M11.5 9v5" stroke="#ff3c6e" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <span>Upload ilimitado de fotos pelos convidados</span>
       </div>
       <div class="um-feature">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="#fbbf24" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Download de todas as fotos</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M8 10l-3-3M8 10l3-3M2 14h12" stroke="#ff3c6e" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="credito-feature-download">Download de fotos disponível no plano</span>
       </div>
-      <div class="upgrade-preco">
+
+      <div class="upgrade-preco" style="border-color:rgba(255,60,110,0.2);background:rgba(255,60,110,0.05);">
         <div class="upgrade-preco-label">
-          <strong>Upgrade para Premium</strong>
-          Diferença do seu plano atual
+          <strong id="credito-preco-label">Crédito Básico</strong>
+          1 evento · 24h de duração
         </div>
-        <div class="upgrade-preco-valor" id="upgrade-preco-valor">R$ 100</div>
+        <div class="upgrade-preco-valor" id="upgrade-preco-valor" style="color:var(--accent);">R$ 49,90</div>
       </div>
-      <button class="btn-upgrade-pix" id="btn-gerar-upgrade" onclick="gerarQrUpgrade()">
-        <img src="data:image/png;base64,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" width="16" height="16" style="display:inline-block;vertical-align:middle;filter:brightness(0);">
+
+      <button class="btn-upgrade-pix" id="btn-gerar-upgrade" onclick="gerarQrUpgrade()" style="background:linear-gradient(135deg,var(--accent),var(--accent2));">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;">
+          <path d="M3.5 3.5l3 3m5-3l-3 3m0 0l3 3M6.5 6.5L3.5 9.5" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+          <rect x="1" y="1" width="14" height="14" rx="3" stroke="white" stroke-width="1.3" opacity=".4"/>
+        </svg>
         <span id="upgrade-btn-label">Gerar QR code Pix</span>
-        <div id="upgrade-spinner" style="display:none;width:16px;height:16px;border:2px solid rgba(0,0,0,0.2);border-top-color:#0a0a0f;border-radius:50%;animation:spin .6s linear infinite;"></div>
+        <div id="upgrade-spinner" style="display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;"></div>
       </button>
       <div id="upgrade-error" style="display:none;margin-top:10px;font-size:12px;color:#ef4444;text-align:center;"></div>
       <button class="btn-upgrade-dismiss" onclick="fecharUpgrade()">Agora não</button>
@@ -921,11 +942,11 @@
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px;">Pix copia e cola</div>
         <div style="display:flex;gap:8px;align-items:center;">
           <div id="upgrade-qr-code" style="font-size:10px;color:var(--muted);word-break:break-all;line-height:1.4;font-family:monospace;flex:1;text-align:left;"></div>
-          <button onclick="copiarUpgrade()" id="btn-copiar-upgrade" style="flex-shrink:0;padding:7px 12px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:8px;color:#fbbf24;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">Copiar</button>
+          <button onclick="copiarUpgrade()" id="btn-copiar-upgrade" style="flex-shrink:0;padding:7px 12px;background:rgba(255,60,110,0.1);border:1px solid rgba(255,60,110,0.3);border-radius:8px;color:var(--accent);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">Copiar</button>
         </div>
       </div>
       <div style="font-size:12px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px;">
-        <div id="upgrade-status-dot" style="width:8px;height:8px;border-radius:50%;background:#fbbf24;animation:pulse 1.5s infinite;"></div>
+        <div id="upgrade-status-dot" style="width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 1.5s infinite;"></div>
         <span id="upgrade-status-txt">Aguardando pagamento...</span>
       </div>
     </div>
@@ -935,9 +956,9 @@
       <div style="width:60px;height:60px;border-radius:50%;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
         <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 14l5 5 11-11" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
-      <div style="font-family:'Outfit',sans-serif;font-size:19px;font-weight:800;margin-bottom:8px;">Upgrade realizado!</div>
-      <div style="font-size:13px;color:var(--muted);line-height:1.6;">Seu plano foi atualizado para <strong style="color:#fbbf24">Premium</strong>. Recarregue a página para acessar todos os recursos.</div>
-      <button onclick="location.reload()" style="margin-top:20px;width:100%;padding:13px;background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#0a0a0f;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;border:none;border-radius:12px;cursor:pointer;">Recarregar agora</button>
+      <div style="font-family:'Outfit',sans-serif;font-size:19px;font-weight:800;margin-bottom:8px;">Crédito adicionado!</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6;">Seu saldo foi atualizado. Ative o crédito no painel para liberar o evento.</div>
+      <button onclick="location.reload()" style="margin-top:20px;width:100%;padding:13px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;border:none;border-radius:12px;cursor:pointer;">Ver saldo atualizado</button>
     </div>
   </div>
 </div>
@@ -965,7 +986,7 @@
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getAuth, onAuthStateChanged, signOut, sendPasswordResetEmail, setPersistence, browserSessionPersistence }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-  import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, arrayRemove, arrayUnion, collection, getDocs, deleteDoc }
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, arrayRemove, arrayUnion, collection, getDocs, deleteDoc, increment, serverTimestamp }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const app = initializeApp({
@@ -1014,27 +1035,32 @@
     const plano = userData.plano || 'basico';
     window.planoAtual = plano;
     const isPremium = plano.includes('premium');
-    const badgeLabels = {
-      'basico':        'Básico Mensal',
-      'mensal':        'Básico Mensal',
-      'basico-anual':  'Básico Anual',
-      'anual':         'Básico Anual',
-      'premium':       'Premium Mensal',
-      'premium-anual': 'Premium Anual',
-    };
-    document.getElementById('plan-badge').textContent = badgeLabels[plano] || 'Básico';
+
+    // Badge de plano
+    const badgeLabels = { 'basico': 'Básico', 'premium': 'Premium' };
     const badgeStyles = {
-      'basico':        { bg: 'rgba(255,60,110,0.1)', border: 'rgba(255,60,110,0.35)', color: '#ff3c6e' },
-      'mensal':        { bg: 'rgba(255,60,110,0.1)', border: 'rgba(255,60,110,0.35)', color: '#ff3c6e' },
-      'basico-anual':  { bg: 'rgba(255,60,110,0.1)', border: 'rgba(255,60,110,0.35)', color: '#ff3c6e' },
-      'anual':         { bg: 'rgba(255,60,110,0.1)', border: 'rgba(255,60,110,0.35)', color: '#ff3c6e' },
-      'premium':       { bg: 'rgba(251,191,36,0.1)', border: 'rgba(251,191,36,0.4)',  color: '#fbbf24' },
-      'premium-anual': { bg: 'rgba(251,191,36,0.1)', border: 'rgba(251,191,36,0.4)',  color: '#fbbf24' },
+      'basico':   { bg: 'rgba(255,60,110,0.1)', border: 'rgba(255,60,110,0.35)', color: '#ff3c6e' },
+      'premium':  { bg: 'rgba(251,191,36,0.1)', border: 'rgba(251,191,36,0.4)',  color: '#fbbf24' },
     };
     const bs = badgeStyles[plano] || badgeStyles['basico'];
-    document.getElementById('plan-badge').style.background   = bs.bg;
-    document.getElementById('plan-badge').style.borderColor  = bs.border;
-    document.getElementById('plan-badge').style.color        = bs.color;
+    const planBadge = document.getElementById('plan-badge');
+    planBadge.textContent = badgeLabels[plano] || 'Básico';
+    planBadge.style.background  = bs.bg;
+    planBadge.style.borderColor = bs.border;
+    planBadge.style.color       = bs.color;
+
+    // Saldo de créditos
+    const creditoSnap = await getDoc(doc(db, 'creditos', user.uid));
+    const saldo = creditoSnap.exists() ? (creditoSnap.data().saldo || 0) : (userData.creditos || 0);
+    window.saldoCreditos = saldo;
+    atualizarBadgeCredito(saldo);
+
+    // Feature download: premium vê o texto certo no modal
+    const featDl = document.getElementById('credito-feature-download');
+    if (featDl) featDl.textContent = isPremium
+      ? 'Download de todas as fotos incluído'
+      : 'Download de fotos disponível no Premium';
+
     // Mostrar/ocultar seções premium
     isPremiumUser = isPremium;
     document.querySelectorAll('.premium-only').forEach(el => {
@@ -1048,17 +1074,16 @@
     if (!isPremium) {
       document.getElementById('slot-btn-2').style.opacity = '0.4';
       document.getElementById('slot-btn-3').style.opacity = '0.4';
-      // Badge e status-card abrem modal de upgrade
-      document.getElementById('plan-badge').style.cursor = 'pointer';
-      document.getElementById('plan-badge').classList.add('clickable');
-      document.getElementById('plan-badge').onclick = () => { document.getElementById('upgrade-overlay').classList.add('open'); atualizarModalUpgrade(); };
     }
 
-    // Status
-    if (userData.venceEm) {
-      const vence = userData.venceEm.toDate ? userData.venceEm.toDate() : new Date(userData.venceEm);
-      document.getElementById('status-detail').textContent =
-        'Próxima cobrança: ' + vence.toLocaleDateString('pt-BR');
+    // Aviso de crédito baixo
+    if (saldo === 0) {
+      document.getElementById('status-label').textContent  = 'Sem créditos disponíveis';
+      document.getElementById('status-detail').textContent = 'Compre um crédito para ativar seu próximo evento';
+      document.getElementById('status-dot').classList.add('inactive');
+    } else {
+      document.getElementById('status-label').textContent  = 'Conta ativa';
+      document.getElementById('status-detail').textContent = `${saldo} crédito(s) disponível(is)`;
     }
 
     // Carrega slot 1 por padrão
@@ -1079,68 +1104,90 @@
     document.getElementById('main').style.display = 'block';
   });
 
-  // ── MODAL PREMIUM ──
+  // ── MODAL CRÉDITO ──
+  window.abrirModalCredito = function() {
+    document.getElementById('upgrade-overlay').classList.add('open');
+    atualizarModalCredito();
+  };
+
   window.fecharUpgrade = function() {
     document.getElementById('upgrade-overlay').classList.remove('open');
-    // Reset modal para tela inicial
     document.getElementById('upgrade-info').style.display = 'block';
     document.getElementById('upgrade-qr').style.display   = 'none';
     document.getElementById('upgrade-sucesso').style.display = 'none';
     if (upgradePolling) { clearInterval(upgradePolling); upgradePolling = null; }
+    // Reset botão
+    const btn = document.getElementById('btn-gerar-upgrade');
+    btn.disabled = false;
+    document.getElementById('upgrade-btn-label').style.display = 'block';
+    document.getElementById('upgrade-spinner').style.display   = 'none';
   };
+
+  function atualizarBadgeCredito(saldo) {
+    const numEl = document.getElementById('credito-saldo-badge');
+    if (numEl) numEl.textContent = saldo;
+    const badge = document.getElementById('credito-badge');
+    if (!badge) return;
+    if (saldo === 0) {
+      badge.style.background  = 'rgba(239,68,68,0.08)';
+      badge.style.borderColor = 'rgba(239,68,68,0.3)';
+      if (numEl) numEl.style.color = '#ef4444';
+    } else {
+      badge.style.background  = 'rgba(34,197,94,0.08)';
+      badge.style.borderColor = 'rgba(34,197,94,0.25)';
+      if (numEl) numEl.style.color = '#22c55e';
+    }
+  }
 
   let upgradePolling = null;
   let upgradePagamentoId = null;
 
-  // Preenche valor do upgrade no modal ao abrir
-  const upgradePlanos  = { 'basico': 'upgrade', 'mensal': 'upgrade', 'basico-anual': 'upgrade-anual', 'anual': 'upgrade-anual' };
-
-  // Valores padrão de fallback
-  const upgradeValoresPadrao = { 'basico': 100.00, 'mensal': 100.00, 'basico-anual': 1000.00, 'anual': 1000.00 };
-
-  function formatarValor(v) {
-    return 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-  }
-
-  async function atualizarModalUpgrade() {
-    const p = window.planoAtual || 'basico';
-    const planoUpgrade = upgradePlanos[p] || 'upgrade';
+  async function atualizarModalCredito() {
+    const isPremium = (window.planoAtual || 'basico').includes('premium');
+    const tipoCredito = isPremium ? 'credito-premium' : 'credito-basico';
+    const precoDefault = isPremium ? 69.90 : 49.90;
     const el = document.getElementById('upgrade-preco-valor');
+    const labelEl = document.getElementById('credito-preco-label');
+    if (labelEl) labelEl.textContent = isPremium ? 'Crédito Premium' : 'Crédito Básico';
     if (!el) return;
-    // Busca valor do Firestore
     try {
-      const snap = await getDoc(doc(db, 'config', 'planos'));
-      if (snap.exists() && snap.data().valores?.[planoUpgrade] !== undefined) {
-        el.textContent = formatarValor(snap.data().valores[planoUpgrade]);
+      const snap = await getDoc(doc(db, 'config', 'precos'));
+      if (snap.exists() && snap.data().valores?.[tipoCredito]) {
+        const v = snap.data().valores[tipoCredito];
+        el.textContent = 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
         return;
       }
     } catch(e) {}
-    // Fallback
-    el.textContent = formatarValor(upgradeValoresPadrao[p] || 100);
+    el.textContent = 'R$ ' + precoDefault.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   }
 
   window.gerarQrUpgrade = async function() {
-    const btn    = document.getElementById('btn-gerar-upgrade');
-    const label  = document.getElementById('upgrade-btn-label');
-    const spin   = document.getElementById('upgrade-spinner');
-    const errEl  = document.getElementById('upgrade-error');
+    const btn   = document.getElementById('btn-gerar-upgrade');
+    const label = document.getElementById('upgrade-btn-label');
+    const spin  = document.getElementById('upgrade-spinner');
+    const errEl = document.getElementById('upgrade-error');
     errEl.style.display = 'none';
     btn.disabled = true;
     label.style.display = 'none';
     spin.style.display  = 'block';
 
-    const planoUpgrade = upgradePlanos[window.planoAtual] || 'upgrade';
+    const isPremium  = (window.planoAtual || 'basico').includes('premium');
+    const tipoCredito = isPremium ? 'credito-premium' : 'credito-basico';
 
     try {
       const user = auth.currentUser;
+      const snap = await getDoc(doc(db, 'usuarios', user.uid));
+      const d    = snap.data() || {};
+
       const res = await fetch('/api/pix', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          nome:     user.displayName || user.email,
-          email:    user.email,
-          telefone: '00000000000',
-          plano:    planoUpgrade,
+          nome:     d.nome     || user.email,
+          email:    d.email    || user.email,
+          telefone: d.telefone || '00000000000',
+          tipo:     tipoCredito,
+          uid:      user.uid,
         }),
       });
 
@@ -1148,7 +1195,7 @@
       if (!res.ok) throw new Error(data.error || 'Erro ao gerar QR');
 
       upgradePagamentoId = data.id;
-      document.getElementById('upgrade-qr-img').src = `data:image/png;base64,${data.qr_code_base64}`;
+      document.getElementById('upgrade-qr-img').src         = `data:image/png;base64,${data.qr_code_base64}`;
       document.getElementById('upgrade-qr-code').textContent = data.qr_code;
 
       document.getElementById('upgrade-info').style.display = 'none';
@@ -1158,22 +1205,14 @@
       upgradePolling = setInterval(async () => {
         try {
           const r = await fetch(`/api/pix-status?id=${upgradePagamentoId}`);
-          const d = await r.json();
-          if (d.status === 'approved') {
-            clearInterval(upgradePolling);
-            upgradePolling = null;
-            // Atualiza plano via API
-            const idToken = await user.getIdToken();
-            const upgradeRes = await fetch('/api/upgrade', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ uid: user.uid, pagamentoId: upgradePagamentoId, idToken, planoAtual: window.planoAtual }),
-            });
-            const upgradeData = await upgradeRes.json();
-            console.log('Upgrade response:', upgradeRes.status, upgradeData);
-            if (!upgradeRes.ok) {
-              console.error('Erro upgrade:', upgradeData);
-            }
+          const statusData = await r.json();
+          if (statusData.status === 'approved') {
+            clearInterval(upgradePolling); upgradePolling = null;
+            // Incrementa saldo no Firestore via SDK
+            await updateDoc(doc(db, 'usuarios', user.uid), { creditos: increment(1) });
+            try { await updateDoc(doc(db, 'creditos', user.uid), { saldo: increment(1), ultimaCompraEm: serverTimestamp() }); } catch(e) {}
+            window.saldoCreditos = (window.saldoCreditos || 0) + 1;
+            atualizarBadgeCredito(window.saldoCreditos);
             document.getElementById('upgrade-qr').style.display     = 'none';
             document.getElementById('upgrade-sucesso').style.display = 'block';
           }
@@ -1198,15 +1237,18 @@
     });
   };
 
-  window.fecharModalPremium = function() {
-    document.getElementById('premium-overlay').classList.remove('open');
-  };
+  // Toast de crédito comprado (vindo de pix.html?credito=ok → dashboard)
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('credito') === 'ok') {
+    setTimeout(() => showToast('✓ Crédito adicionado ao seu saldo!'), 800);
+    history.replaceState({}, '', 'dashboard.html');
+  }
 
   // ── TROCAR SLOT ──
   window.trocarSlot = async function(slot) {
     if (slot === currentSlot) return;
     if (slot > 1 && !isPremiumUser) {
-      document.getElementById('upgrade-overlay').classList.add('open'); atualizarModalUpgrade();
+      window.abrirModalCredito();
       return;
     }
     currentSlot = slot;

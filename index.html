@@ -943,111 +943,63 @@
 <!-- PRICING -->
 <section id="planos">
   <div style="text-align:center; margin-bottom: 56px;">
-    <div class="section-label reveal" style="justify-content:center;display:flex;">Planos</div>
-    <div class="section-title reveal" style="margin:0 auto;text-align:center;max-width:100%;">Escolha seu <span class="accent">plano</span></div>
+    <div class="section-label reveal" style="justify-content:center;display:flex;">Como funciona</div>
+    <div class="section-title reveal" style="margin:0 auto;text-align:center;max-width:100%;">Pague por <span class="accent">evento</span>, não por mês</div>
+    <p class="reveal" style="color:var(--muted);font-size:15px;margin-top:14px;max-width:540px;margin-left:auto;margin-right:auto;line-height:1.6;">Você paga uma vez para criar sua conta e ganha 1 crédito. Compra mais créditos quando precisar — cada um libera 1 evento por 24h.</p>
   </div>
-  <!-- Todos os planos em grid -->
-  <div class="pricing-grid">
+  <div class="pricing-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));max-width:700px;margin:0 auto;">
+
+    <!-- BÁSICO -->
     <div class="price-card reveal">
-      <div class="price-plan">Básico Mensal</div>
+      <div class="price-plan">Básico</div>
+      <div style="font-size:12px;color:var(--muted);font-weight:500;margin-bottom:20px;">Acesso + 1º crédito</div>
       <div class="price-amount">
-        <span class="price-currency">R$</span><span id="preco-basico-int">289</span><span class="price-cents" id="preco-basico-dec">,99</span>
+        <span class="price-currency">R$</span><span id="preco-basico-int">49</span><span class="price-cents" id="preco-basico-dec">,90</span>
       </div>
-      <div class="price-period">por mês · cancele quando quiser</div>
-      <div style="height:20px;margin-bottom:28px;"></div>
+      <div class="price-period">taxa única de entrada</div>
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(255,60,110,0.06);border:1px solid rgba(255,60,110,0.2);border-radius:10px;padding:10px 14px;margin:16px 0 24px;font-size:13px;color:var(--muted);">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1.5" stroke="#ff3c6e" stroke-width="1.3"/><circle cx="7" cy="7" r="2" stroke="#ff3c6e" stroke-width="1.3"/></svg>
+        <span>Créditos extras: <strong style="color:var(--text)">R$ 49,90</strong> cada</span>
+      </div>
       <ul class="price-features">
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Painel interativo ilimitado</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Upload em tempo real</li>
+        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>1 evento por crédito (24h)</li>
+        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Upload ilimitado pelos convidados</li>
         <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Painel de administração</li>
         <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Suporte por WhatsApp</li>
-        <li><span class="feature-check" style="background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3)"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1.5a2 2 0 00-2 2V5H2.5v4h5V5H7V3.5a2 2 0 00-2-2z" stroke="#fbbf24" stroke-width="1.2"/></svg></span><span style="color:var(--muted)">Acesso antecipado a novidades</span></li>
         <li><span class="feature-check" style="background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3)"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1.5a2 2 0 00-2 2V5H2.5v4h5V5H7V3.5a2 2 0 00-2-2z" stroke="#fbbf24" stroke-width="1.2"/></svg></span><span style="color:var(--muted)">Moderação de fotos</span></li>
         <li><span class="feature-check" style="background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3)"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1.5a2 2 0 00-2 2V5H2.5v4h5V5H7V3.5a2 2 0 00-2-2z" stroke="#fbbf24" stroke-width="1.2"/></svg></span><span style="color:var(--muted)">Download de fotos</span></li>
-        <li><span class="feature-check" style="background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3)"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1.5a2 2 0 00-2 2V5H2.5v4h5V5H7V3.5a2 2 0 00-2-2z" stroke="#fbbf24" stroke-width="1.2"/></svg></span><span style="color:var(--muted)">Instagram personalizado</span></li>
       </ul>
       <div class="card-btns">
-      <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=c0b6f6e58429467aa4903f0ae000c12a&back_url=https://painel-interativo-saas.vercel.app/sucesso.html?plano=mensal" class="btn-plan btn-plan-outline">Assinar mensal</a>
-      <a href="https://painel-interativo-saas.vercel.app/pix.html?plano=basico" class="btn-plan" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;background:transparent;border:1px solid rgba(50,188,173,0.3);color:#32bcad;font-size:13px;padding:11px;transition:all .2s;" onmouseover="this.style.background='rgba(50,188,173,0.08)'" onmouseout="this.style.background='transparent'">
-        <img src="data:image/png;base64,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" width="16" height="16" style="display:inline-block;vertical-align:middle;">
-        Pagar com Pix
-      </a>
-      </div>
-    </div>
-    <div class="price-card featured reveal">
-      <div class="price-badge">Melhor custo-benefício</div>
-      <div class="price-plan">Básico Anual</div>
-      <div class="price-amount">
-        <span class="price-currency">R$</span><span id="preco-basico-anual-int">249</span><span class="price-cents" id="preco-basico-anual-dec">,17</span>
-      </div>
-      <div class="price-period" id="periodo-basico-anual">por mês · R$ 2.989,99 cobrado anualmente</div>
-      <div class="price-economy" id="economia-basico-anual">✦ Economia de R$ 498,89 por ano</div>
-      <ul class="price-features">
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Tudo do plano mensal</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>2 meses grátis</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Prioridade no suporte</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Garantia de 30 dias</li>
-        <li><span class="feature-check" style="background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3)"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1.5a2 2 0 00-2 2V5H2.5v4h5V5H7V3.5a2 2 0 00-2-2z" stroke="#fbbf24" stroke-width="1.2"/></svg></span><span style="color:var(--muted)">Acesso antecipado a novidades</span></li>
-        <li><span class="feature-check" style="background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3)"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1.5a2 2 0 00-2 2V5H2.5v4h5V5H7V3.5a2 2 0 00-2-2z" stroke="#fbbf24" stroke-width="1.2"/></svg></span><span style="color:var(--muted)">Moderação de fotos</span></li>
-        <li><span class="feature-check" style="background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3)"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1.5a2 2 0 00-2 2V5H2.5v4h5V5H7V3.5a2 2 0 00-2-2z" stroke="#fbbf24" stroke-width="1.2"/></svg></span><span style="color:var(--muted)">Download de fotos</span></li>
-        <li><span class="feature-check" style="background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.3)"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1.5a2 2 0 00-2 2V5H2.5v4h5V5H7V3.5a2 2 0 00-2-2z" stroke="#fbbf24" stroke-width="1.2"/></svg></span><span style="color:var(--muted)">Instagram personalizado</span></li>
-      </ul>
-      <div class="card-btns">
-      <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=ec71504aaae046308a978c6f0b043758&back_url=https://painel-interativo-saas.vercel.app/sucesso.html?plano=anual" class="btn-plan btn-plan-primary">Assinar anual</a>
-      <a href="https://painel-interativo-saas.vercel.app/pix.html?plano=basico-anual" class="btn-plan" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;background:transparent;border:1px solid rgba(50,188,173,0.3);color:#32bcad;font-size:13px;padding:11px;transition:all .2s;" onmouseover="this.style.background='rgba(50,188,173,0.08)'" onmouseout="this.style.background='transparent'">
-        <img src="data:image/png;base64,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" width="16" height="16" style="display:inline-block;vertical-align:middle;">
-        Pagar com Pix
-      </a>
+        <a href="pix.html?tipo=onboarding-basico" class="btn-plan btn-plan-outline">Começar agora</a>
       </div>
     </div>
 
-  <!-- Planos Premium -->
-    <div class="price-card price-card-premium-mensal reveal">
-      <div class="price-plan" style="color:#fbbf24;">Premium Mensal</div>
+    <!-- PREMIUM -->
+    <div class="price-card featured reveal">
+      <div class="price-badge">Mais recursos</div>
+      <div class="price-plan" style="color:#fbbf24;">★ Premium</div>
+      <div style="font-size:12px;color:var(--muted);font-weight:500;margin-bottom:20px;">Acesso + 1º crédito</div>
       <div class="price-amount">
-        <span class="price-currency">R$</span><span id="preco-premium-int">389</span><span class="price-cents" id="preco-premium-dec">,99</span>
+        <span class="price-currency" style="color:#fbbf24;">R$</span><span id="preco-premium-int" style="color:#fbbf24;">69</span><span class="price-cents" id="preco-premium-dec" style="color:#fbbf24;">,90</span>
       </div>
-      <div class="price-period">por mês · cancele quando quiser</div>
-      <div style="height:20px;margin-bottom:28px;"></div>
+      <div class="price-period">taxa única de entrada</div>
+      <div style="display:flex;align-items:center;gap:8px;background:rgba(251,191,36,0.06);border:1px solid rgba(251,191,36,0.2);border-radius:10px;padding:10px 14px;margin:16px 0 24px;font-size:13px;color:var(--muted);">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1.5" stroke="#fbbf24" stroke-width="1.3"/><circle cx="7" cy="7" r="2" stroke="#fbbf24" stroke-width="1.3"/></svg>
+        <span>Créditos extras: <strong style="color:var(--text)">R$ 69,90</strong> cada</span>
+      </div>
       <ul class="price-features">
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Tudo do plano básico</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>3 eventos simultâneos com tela exclusiva</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Moderação de fotos</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Download de fotos</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Instagram personalizado</li>
+        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Tudo do plano Básico</li>
+        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Moderação de fotos antes de exibir</li>
+        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Download de todas as fotos</li>
+        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Instagram personalizado no totem</li>
         <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Suporte prioritário</li>
+        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Acesso antecipado a novidades</li>
       </ul>
       <div class="card-btns">
-      <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=d5cec8b23f9448c3947d1df1441c42de&back_url=https://painel-interativo-saas.vercel.app/sucesso.html?plano=premium" class="btn-plan btn-plan-premium-mensal">Assinar mensal</a>
-      <a href="https://painel-interativo-saas.vercel.app/pix.html?plano=premium" class="btn-plan" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;background:transparent;border:1px solid rgba(50,188,173,0.3);color:#32bcad;font-size:13px;padding:11px;transition:all .2s;" onmouseover="this.style.background='rgba(50,188,173,0.08)'" onmouseout="this.style.background='transparent'">
-        <img src="data:image/png;base64,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" width="16" height="16" style="display:inline-block;vertical-align:middle;">
-        Pagar com Pix
-      </a>
+        <a href="pix.html?tipo=onboarding-premium" class="btn-plan btn-plan-primary">Começar Premium</a>
       </div>
     </div>
-    <div class="price-card price-card-premium-anual reveal" style="border-color:rgba(251,191,36,0.4);background:linear-gradient(180deg,rgba(251,191,36,0.06) 0%,var(--card) 60%);">
-      <div class="price-badge" style="background:linear-gradient(135deg,#c97d00,#e8a800,#f2c030);">Melhor custo-benefício</div>
-      <div class="price-plan" style="color:#fbbf24;">Premium Anual</div>
-      <div class="price-amount">
-        <span class="price-currency">R$</span><span id="preco-premium-anual-int">332</span><span class="price-cents" id="preco-premium-anual-dec">,50</span>
-      </div>
-      <div class="price-period" id="periodo-premium-anual">por mês · R$ 3.989,99 cobrado anualmente</div>
-      <div class="price-economy" id="economia-premium-anual">✦ Economia de R$ 690,89 por ano</div>
-      <ul class="price-features">
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Tudo do plano básico anual</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>3 eventos simultâneos com tela exclusiva</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Moderação de fotos</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Download de fotos</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Instagram personalizado</li>
-        <li><span class="feature-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Garantia de 30 dias</li>
-      </ul>
-      <div class="card-btns">
-      <a href="https://www.mercadopago.com.br/subscriptions/checkout?preapproval_plan_id=b872316bddf74db7a4c6e6dbb7a3bf5b&back_url=https://painel-interativo-saas.vercel.app/sucesso.html?plano=premium-anual" class="btn-plan btn-plan-premium-anual">Assinar anual</a>
-      <a href="https://painel-interativo-saas.vercel.app/pix.html?plano=premium-anual" class="btn-plan" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;background:transparent;border:1px solid rgba(50,188,173,0.3);color:#32bcad;font-size:13px;padding:11px;transition:all .2s;" onmouseover="this.style.background='rgba(50,188,173,0.08)'" onmouseout="this.style.background='transparent'">
-        <img src="data:image/png;base64,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" width="16" height="16" style="display:inline-block;vertical-align:middle;">
-        Pagar com Pix
-      </a>
-      </div>
-    </div>
+
   </div>
 </section>
 
@@ -1063,20 +1015,20 @@
       <div class="faq-a">Não. O Painel Interativo funciona direto no navegador, para você e para os convidados. Basta escanear o QR code com o celular.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Posso usar em vários eventos por mês? <span class="faq-icon">+</span></div>
-      <div class="faq-a">Sim, sem limite de eventos. Você configura o painel quantas vezes quiser. No Básico um evento por vez, no Premium até 3 eventos simultâneos.</div>
+      <div class="faq-q">O que é um crédito? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Cada crédito libera 1 evento por 24 horas. Você escolhe a data do evento no painel e o crédito fica ativo naquele dia. Não há assinatura mensal — você paga só quando vai usar.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Como funciona o cancelamento? <span class="faq-icon">+</span></div>
-      <div class="faq-a">Você cancela a qualquer momento pelo MercadoPago. No plano mensal, o acesso continua até o fim do período já pago.</div>
+      <div class="faq-q">Qual a diferença entre Básico e Premium? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Ambos liberam 1 evento por crédito com upload ilimitado de fotos. O Premium adiciona moderação de fotos antes de exibir no totem, download de todas as fotos ao final, Instagram personalizado no rodapé e suporte prioritário.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">O que é a garantia de 30 dias do plano anual? <span class="faq-icon">+</span></div>
-      <div class="faq-a">Se nos primeiros 30 dias você não ficar satisfeito, devolvemos o valor integral sem burocracia.</div>
+      <div class="faq-q">Posso usar em vários eventos? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Sim, sem limite. Compre um crédito por evento. Você acumula créditos no painel e ativa cada um na data que quiser.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Precisa de internet no evento? <span class="faq-icon">+</span></div>
-      <div class="faq-a">Sim, o painel funciona em tempo real. Recomendamos usar a rede do espaço ou um roteador dedicado. Os convidados conseguem upar direto do celular com rede móvel.</div>
+      <div class="faq-a">Sim, o painel funciona em tempo real. Recomendamos a rede do espaço ou um roteador dedicado. Os convidados fazem upload com qualquer rede móvel.</div>
     </div>
   </div>
 </section>
@@ -1118,15 +1070,11 @@
 </script>
 
 <script>
-
-</script>
-
-<script>
-// Busca preços do Firestore e atualiza os cards
+// Busca preços do Firestore (config/precos) e atualiza os cards
 (async () => {
   try {
     const res = await fetch(
-      'https://firestore.googleapis.com/v1/projects/painel-interativo-saas/databases/(default)/documents/config/planos'
+      'https://firestore.googleapis.com/v1/projects/painel-interativo-saas/databases/(default)/documents/config/precos'
     );
     if (!res.ok) return;
     const data = await res.json();
@@ -1134,63 +1082,37 @@
     if (!v) return;
 
     const get = (key) => parseFloat(v[key]?.doubleValue || v[key]?.integerValue || 0);
-
-    const basico        = get('basico');
-    const basicoAnual   = get('basico-anual');
-    const premium       = get('premium');
-    const premiumAnual  = get('premium-anual');
-
-    // Formata: separa inteiro e centavos
     function fmt(val) {
       const [int, dec] = val.toFixed(2).split('.');
       return { int: int.replace(/\B(?=(\d{3})+(?!\d))/g, '.'), dec: ',' + dec };
     }
 
-    // Básico mensal
+    const basico   = get('onboarding-basico');
+    const premium  = get('onboarding-premium');
+    const cBasico  = get('credito-basico');
+    const cPremium = get('credito-premium');
+
     if (basico) {
       const f = fmt(basico);
       document.getElementById('preco-basico-int').textContent = f.int;
       document.getElementById('preco-basico-dec').textContent = f.dec;
     }
-
-    // Básico anual (exibe preço mensal = total/12)
-    if (basicoAnual) {
-      const mensal = basicoAnual / 12;
-      const f = fmt(mensal);
-      document.getElementById('preco-basico-anual-int').textContent = f.int;
-      document.getElementById('preco-basico-anual-dec').textContent = f.dec;
-      document.getElementById('periodo-basico-anual').textContent =
-        `por mês · R$ ${basicoAnual.toLocaleString('pt-BR', {minimumFractionDigits:2})} cobrado anualmente`;
-      // Economia = basico*12 - basicoAnual
-      if (basico) {
-        const economia = (basico * 12) - basicoAnual;
-        document.getElementById('economia-basico-anual').textContent =
-          `✦ Economia de R$ ${economia.toLocaleString('pt-BR', {minimumFractionDigits:2})} por ano`;
-      }
-    }
-
-    // Premium mensal
     if (premium) {
       const f = fmt(premium);
       document.getElementById('preco-premium-int').textContent = f.int;
       document.getElementById('preco-premium-dec').textContent = f.dec;
     }
-
-    // Premium anual
-    if (premiumAnual) {
-      const mensal = premiumAnual / 12;
-      const f = fmt(mensal);
-      document.getElementById('preco-premium-anual-int').textContent = f.int;
-      document.getElementById('preco-premium-anual-dec').textContent = f.dec;
-      document.getElementById('periodo-premium-anual').textContent =
-        `por mês · R$ ${premiumAnual.toLocaleString('pt-BR', {minimumFractionDigits:2})} cobrado anualmente`;
-      if (premium) {
-        const economia = (premium * 12) - premiumAnual;
-        document.getElementById('economia-premium-anual').textContent =
-          `✦ Economia de R$ ${economia.toLocaleString('pt-BR', {minimumFractionDigits:2})} por ano`;
-      }
+    // Atualiza texto de crédito extra nos cards
+    if (cBasico) {
+      document.querySelectorAll('.credito-extra-basico').forEach(el => {
+        el.textContent = `R$ ${cBasico.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+      });
     }
-
+    if (cPremium) {
+      document.querySelectorAll('.credito-extra-premium').forEach(el => {
+        el.textContent = `R$ ${cPremium.toLocaleString('pt-BR', {minimumFractionDigits:2})}`;
+      });
+    }
   } catch(e) { /* mantém valores padrão */ }
 })();
 </script>
