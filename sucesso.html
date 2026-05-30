@@ -8,9 +8,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0a0f; --card: #13131a; --card2: #1a1a24;
-    --accent: #ff3c6e; --accent2: #ff8c42;
-    --text: #f0f0f5; --muted: #6b6b80;
+    --bg: #0a0a0f;
+    --card: #13131a;
+    --card2: #1a1a24;
+    --accent: #ff3c6e;
+    --accent2: #ff8c42;
+    --text: #f0f0f5;
+    --muted: #6b6b80;
     --border: rgba(255,255,255,0.08);
     --border-accent: rgba(255,60,110,0.25);
     --green: #22c55e;
@@ -23,29 +27,38 @@
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--bg); color: var(--text);
+    background: var(--bg);
+    color: var(--text);
     min-height: 100dvh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 32px 24px 60px;
-    position: relative; overflow: hidden;
+    position: relative;
+    overflow: hidden;
   }
 
   body::before {
-    content: ''; position: fixed; inset: 0;
+    content: '';
+    position: fixed; inset: 0;
     background:
       radial-gradient(ellipse 70% 50% at 50% -10%, rgba(34,197,94,0.1) 0%, transparent 60%),
       radial-gradient(ellipse 50% 40% at 80% 100%, rgba(255,60,110,0.08) 0%, transparent 55%);
     pointer-events: none;
   }
 
+  /* CARD PRINCIPAL */
   .card {
     position: relative; z-index: 1;
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 24px; padding: 48px 36px;
-    max-width: 420px; width: 100%; text-align: center;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 48px 36px;
+    max-width: 420px; width: 100%;
+    text-align: center;
     box-shadow: 0 40px 100px rgba(0,0,0,0.5);
-    animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   @keyframes popIn {
@@ -55,169 +68,289 @@
 
   /* CHECK ANIMADO */
   .check-wrap {
-    width: 80px; height: 80px; border-radius: 50%;
-    background: var(--green-bg); border: 1px solid var(--green-border);
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
     display: flex; align-items: center; justify-content: center;
     margin: 0 auto 28px;
-    animation: popIn 0.5s 0.2s cubic-bezier(0.34,1.56,0.64,1) both;
+    animation: popIn 0.5s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
   }
+
   .check-svg circle {
-    stroke-dasharray: 166; stroke-dashoffset: 166;
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
     animation: stroke 0.5s 0.4s ease forwards;
   }
   .check-svg path {
-    stroke-dasharray: 50; stroke-dashoffset: 50;
+    stroke-dasharray: 50;
+    stroke-dashoffset: 50;
     animation: stroke 0.4s 0.8s ease forwards;
   }
-  @keyframes stroke { to { stroke-dashoffset: 0; } }
+  @keyframes stroke {
+    to { stroke-dashoffset: 0; }
+  }
 
   h1 {
     font-family: 'Outfit', sans-serif;
     font-size: 26px; font-weight: 800;
-    line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px;
+    line-height: 1.15; letter-spacing: -0.02em;
+    margin-bottom: 10px;
     opacity: 0; animation: fadeUp 0.5s 0.5s forwards;
   }
+
   .subtitle {
-    font-size: 14px; font-weight: 300; color: var(--muted); line-height: 1.6;
-    margin-bottom: 24px;
+    font-size: 14px; font-weight: 300;
+    color: var(--muted); line-height: 1.6;
+    margin-bottom: 32px;
     opacity: 0; animation: fadeUp 0.5s 0.65s forwards;
   }
 
-  /* BADGE TIPO */
-  .tipo-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700;
-    letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 4px 14px; border-radius: 99px; margin-bottom: 20px;
-    opacity: 0; animation: fadeUp 0.5s 0.7s forwards;
-  }
-  .tipo-badge.basico {
-    background: rgba(255,60,110,0.1); border: 1px solid rgba(255,60,110,0.25); color: var(--accent);
-  }
-  .tipo-badge.premium {
-    background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); color: #fbbf24;
+  /* PRÓXIMOS PASSOS */
+  .steps-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    opacity: 0; animation: fadeUp 0.5s 0.75s forwards;
   }
 
-  /* CREDIT CARD */
-  .credito-card {
-    display: flex; align-items: center; gap: 14px;
-    background: var(--card2); border: 1px solid var(--border);
-    border-radius: 14px; padding: 16px 18px;
-    margin-bottom: 24px; text-align: left;
-    opacity: 0; animation: fadeUp 0.5s 0.8s forwards;
+  .steps {
+    display: flex; flex-direction: column; gap: 10px;
+    margin-bottom: 32px;
+    opacity: 0; animation: fadeUp 0.5s 0.85s forwards;
   }
-  .credito-icon {
-    width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
-    background: rgba(255,60,110,0.1); border: 1px solid var(--border-accent);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .credito-icon.premium {
-    background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.3);
-  }
-  .credito-info h4 {
-    font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 2px;
-  }
-  .credito-info p { font-size: 12px; color: var(--muted); line-height: 1.4; }
 
-  /* FORM CADASTRO */
-  .cadastro-wrap {
-    border-top: 1px solid var(--border); padding-top: 24px;
-    opacity: 0; animation: fadeUp 0.5s 0.9s forwards;
+  .step {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
     text-align: left;
   }
-  .cadastro-titulo {
-    font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 800;
-    margin-bottom: 4px; text-align: center;
-  }
-  .cadastro-sub {
-    font-size: 12px; color: var(--muted); margin-bottom: 18px;
-    line-height: 1.5; text-align: center;
+
+  .step-num {
+    width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(255,60,110,0.12);
+    border: 1px solid var(--border-accent);
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px; font-weight: 800;
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
   }
 
-  .field-cad { margin-bottom: 12px; }
+  .step-content h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: var(--text); margin-bottom: 2px;
+  }
+
+  .step-content p {
+    font-size: 12px; color: var(--muted);
+    font-weight: 300; line-height: 1.5;
+  }
+
+  /* AVISO DE PRAZO */
+  .prazo {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,60,110,0.06);
+    border: 1px solid var(--border-accent);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 28px;
+    text-align: left;
+    opacity: 0; animation: fadeUp 0.5s 0.95s forwards;
+  }
+
+  .prazo-icon {
+    flex-shrink: 0;
+    width: 32px; height: 32px; border-radius: 8px;
+    background: rgba(255,60,110,0.1);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .prazo p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .prazo strong { color: var(--text); font-weight: 500; }
+
+  /* BOTÃO WHATSAPP */
+  .btn-whatsapp {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; padding: 16px;
+    background: #25d366;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px; font-weight: 700;
+    border: none; border-radius: 12px;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.2s;
+    margin-bottom: 12px;
+    opacity: 0; animation: fadeUp 0.5s 1.05s forwards;
+  }
+  .btn-whatsapp:hover { opacity: 0.88; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37,211,102,0.3); }
+
+  .btn-voltar {
+    display: block; width: 100%; padding: 14px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--muted);
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 500;
+    cursor: pointer; text-decoration: none;
+    transition: all 0.2s;
+    opacity: 0; animation: fadeUp 0.5s 1.1s forwards;
+  }
+  .btn-voltar:hover { border-color: var(--border-accent); color: var(--text); }
+
+  /* BRAND */
+  .brand {
+    position: fixed; bottom: 18px;
+    font-size: 12px; font-weight: 600;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .brand:hover { color: rgba(255,255,255,0.5); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .card { padding: 36px 24px; }
+  }
+
+  /* FORMULÁRIO DE CADASTRO */
+  .cadastro-wrap {
+    margin-top: 28px;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    opacity: 0; animation: fadeUp 0.5s 1.2s forwards;
+  }
+
+  .cadastro-label {
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+
+  .cadastro-titulo {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px; font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .cadastro-sub {
+    font-size: 12px; color: var(--muted);
+    margin-bottom: 18px; line-height: 1.5;
+  }
+
+  .plano-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 99px;
+    margin-bottom: 18px;
+  }
+
+  .plano-badge.basico {
+    background: rgba(255,60,110,0.1);
+    border: 1px solid rgba(255,60,110,0.25);
+    color: var(--accent);
+  }
+
+  .plano-badge.premium {
+    background: rgba(251,191,36,0.1);
+    border: 1px solid rgba(251,191,36,0.3);
+    color: #fbbf24;
+  }
+
+  .field-cad { margin-bottom: 12px; text-align: left; }
   .field-cad label {
-    display: block; font-size: 11px; font-weight: 700;
+    display: block;
+    font-size: 11px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.06em;
     color: var(--muted); margin-bottom: 6px;
   }
+
   .field-cad input {
-    width: 100%; background: var(--card2); border: 1px solid var(--border);
-    border-radius: 10px; color: var(--text);
-    font-size: 14px; font-family: 'DM Sans', sans-serif;
-    padding: 11px 14px; outline: none; transition: border-color 0.2s;
+    width: 100%;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s;
   }
+
   .field-cad input:focus { border-color: rgba(255,60,110,0.5); }
   .field-cad input::placeholder { color: var(--muted); }
 
   .btn-cadastrar {
     width: 100%; padding: 14px;
     background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #fff; font-family: 'Outfit', sans-serif;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
     font-size: 14px; font-weight: 700;
     border: none; border-radius: 12px;
-    cursor: pointer; transition: all 0.2s; margin-top: 4px;
+    cursor: pointer; transition: all 0.2s;
+    margin-top: 4px;
     display: flex; align-items: center; justify-content: center; gap: 8px;
   }
-  .btn-cadastrar:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+  .btn-cadastrar:hover { opacity: 0.88; transform: translateY(-1px); }
   .btn-cadastrar:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
   .cad-error {
     display: none;
-    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
-    color: #f87171; border-radius: 10px; padding: 10px 14px;
-    font-size: 12px; margin-bottom: 12px;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.3);
+    color: #f87171;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 12px;
+    margin-bottom: 12px;
+    text-align: left;
   }
 
-  /* SUCESSO PÓS-CADASTRO */
   .cad-sucesso {
-    display: none; flex-direction: column; align-items: center; gap: 10px;
-    padding: 20px 0 8px; text-align: center;
+    display: none;
+    flex-direction: column; align-items: center; gap: 10px;
+    padding: 20px 0 8px;
+    text-align: center;
   }
-  .cs-icon {
+
+  .cad-sucesso .cs-icon {
     width: 48px; height: 48px; border-radius: 50%;
     background: var(--green-bg); border: 1px solid var(--green-border);
     display: flex; align-items: center; justify-content: center;
   }
-  .cad-sucesso h3 { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 800; }
-  .cad-sucesso p  { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
-  /* WHATSAPP / VOLTAR */
-  .btn-whatsapp {
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    width: 100%; padding: 14px; background: #25d366; color: #fff;
-    font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700;
-    border: none; border-radius: 12px; cursor: pointer; text-decoration: none;
-    transition: all 0.2s; margin-bottom: 10px;
-  }
-  .btn-whatsapp:hover { opacity: 0.88; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(37,211,102,0.3); }
-  .btn-voltar {
-    display: block; width: 100%; padding: 13px;
-    background: transparent; border: 1px solid var(--border); border-radius: 12px;
-    color: var(--muted); font-family: 'Outfit', sans-serif;
-    font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; transition: all 0.2s;
-  }
-  .btn-voltar:hover { border-color: var(--border-accent); color: var(--text); }
-
-  .rodape-links {
-    border-top: 1px solid var(--border); margin-top: 24px; padding-top: 20px;
-    opacity: 0; animation: fadeUp 0.5s 1.1s forwards;
+  .cad-sucesso h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px; font-weight: 800;
   }
 
-  .brand {
-    position: fixed; bottom: 18px; font-size: 12px; font-weight: 600;
-    color: rgba(255,255,255,0.25); letter-spacing: 1px; text-decoration: none; transition: color 0.2s;
-  }
-  .brand:hover { color: rgba(255,255,255,0.5); }
+  .cad-sucesso p { font-size: 12px; color: var(--muted); line-height: 1.5; }
 
   .spinner {
     width: 16px; height: 16px;
-    border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
-    border-radius: 50%; animation: spin 0.6s linear infinite; display: none;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
   }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes spin   { to { transform: rotate(360deg); } }
-
-  @media (max-width: 480px) { .card { padding: 36px 24px; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -233,26 +366,13 @@
   </div>
 
   <h1>Pagamento confirmado!</h1>
-  <p class="subtitle">Crie sua conta abaixo para acessar o painel e usar seu crédito de evento.</p>
+  <p class="subtitle" style="margin-bottom:20px;">Seu pagamento foi confirmado. Crie sua conta abaixo para acessar o painel.</p>
 
-  <!-- BADGE DE TIPO -->
-  <div id="tipo-badge-wrap"></div>
-
-  <!-- CARD DO CRÉDITO INCLUÍDO -->
-  <div class="credito-card" id="credito-card">
-    <div class="credito-icon" id="credito-icon">
-      <!-- ícone injetado via JS -->
-    </div>
-    <div class="credito-info">
-      <h4 id="credito-titulo">1 crédito de evento incluído</h4>
-      <p id="credito-desc">Válido por 24h a partir da data que você escolher no painel.</p>
-    </div>
-  </div>
-
-  <!-- FORMULÁRIO DE CADASTRO -->
-  <div class="cadastro-wrap">
-    <div class="cadastro-titulo">Crie sua conta agora</div>
-    <div class="cadastro-sub">Seu acesso é imediato após o cadastro.</div>
+  <!-- CADASTRO RÁPIDO -->
+  <div class="cadastro-wrap" style="margin-top:0;border-top:none;padding-top:0;">
+    <div id="plano-badge-wrap" style="margin-bottom:16px;"></div>
+    <div class="cadastro-titulo" style="font-size:18px;margin-bottom:6px;">Crie sua conta agora</div>
+    <div class="cadastro-sub">Já aprovamos seu pagamento. Cadastre-se para acessar o painel, em caso de dúvida chame no WhatsApp.</div>
 
     <div class="cad-error" id="cad-error"></div>
 
@@ -279,27 +399,26 @@
       </button>
     </div>
 
-    <!-- ESTADO PÓS-CADASTRO -->
     <div class="cad-sucesso" id="cad-sucesso">
       <div class="cs-icon">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
           <path d="M5 11l4 4 8-8" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <h3>Conta criada com sucesso!</h3>
-      <p>Seu 1º crédito já está disponível. Acesse o painel para usá-lo.</p>
-      <a href="dashboard.html" style="display:inline-block;margin-top:10px;padding:13px 28px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;border-radius:12px;text-decoration:none;">Ir para o painel →</a>
+      <h3>Conta criada!</h3>
+      <p>Seu acesso está <strong style="color:var(--green)">ativo</strong>. Acesse agora o seu painel!</p>
+      <a href="login.html" style="display:inline-block;margin-top:8px;padding:13px 24px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;border-radius:12px;text-decoration:none;">Acessar o painel →</a>
     </div>
   </div>
 
-  <!-- RODAPÉ -->
-  <div class="rodape-links">
+  <div style="border-top:1px solid var(--border);margin-top:24px;padding-top:20px;opacity:0;animation:fadeUp 0.5s 1.1s forwards;">
     <a
-      href="https://wa.me/5547991536771?text=Ol%C3%A1!%20Acabei%20de%20me%20cadastrar%20no%20Painel%20Interativo%20e%20preciso%20de%20ajuda."
+      href="https://wa.me/5547991536771?text=Ol%C3%A1!%20Acabei%20de%20assinar%20o%20Painel%20Interativo%20e%20gostaria%20de%20receber%20meu%20acesso."
       target="_blank"
       class="btn-whatsapp"
+      style="margin-bottom:10px;"
     >
-      <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
         <path d="M10 1.5C5.31 1.5 1.5 5.31 1.5 10c0 1.5.39 2.9 1.07 4.13L1.5 18.5l4.5-1.05A8.47 8.47 0 0010 18.5c4.69 0 8.5-3.81 8.5-8.5S14.69 1.5 10 1.5z" stroke="white" stroke-width="1.4" stroke-linejoin="round"/>
         <path d="M7.5 6.5s-.5 1 .5 2.5c.67 1 1.5 1.83 2.5 2.5 1.5 1 2.5.5 2.5.5l.5-1.5-1.5-.5-.5.5s-.5.5-1.5-.5S9 8.5 9 8.5l.5-.5-.5-1.5-1.5.5z" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -316,7 +435,7 @@
   import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getAuth, createUserWithEmailAndPassword, setPersistence, browserSessionPersistence }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-  import { getFirestore, doc, setDoc, getDoc, updateDoc, serverTimestamp }
+  import { getFirestore, doc, setDoc, getDoc, updateDoc, serverTimestamp, Timestamp }
     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   const app = initializeApp({
@@ -330,45 +449,15 @@
 
   const auth = getAuth(app);
   setPersistence(auth, browserSessionPersistence);
-  const db = getFirestore(app);
+  const db   = getFirestore(app);
 
-  // Parâmetros da URL
-  // tipo: 'onboarding-basico' | 'onboarding-premium'
-  // token: ID do pagamento (para pré-preencher dados e marcar como concluído)
+  // Detecta plano pela URL (?plano=premium, mensal, anual, premium-anual)
   const params = new URLSearchParams(window.location.search);
-  const tipo   = params.get('tipo')  || 'onboarding-basico';
-  const token  = params.get('token') || null;
+  const planoParam = params.get('plano') || 'mensal';
+  const plano = planoParam === 'upgrade' ? 'premium' : planoParam;
+  const token = params.get('token') || null;
 
-  const isPremium = tipo.includes('premium');
-  const plano     = isPremium ? 'premium' : 'basico';
-
-  // Badge de tipo
-  const badgeWrap = document.getElementById('tipo-badge-wrap');
-  badgeWrap.innerHTML = `
-    <div class="tipo-badge ${isPremium ? 'premium' : 'basico'}">
-      ${isPremium ? '★ Premium' : 'Básico'}
-    </div>`;
-
-  // Ícone e textos do card de crédito
-  const iconEl = document.getElementById('credito-icon');
-  if (isPremium) {
-    iconEl.classList.add('premium');
-    iconEl.innerHTML = `
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <path d="M11 2l2.5 5.5L19 8.5l-4 4 1 5.5L11 15.5 6 18l1-5.5-4-4 5.5-1L11 2z"
-          stroke="#fbbf24" stroke-width="1.5" stroke-linejoin="round" fill="rgba(251,191,36,0.15)"/>
-      </svg>`;
-    document.getElementById('credito-titulo').textContent = '1 crédito Premium incluído';
-  } else {
-    iconEl.innerHTML = `
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <rect x="3" y="6" width="16" height="11" rx="2" stroke="#ff3c6e" stroke-width="1.5"/>
-        <circle cx="11" cy="11.5" r="3" stroke="#ff3c6e" stroke-width="1.5"/>
-        <path d="M7 6l1.5-3h5L15 6" stroke="#ff3c6e" stroke-width="1.5" stroke-linejoin="round"/>
-      </svg>`;
-  }
-
-  // Pré-preenche formulário se veio com token de pagamento Pix
+  // Se veio com token, busca dados do pagamento e pré-preenche o formulário
   if (token) {
     (async () => {
       try {
@@ -381,6 +470,30 @@
         }
       } catch(e) { /* silencioso */ }
     })();
+  }
+
+  const planoLabels = {
+    'mensal':        'Básico Mensal',
+    'anual':         'Básico Anual',
+    'premium':       'Premium Mensal',
+    'premium-anual': 'Premium Anual',
+    'upgrade':       'Upgrade Premium',
+  };
+
+  const isPremium = plano.includes('premium');
+
+  // Renderiza badge do plano
+  const badgeWrap = document.getElementById('plano-badge-wrap');
+  badgeWrap.innerHTML = `
+    <div class="plano-badge ${isPremium ? 'premium' : 'basico'}">
+      ${isPremium ? '★ ' : ''}${planoLabels[plano] || 'Básico Mensal'}
+    </div>`;
+
+  // Vencimento automático: mensal = +30 dias, anual = +365 dias
+  function calcVencimento() {
+    const d = new Date();
+    d.setDate(d.getDate() + (plano.includes('anual') ? 365 : 30));
+    return Timestamp.fromDate(d);
   }
 
   window.criarConta = async function() {
@@ -404,48 +517,32 @@
     spinner.style.display = 'block';
 
     try {
-      // 1. Cria usuário no Firebase Auth (já estabelece sessão automaticamente)
+      // 1. Cria no Firebase Auth
       const cred = await createUserWithEmailAndPassword(auth, email, senha);
       const uid  = cred.user.uid;
 
-      // 2. Cria documento em usuarios/{uid}
+      // 2. Cria documento no Firestore — status inativo (aguarda ativação manual)
       await setDoc(doc(db, 'usuarios', uid), {
         email,
         nome,
         telefone,
-        plano,           // 'basico' ou 'premium'
-        status:  'ativo',
-        creditos: 1,     // 1 crédito incluso no onboarding
-        criadoEm: serverTimestamp(),
-      });
-
-      // 3. Registra o crédito inicial em creditos/{uid}/historico
-      await setDoc(doc(db, 'creditos', uid), {
-        saldo:          1,
         plano,
-        ultimaCompraEm: serverTimestamp(),
+        status:   'ativo',
+        criadoEm: serverTimestamp(),
+        venceEm:  calcVencimento(),
       });
 
-      // 4. Marca pagamento como concluído (se veio via Pix)
+      // Sucesso
+      // Se veio com token, marca pagamento como concluído
       if (token) {
         try {
-          await updateDoc(doc(db, 'pagamentos_pendentes', token), { status: 'concluido', uid });
+          await updateDoc(doc(db, 'pagamentos_pendentes', token), { status: 'concluido' });
         } catch(e) { /* silencioso */ }
       }
 
-      // 5. Cria documento inicial do evento (slot1)
-      await setDoc(doc(db, 'eventos', `${uid}_slot1`), {
-        eventName:     nome,
-        slideDuration: 5000,
-        paused:        false,
-        moderation:    false,
-        photos:        [],
-        instagram:     '@nfsolucoesparaeventos',
-        creditoAtivo:  false,  // será true quando o cliente ativar um crédito
-      });
-
       document.getElementById('cad-form').style.display = 'none';
-      document.getElementById('cad-sucesso').style.display = 'flex';
+      const s = document.getElementById('cad-sucesso');
+      s.style.display = 'flex';
 
     } catch(e) {
       const msgs = {

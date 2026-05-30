@@ -2,66 +2,21 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // ── USUÁRIOS ──────────────────────────────────────────────────────────────
+    // Usuários — só o próprio usuário lê, só admin escreve
     match /usuarios/{uid} {
-      allow read: if request.auth != null &&
-        (request.auth.uid == uid || request.auth.token.email == "natanael.fuques@gmail.com");
-      allow create: if request.auth != null && request.auth.uid == uid;
-      allow update: if request.auth != null &&
-        (request.auth.uid == uid || request.auth.token.email == "natanael.fuques@gmail.com");
-      allow delete: if false;
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false; // só via Firebase Console ou Admin SDK
     }
 
-    // ── CRÉDITOS ─────────────────────────────────────────────────────────────
-    // Documento único por usuário: creditos/{uid}
-    // Saldo e histórico de compras
-    match /creditos/{uid} {
-      allow read: if request.auth != null &&
-        (request.auth.uid == uid || request.auth.token.email == "natanael.fuques@gmail.com");
-      allow create: if request.auth != null && request.auth.uid == uid;
-      allow update: if request.auth != null &&
-        (request.auth.uid == uid || request.auth.token.email == "natanael.fuques@gmail.com");
-      allow delete: if false;
-    }
+    // Eventos — dono lê/escreve tudo; qualquer um pode adicionar/remover fotos (upload público)
+    match /eventos/{uid} {
+      // Dono autenticado tem acesso total
+      allow read, write: if request.auth != null && request.auth.uid == uid;
 
-    // ── EVENTOS ───────────────────────────────────────────────────────────────
-    match /eventos/{eventId} {
-      // Dono autenticado tem acesso total ao próprio slot
-      allow read, write: if request.auth != null &&
-        eventId.matches(request.auth.uid + '_slot.*');
-
-      // Leitura pública — totem e upload não requerem auth
-      allow read: if true;
-
-      // Upload de convidados (sem auth): só pode alterar photos e pendingPhotos
+      // Upload público: permite adicionar/remover URLs do array photos
       allow update: if
-        request.resource.data.diff(resource.data).affectedKeys()
-          .hasOnly(['photos', 'pendingPhotos']);
-
-      // Presença das telas (totem) — sem auth necessário
-      match /presencas/{sessionId} {
-        allow read:                   if request.auth != null;
-        allow create, update, delete: if true;
-      }
+        request.resource.data.keys().hasOnly(['photos']) &&
+        request.resource.data.photos is list;
     }
-
-    // ── PAGAMENTOS PENDENTES ──────────────────────────────────────────────────
-    // Criados pelo backend (pix-status.js) quando pagamento é aprovado
-    // Lidos pelo sucesso.html para pré-preencher o formulário
-    match /pagamentos_pendentes/{pagamentoId} {
-      allow read:   if true;  // sucesso.html lê sem auth (cliente acabou de pagar)
-      allow create: if false; // só backend escreve via API key
-      allow update: if request.auth != null; // sucesso.html marca como 'concluido'
-      allow delete: if false;
-    }
-
-    // ── CONFIG (preços) ───────────────────────────────────────────────────────
-    // Leitura pública para pix.html exibir preços; escrita só pelo admin
-    match /config/{doc} {
-      allow read:  if true;
-      allow write: if request.auth != null &&
-        request.auth.token.email == "natanael.fuques@gmail.com";
-    }
-
   }
 }

@@ -24,7 +24,8 @@
       min-height: 100dvh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      padding: 32px 24px 60px; position: relative; overflow: hidden;
+      padding: 32px 24px 60px;
+      position: relative; overflow: hidden;
     }
 
     body::before {
@@ -37,9 +38,11 @@
 
     .logo {
       display: flex; align-items: center; gap: 10px;
-      font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 800;
+      font-family: 'Outfit', sans-serif;
+      font-size: 18px; font-weight: 800;
       margin-bottom: 28px; position: relative; z-index: 1;
     }
+
     .logo-dot {
       width: 8px; height: 8px; border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -59,59 +62,53 @@
       to   { opacity: 1; transform: scale(1) translateY(0); }
     }
 
-    /* HEADER */
-    .pix-header { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+    /* ── HEADER ── */
+    .pix-header {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 6px;
+    }
+
     .pix-icon {
       width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
-      background: rgba(50,188,173,0.12); border: 1px solid rgba(50,188,173,0.3);
+      background: rgba(50,188,173,0.12);
+      border: 1px solid rgba(50,188,173,0.3);
       display: flex; align-items: center; justify-content: center;
     }
-    .card-title { font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
-    .card-sub   { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
 
-    /* SELETOR DE TIPO (onboarding) */
-    .tipo-selector {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 8px; margin-bottom: 20px;
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 22px; font-weight: 800; letter-spacing: -0.02em;
     }
-    .btn-tipo {
-      padding: 12px 10px; border-radius: 12px;
-      background: var(--card2); border: 1px solid var(--border);
-      color: var(--muted); cursor: pointer; transition: all .2s;
-      text-align: center; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700;
-    }
-    .btn-tipo:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
-    .btn-tipo.active {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-color: transparent; color: #fff;
-    }
-    .btn-tipo.active-premium {
-      background: linear-gradient(135deg, #f59e0b, #fbbf24);
-      border-color: transparent; color: #0a0a0f;
-    }
-    .tipo-sub { font-size: 11px; font-weight: 400; opacity: 0.8; margin-top: 2px; }
 
-    /* VALOR */
+    .card-sub { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
+
+    /* ── VALOR ── */
     .valor-badge {
       display: flex; align-items: center; justify-content: space-between;
-      gap: 12px;
-      background: rgba(50,188,173,0.06); border: 1px solid rgba(50,188,173,0.2);
-      border-radius: 14px; padding: 14px 18px; margin-bottom: 24px;
-    }
-    .valor-label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
-    .valor-desc  { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-    .valor-num   {
-      font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800;
-      color: var(--pix); white-space: nowrap; flex-shrink: 0;
+      flex-wrap: nowrap; gap: 12px;
+      background: rgba(50,188,173,0.06);
+      border: 1px solid rgba(50,188,173,0.2);
+      border-radius: 14px; padding: 14px 18px;
+      margin-bottom: 24px;
     }
 
-    /* FORM */
+    .valor-label { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+    .valor-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px; font-weight: 800; color: var(--pix);
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    /* ── FORM ── */
     .field { margin-bottom: 14px; }
     .field label {
-      display: block; font-family: 'Outfit', sans-serif;
-      font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      display: block;
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase;
       color: var(--muted); margin-bottom: 7px;
     }
+
     .field input {
       width: 100%; padding: 13px 16px;
       background: var(--card2); border: 1px solid var(--border);
@@ -119,10 +116,11 @@
       font-family: 'DM Sans', sans-serif; font-size: 15px;
       outline: none; transition: border-color .2s;
     }
+
     .field input:focus { border-color: rgba(50,188,173,0.5); }
     .field input::placeholder { color: var(--muted); }
 
-    /* BOTÃO */
+    /* ── BOTÃO ── */
     .btn-pix {
       width: 100%; padding: 15px;
       background: linear-gradient(135deg, #32bcad, #1d9e91);
@@ -133,10 +131,11 @@
       display: flex; align-items: center; justify-content: center; gap: 8px;
       margin-top: 6px;
     }
+
     .btn-pix:hover:not(:disabled) { opacity: .88; transform: translateY(-1px); box-shadow: 0 10px 28px rgba(50,188,173,0.3); }
     .btn-pix:disabled { opacity: .5; cursor: not-allowed; }
 
-    /* ERRO */
+    /* ── ERRO ── */
     .error-box {
       display: none;
       background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
@@ -145,64 +144,119 @@
       margin-bottom: 14px; text-align: center;
     }
 
-    /* QR RESULT */
+    /* ── QR RESULT ── */
     #qr-result { display: none; }
-    .qr-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 24px 0; }
-    .qr-img-wrap { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+
+    .qr-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 16px; padding: 24px 0;
+    }
+
+    .qr-img-wrap {
+      background: #fff; border-radius: 16px; padding: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
     .qr-img-wrap img { width: 200px; height: 200px; display: block; }
+
     .qr-info { text-align: center; }
-    .qr-info h3 { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 800; margin-bottom: 4px; }
-    .qr-info p  { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .qr-info h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px; font-weight: 800; margin-bottom: 4px;
+    }
+    .qr-info p { font-size: 13px; color: var(--muted); line-height: 1.5; }
 
     .pix-code-wrap {
-      width: 100%; background: var(--card2); border: 1px solid var(--border);
+      width: 100%;
+      background: var(--card2); border: 1px solid var(--border);
       border-radius: 12px; padding: 14px 16px;
     }
+
     .pix-code-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 8px; }
-    .pix-code-row   { display: flex; gap: 8px; align-items: center; }
-    .pix-code { flex: 1; font-size: 11px; color: var(--muted); word-break: break-all; line-height: 1.4; font-family: monospace; }
+
+    .pix-code-row { display: flex; gap: 8px; align-items: center; }
+
+    .pix-code {
+      flex: 1; font-size: 11px; color: var(--muted);
+      word-break: break-all; line-height: 1.4;
+      font-family: monospace;
+    }
 
     .btn-copy {
       flex-shrink: 0; padding: 8px 14px;
-      background: rgba(50,188,173,0.12); border: 1px solid rgba(50,188,173,0.3);
+      background: rgba(50,188,173,0.12);
+      border: 1px solid rgba(50,188,173,0.3);
       border-radius: 8px; color: var(--pix);
       font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700;
       cursor: pointer; transition: all .2s; white-space: nowrap;
     }
-    .btn-copy:hover  { background: rgba(50,188,173,0.2); }
+
+    .btn-copy:hover { background: rgba(50,188,173,0.2); }
     .btn-copy.copied { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.3); color: var(--green); }
 
-    .expira { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
-
-    .aviso {
-      display: flex; align-items: flex-start; gap: 10px;
-      background: rgba(255,204,0,0.06); border: 1px solid rgba(255,204,0,0.2);
-      border-radius: 12px; padding: 14px 16px;
-      font-size: 12px; color: var(--muted); line-height: 1.5; margin-top: 16px;
+    .expira {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12px; color: var(--muted);
     }
 
     .btn-novo {
-      width: 100%; padding: 12px; background: transparent; border: 1px solid var(--border);
+      width: 100%; padding: 12px;
+      background: transparent; border: 1px solid var(--border);
       border-radius: 12px; color: var(--muted);
       font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
       cursor: pointer; transition: all .2s; margin-top: 8px;
     }
     .btn-novo:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
 
+    .btn-plano {
+      padding: 12px 20px; border-radius: 99px;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer; transition: all .2s;
+      text-align: center; font-family: 'Outfit', sans-serif;
+      font-size: 14px; font-weight: 700;
+    }
+    .btn-plano:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+    .btn-plano.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-color: transparent;
+      color: #fff;
+    }
+    .btn-plano.active-premium {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      border-color: transparent;
+      color: #0a0a0f;
+    }
+
+    /* ── SPINNER ── */
     .spinner {
       width: 18px; height: 18px;
-      border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
-      border-radius: 50%; animation: spin .7s linear infinite;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ── AVISO ── */
+    .aviso {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: rgba(255,204,0,0.06);
+      border: 1px solid rgba(255,204,0,0.2);
+      border-radius: 12px; padding: 14px 16px;
+      font-size: 12px; color: var(--muted); line-height: 1.5;
+      margin-top: 16px;
+    }
+
     .brand {
-      position: fixed; bottom: 18px; font-size: 12px; font-weight: 600;
-      color: rgba(255,255,255,0.2); letter-spacing: 1px; text-decoration: none; transition: color .2s;
+      position: fixed; bottom: 18px;
+      font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.2); letter-spacing: 1px;
+      text-decoration: none; transition: color .2s;
     }
     .brand:hover { color: rgba(255,255,255,0.5); }
 
-    @media (max-width: 480px) { .card { padding: 32px 24px; } }
+    @media (max-width: 480px) {
+      .card { padding: 32px 24px; }
+    }
   </style>
 </head>
 <body>
@@ -218,70 +272,51 @@
   <div id="form-section">
     <div class="pix-header">
       <div class="pix-icon">
-        <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-          <path d="M5.5 5.5l4.3 4.3m6.7-4.3l-4.3 4.3m0 0l4.3 4.3M9.8 9.8L5.5 14.1" stroke="#32bcad" stroke-width="1.8" stroke-linecap="round"/>
-          <rect x="2" y="2" width="18" height="18" rx="4" stroke="#32bcad" stroke-width="1.4" opacity=".4"/>
-        </svg>
+        <img src="data:image/png;base64,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" width="24" height="24" style="display:block;">
       </div>
       <div>
-        <div class="card-title" id="card-title">Pagar com Pix</div>
+        <div class="card-title">Pagar com Pix</div>
       </div>
     </div>
-    <p class="card-sub" id="card-sub">Preencha seus dados e gere o QR code para pagar agora.</p>
+    <p class="card-sub">Preencha seus dados e gere o QR code para pagar agora.</p>
 
-    <!-- SELETOR BÁSICO/PREMIUM (visível só no onboarding) -->
-    <div class="tipo-selector" id="tipo-selector">
-      <button class="btn-tipo active" id="btn-basico" onclick="selecionarTipo('basico')">
-        Básico
-        <div class="tipo-sub" id="preco-basico">R$ 49,90</div>
-      </button>
-      <button class="btn-tipo" id="btn-premium" onclick="selecionarTipo('premium')">
-        ★ Premium
-        <div class="tipo-sub" id="preco-premium">R$ 69,90</div>
-      </button>
-    </div>
-
-    <!-- BADGE DE VALOR -->
     <div class="valor-badge" id="valor-badge">
       <div>
-        <div class="valor-desc" id="valor-desc">Acesso Básico + 1 Crédito</div>
-        <div class="valor-label">inclui 1 evento de 24h</div>
+        <div id="plano-nome" style="font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px">Plano Básico Mensal</div>
+        <div class="valor-label" style="text-transform:none;letter-spacing:0;font-size:12px">Acesso por 30 dias</div>
       </div>
-      <div class="valor-num" id="valor-num">R$ 49,90</div>
+      <div class="valor-num" id="plano-valor">R$ 289,99</div>
     </div>
+
+    
 
     <div class="error-box" id="error-box"></div>
 
-    <!-- CAMPOS DO USUÁRIO (ocultos se cliente já logado) -->
-    <div id="campos-usuario">
-      <div class="field">
-        <label>Nome completo</label>
-        <input type="text" id="f-nome" placeholder="Seu nome completo">
-      </div>
-      <div class="field">
-        <label>Email</label>
-        <input type="email" id="f-email" placeholder="seu@email.com">
-      </div>
-      <div class="field">
-        <label>WhatsApp</label>
-        <input type="tel" id="f-tel" placeholder="(47) 99999-9999">
-      </div>
+    <div class="field">
+      <label>Nome completo</label>
+      <input type="text" id="f-nome" placeholder="Seu nome completo">
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="f-email" placeholder="seu@email.com">
+    </div>
+    <div class="field">
+      <label>WhatsApp</label>
+      <input type="tel" id="f-tel" placeholder="(47) 99999-9999">
     </div>
 
     <button class="btn-pix" id="btn-gerar" onclick="gerarPix()">
-      <svg width="18" height="18" viewBox="0 0 22 22" fill="none" style="flex-shrink:0">
-        <path d="M5.5 5.5l4.3 4.3m6.7-4.3l-4.3 4.3m0 0l4.3 4.3M9.8 9.8L5.5 14.1" stroke="white" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+      <img src="data:image/png;base64,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" width="18" height="18" style="display:inline-block;vertical-align:middle;filter:brightness(0) invert(1);">
       <span id="btn-label">Gerar QR code Pix</span>
       <div class="spinner" id="spinner" style="display:none"></div>
     </button>
 
-    <div class="aviso" style="margin-top:14px">
+    <div class="aviso">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:1px">
         <circle cx="8" cy="8" r="6.5" stroke="#facc15" stroke-width="1.3"/>
         <path d="M8 5v4M8 10.5v.5" stroke="#facc15" stroke-width="1.3" stroke-linecap="round"/>
       </svg>
-      <span id="aviso-texto">Após o pagamento, sua conta e 1 crédito de evento serão liberados imediatamente.</span>
+      <span>Após o pagamento, sua conta será criada e ativada em até <strong style="color:var(--text)">24 horas</strong> via WhatsApp.</span>
     </div>
   </div>
 
@@ -318,7 +353,7 @@
         <circle cx="8" cy="8" r="6.5" stroke="#facc15" stroke-width="1.3"/>
         <path d="M8 5v4M8 10.5v.5" stroke="#facc15" stroke-width="1.3" stroke-linecap="round"/>
       </svg>
-      <span id="aviso-qr">Após confirmar o pagamento, você será redirecionado automaticamente.</span>
+      <span>Após pagar, aguarde a confirmação. Sua conta será ativada em até <strong style="color:var(--text)">24 horas</strong> via WhatsApp.</span>
     </div>
 
     <button class="btn-novo" onclick="novaCobranca()">← Gerar novo QR code</button>
@@ -329,144 +364,68 @@
 <a class="brand" href="index.html">Painel Interativo</a>
 
 <script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-  import { getAuth, onAuthStateChanged }
-    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-  import { getFirestore, doc, getDoc, updateDoc, increment, serverTimestamp }
-    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-
-  const app = initializeApp({
-    apiKey: "AIzaSyAuPS32OoQtQIQBO6LfEfYn2T5J6xTTxHY",
-    authDomain: "painel-interativo-saas.firebaseapp.com",
-    projectId: "painel-interativo-saas",
-    storageBucket: "painel-interativo-saas.firebasestorage.app",
-    messagingSenderId: "962909096330",
-    appId: "1:962909096330:web:d446a082bce21a0447a073"
-  });
-
-  const auth = getAuth(app);
-  const db   = getFirestore(app);
-
-  // Parâmetros da URL
-  const params      = new URLSearchParams(window.location.search);
-  const urlTipo     = params.get('tipo'); // 'credito-basico', 'credito-premium', 'onboarding-basico', 'onboarding-premium'
-  const modoCredito = urlTipo && urlTipo.startsWith('credito'); // compra avulsa por cliente logado
-
-  // Valores padrão (serão atualizados pelo Firestore se disponível)
-  const precos = {
-    'onboarding-basico':  49.90,
-    'onboarding-premium': 69.90,
-    'credito-basico':     49.90,
-    'credito-premium':    69.90,
+  // Valores padrão — serão sobrescritos pelo Firestore
+  const basicoStyle  = { cor: '#ff3c6e', badgeBg: 'rgba(255,60,110,0.08)',  badgeBorder: 'rgba(255,60,110,0.3)'  };
+  const premiumStyle = { cor: '#fbbf24', badgeBg: 'rgba(251,191,36,0.08)', badgeBorder: 'rgba(251,191,36,0.3)' };
+  const planos = {
+    basico:          { nome: 'Plano Básico Mensal',   valor: 289.99,  label: 'R$ 289,99',   descAcesso: 'Acesso por 30 dias',  ...basicoStyle  },
+    'basico-anual':  { nome: 'Plano Básico Anual',    valor: 2989.99, label: 'R$ 2.989,99', descAcesso: 'Acesso por 12 meses', ...basicoStyle  },
+    mensal:          { nome: 'Plano Básico Mensal',   valor: 289.99,  label: 'R$ 289,99',   descAcesso: 'Acesso por 30 dias',  ...basicoStyle  },
+    anual:           { nome: 'Plano Básico Anual',    valor: 2989.99, label: 'R$ 2.989,99', descAcesso: 'Acesso por 12 meses', ...basicoStyle  },
+    premium:         { nome: 'Plano Premium Mensal',  valor: 389.99,  label: 'R$ 389,99',   descAcesso: 'Acesso por 30 dias',  ...premiumStyle },
+    'premium-anual': { nome: 'Plano Premium Anual',   valor: 3989.99, label: 'R$ 3.989,99', descAcesso: 'Acesso por 12 meses', ...premiumStyle },
   };
 
-  const fmt = (v) => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+  let planoAtivo = 'basico';
 
-  // Busca preços do Firestore
+  function selecionarPlano(p) {
+    planoAtivo = p;
+    const info = planos[p];
+    if (!info) return;
+    document.getElementById('plano-nome').textContent  = info.nome;
+    document.getElementById('plano-valor').textContent = info.label;
+    document.getElementById('plano-valor').style.color = info.cor;
+    document.getElementById('valor-badge').style.background  = info.badgeBg;
+    document.getElementById('valor-badge').style.borderColor = info.badgeBorder;
+    const descEl = document.querySelector('#valor-badge > div > div:last-child');
+    if (descEl) descEl.textContent = info.descAcesso;
+  }
+
+  // Aplica plano da URL imediatamente com valores padrão
+  const planoUrl = new URLSearchParams(window.location.search).get('plano');
+  if (planoUrl && planos[planoUrl]) selecionarPlano(planoUrl);
+
+  // Busca valores do Firestore e re-aplica
   (async () => {
     try {
       const res = await fetch(
-        'https://firestore.googleapis.com/v1/projects/painel-interativo-saas/databases/(default)/documents/config/precos'
+        'https://firestore.googleapis.com/v1/projects/painel-interativo-saas/databases/(default)/documents/config/planos'
       );
       if (!res.ok) return;
       const data = await res.json();
       const v = data.fields?.valores?.mapValue?.fields;
       if (!v) return;
-      Object.keys(precos).forEach(k => {
-        const raw = parseFloat(v[k]?.doubleValue || v[k]?.integerValue || 0);
-        if (raw) precos[k] = raw;
+      const get = (key) => parseFloat(v[key]?.doubleValue || v[key]?.integerValue || 0);
+      const fmtLabel = (val) => 'R$ ' + val.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+      const fsMap = { mensal: 'basico', anual: 'basico-anual' };
+      ['basico','basico-anual','mensal','anual','premium','premium-anual'].forEach(k => {
+        const val = get(fsMap[k] || k);
+        if (val && planos[k]) { planos[k].valor = val; planos[k].label = fmtLabel(val); }
       });
-      // Atualiza exibição dos botões de tipo
-      document.getElementById('preco-basico').textContent  = fmt(precos['onboarding-basico']);
-      document.getElementById('preco-premium').textContent = fmt(precos['onboarding-premium']);
-      selecionarTipo(tipoAtivo.includes('premium') ? 'premium' : 'basico');
+      selecionarPlano(planoAtivo);
     } catch(e) {}
   })();
 
-  // Estado
-  let tipoAtivo  = urlTipo || 'onboarding-basico';
-  let usuarioUid = null;
-  let usuarioNome, usuarioEmail, usuarioTel;
-
-  // Se é compra de crédito avulso, aguarda usuário logado
-  if (modoCredito) {
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = 'login.html';
-        return;
-      }
-      usuarioUid = user.uid;
-      try {
-        const snap = await getDoc(doc(db, 'usuarios', user.uid));
-        if (snap.exists()) {
-          const d = snap.data();
-          usuarioNome  = d.nome     || '';
-          usuarioEmail = d.email    || user.email;
-          usuarioTel   = d.telefone || '';
-
-          // Determina tipo de crédito baseado no plano do cliente
-          tipoAtivo = d.plano === 'premium' ? 'credito-premium' : 'credito-basico';
-        }
-      } catch(e) {}
-
-      configurarModoCredito();
-    });
-  } else {
-    configurarModoOnboarding();
-  }
-
-  function configurarModoOnboarding() {
-    document.getElementById('card-title').textContent = 'Pagar com Pix';
-    document.getElementById('card-sub').textContent   = 'Escolha seu plano e pague para criar sua conta.';
-    document.getElementById('tipo-selector').style.display = 'grid';
-    document.getElementById('campos-usuario').style.display = 'block';
-    selecionarTipo(tipoAtivo.includes('premium') ? 'premium' : 'basico');
-  }
-
-  function configurarModoCredito() {
-    document.getElementById('card-title').textContent = 'Comprar crédito de evento';
-    document.getElementById('card-sub').textContent   = 'Gere o QR code e pague para adicionar 1 crédito à sua conta.';
-    document.getElementById('tipo-selector').style.display = 'none';
-    document.getElementById('campos-usuario').style.display = 'none';
-
-    const isPremium = tipoAtivo.includes('premium');
-    const preco     = precos[tipoAtivo] || 49.90;
-    document.getElementById('valor-desc').textContent = isPremium ? 'Crédito Premium' : 'Crédito Básico';
-    document.getElementById('valor-num').textContent  = fmt(preco);
-    document.getElementById('aviso-texto').textContent = 'Após o pagamento, 1 crédito será adicionado à sua conta imediatamente.';
-  }
-
-  window.selecionarTipo = function(plano) {
-    const isPremium = plano === 'premium';
-    tipoAtivo = isPremium ? 'onboarding-premium' : 'onboarding-basico';
-    const preco = precos[tipoAtivo] || 49.90;
-
-    document.getElementById('btn-basico').className  = 'btn-tipo' + (!isPremium ? ' active' : '');
-    document.getElementById('btn-premium').className = 'btn-tipo' + (isPremium  ? ' active-premium' : '');
-
-    document.getElementById('valor-desc').textContent = isPremium ? 'Acesso Premium + 1 Crédito' : 'Acesso Básico + 1 Crédito';
-    document.getElementById('valor-num').textContent  = fmt(preco);
-  };
-
   async function gerarPix() {
+    const nome  = document.getElementById('f-nome').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const tel   = document.getElementById('f-tel').value.trim();
     const errEl = document.getElementById('error-box');
     errEl.style.display = 'none';
 
-    let nome, email, tel;
-
-    if (modoCredito) {
-      // Usa dados do usuário logado
-      nome  = usuarioNome;
-      email = usuarioEmail;
-      tel   = usuarioTel;
-    } else {
-      nome  = document.getElementById('f-nome').value.trim();
-      email = document.getElementById('f-email').value.trim();
-      tel   = document.getElementById('f-tel').value.trim();
-      if (!nome)  return showErr('Preencha seu nome.');
-      if (!email) return showErr('Preencha seu email.');
-      if (!tel)   return showErr('Preencha seu WhatsApp.');
-    }
+    if (!nome)  return showErr('Preencha seu nome.');
+    if (!email) return showErr('Preencha seu email.');
+    if (!tel)   return showErr('Preencha seu WhatsApp.');
 
     const btn     = document.getElementById('btn-gerar');
     const label   = document.getElementById('btn-label');
@@ -476,19 +435,16 @@
     spinner.style.display = 'block';
 
     try {
-      const body = { nome, email, telefone: tel, tipo: tipoAtivo };
-      if (usuarioUid) body.uid = usuarioUid;
-
-      const res  = await fetch('/api/pix', {
+      const res = await fetch('/api/pix', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ nome, email, telefone: tel, plano: planoAtivo }),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erro ao gerar Pix');
 
-      document.getElementById('qr-img').src         = `data:image/png;base64,${data.qr_code_base64}`;
+      document.getElementById('qr-img').src = `data:image/png;base64,${data.qr_code_base64}`;
       document.getElementById('pix-code-text').textContent = data.qr_code;
 
       if (data.expiracao) {
@@ -498,9 +454,10 @@
       }
 
       document.getElementById('form-section').style.display = 'none';
-      document.getElementById('qr-result').style.display    = 'block';
+      document.getElementById('qr-result').style.display = 'block';
 
-      iniciarPolling(data.id, tipoAtivo);
+      // Polling — verifica status a cada 5s
+      iniciarPolling(data.id, planoAtivo);
 
     } catch(e) {
       showErr(e.message);
@@ -510,62 +467,55 @@
     }
   }
 
-  window.copiarCodigo = function() {
+  function copiarCodigo() {
     const code = document.getElementById('pix-code-text').textContent;
     navigator.clipboard.writeText(code).then(() => {
       const btn = document.getElementById('btn-copy');
       btn.textContent = 'Copiado ✓';
       btn.classList.add('copied');
-      setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2500);
+      setTimeout(() => {
+        btn.textContent = 'Copiar';
+        btn.classList.remove('copied');
+      }, 2500);
     });
-  };
+  }
 
-  window.novaCobranca = function() {
+  function novaCobranca() {
     if (pollingInterval) { clearInterval(pollingInterval); pollingInterval = null; }
-    document.getElementById('qr-result').style.display    = 'none';
+    document.getElementById('qr-result').style.display = 'none';
     document.getElementById('form-section').style.display = 'block';
     const btn = document.getElementById('btn-gerar');
     btn.disabled = false;
     document.getElementById('btn-label').style.display = 'block';
-    document.getElementById('spinner').style.display   = 'none';
+    document.getElementById('spinner').style.display = 'none';
     document.getElementById('error-box').style.display = 'none';
-  };
+  }
 
   let pollingInterval = null;
 
-  function iniciarPolling(pagamentoId, tipo) {
+  function iniciarPolling(pagamentoId, plano) {
     let tentativas = 0;
-    const maxTentativas = 72; // ~6 minutos
+    const maxTentativas = 72; // 6 minutos (72 x 5s)
 
     pollingInterval = setInterval(async () => {
       tentativas++;
-      if (tentativas > maxTentativas) { clearInterval(pollingInterval); return; }
+      if (tentativas > maxTentativas) {
+        clearInterval(pollingInterval);
+        return;
+      }
 
       try {
-        const res  = await fetch(`/api/pix-status?id=${pagamentoId}`);
+        const res = await fetch(`/api/pix-status?id=${pagamentoId}`);
         const data = await res.json();
 
         if (data.status === 'approved') {
           clearInterval(pollingInterval);
-
-          if (modoCredito && usuarioUid) {
-            // Crédito avulso: incrementa saldo no Firestore e volta ao dashboard
-            try {
-              await updateDoc(doc(db, 'usuarios', usuarioUid), {
-                creditos: increment(1),
-              });
-              await updateDoc(doc(db, 'creditos', usuarioUid), {
-                saldo:          increment(1),
-                ultimaCompraEm: serverTimestamp(),
-              });
-            } catch(e) { /* silencioso — backend pode processar via webhook futuramente */ }
-            window.location.href = 'dashboard.html?credito=ok';
-          } else {
-            // Onboarding: redireciona para sucesso.html para criar conta
-            window.location.href = `sucesso.html?tipo=${tipo}&token=${pagamentoId}`;
-          }
+          // Backend já salvou no Firestore — só redireciona
+          window.location.href = `sucesso.html?plano=${plano}&token=${pagamentoId}`;
         }
-      } catch(e) { /* continua tentando */ }
+      } catch(e) {
+        // Erro de rede — continua tentando
+      }
     }, 5000);
   }
 
@@ -575,7 +525,10 @@
     el.style.display = 'block';
   }
 
-  window.gerarPix = gerarPix;
+  // Expõe funções para os onclick do HTML
+  window.gerarPix      = gerarPix;
+  window.copiarCodigo  = copiarCodigo;
+  window.novaCobranca  = novaCobranca;
 </script>
 </body>
 </html>

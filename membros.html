@@ -608,7 +608,7 @@
       <div class="stat-value red" id="stat-inativos">—</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Sem créditos</div>
+      <div class="stat-label">Vencendo em 7d</div>
       <div class="stat-value yellow" id="stat-vencendo">—</div>
     </div>
   </div>
@@ -650,8 +650,10 @@
     </select>
     <select class="filter" id="filter-plano" onchange="renderTable()">
       <option value="">Todos os planos</option>
-      <option value="basico">Básico</option>
-      <option value="premium">Premium</option>
+      <option value="mensal">Básico Mensal</option>
+      <option value="anual">Básico Anual</option>
+      <option value="premium">Premium Mensal</option>
+      <option value="premium-anual">Premium Anual</option>
     </select>
   </div>
 
@@ -665,7 +667,7 @@
           <th>Status</th>
           <th>Telas</th>
           <th>Cadastro</th>
-          <th>Créditos</th>
+          <th>Vencimento</th>
           <th></th>
         </tr>
       </thead>
@@ -681,20 +683,24 @@
     <h3>⚙️ Configurações</h3>
     <div class="cm-sub">Edite os valores e textos dos planos. Salvos automaticamente no Firestore.</div>
 
-    <div class="config-section-title">Valores (R$)</div>
+    <div class="config-section-title">Valores dos Planos (R$)</div>
     <div class="config-grid">
-      <div class="config-field"><label>Onboarding Básico</label><input id="cfg-val-onboarding-basico" type="number" step="0.01" placeholder="49.90"/></div>
-      <div class="config-field"><label>Onboarding Premium</label><input id="cfg-val-onboarding-premium" type="number" step="0.01" placeholder="69.90"/></div>
-      <div class="config-field"><label>Crédito Básico</label><input id="cfg-val-credito-basico" type="number" step="0.01" placeholder="49.90"/></div>
-      <div class="config-field"><label>Crédito Premium</label><input id="cfg-val-credito-premium" type="number" step="0.01" placeholder="69.90"/></div>
+      <div class="config-field"><label>Básico Mensal</label><input id="cfg-val-basico" type="number" step="0.01" placeholder="289.99"/></div>
+      <div class="config-field"><label>Básico Anual</label><input id="cfg-val-basico-anual" type="number" step="0.01" placeholder="2989.99"/></div>
+      <div class="config-field"><label>Premium Mensal</label><input id="cfg-val-premium" type="number" step="0.01" placeholder="389.99"/></div>
+      <div class="config-field"><label>Premium Anual</label><input id="cfg-val-premium-anual" type="number" step="0.01" placeholder="3989.99"/></div>
+      <div class="config-field"><label>Upgrade Mensal→Premium</label><input id="cfg-val-upgrade" type="number" step="0.01" placeholder="100.00"/></div>
+      <div class="config-field"><label>Upgrade Anual→Premium Anual</label><input id="cfg-val-upgrade-anual" type="number" step="0.01" placeholder="1000.00"/></div>
     </div>
 
     <div class="config-section-title">Descrições (texto no QR Pix)</div>
     <div style="display:flex;flex-direction:column;gap:10px;">
-      <div class="config-field"><label>Onboarding Básico</label><input id="cfg-desc-onboarding-basico" type="text" placeholder="Painel Interativo — Acesso Básico + 1 Crédito"/></div>
-      <div class="config-field"><label>Onboarding Premium</label><input id="cfg-desc-onboarding-premium" type="text" placeholder="Painel Interativo — Acesso Premium + 1 Crédito"/></div>
-      <div class="config-field"><label>Crédito Básico</label><input id="cfg-desc-credito-basico" type="text" placeholder="Painel Interativo — Crédito de Evento Básico"/></div>
-      <div class="config-field"><label>Crédito Premium</label><input id="cfg-desc-credito-premium" type="text" placeholder="Painel Interativo — Crédito de Evento Premium"/></div>
+      <div class="config-field"><label>Básico Mensal</label><input id="cfg-desc-basico" type="text" placeholder="Painel Interativo — Plano Básico Mensal"/></div>
+      <div class="config-field"><label>Básico Anual</label><input id="cfg-desc-basico-anual" type="text" placeholder="Painel Interativo — Plano Básico Anual"/></div>
+      <div class="config-field"><label>Premium Mensal</label><input id="cfg-desc-premium" type="text" placeholder="Painel Interativo — Plano Premium Mensal"/></div>
+      <div class="config-field"><label>Premium Anual</label><input id="cfg-desc-premium-anual" type="text" placeholder="Painel Interativo — Plano Premium Anual"/></div>
+      <div class="config-field"><label>Upgrade Mensal</label><input id="cfg-desc-upgrade" type="text" placeholder="Painel Interativo — Upgrade para Premium"/></div>
+      <div class="config-field"><label>Upgrade Anual</label><input id="cfg-desc-upgrade-anual" type="text" placeholder="Painel Interativo — Upgrade para Premium Anual"/></div>
     </div>
 
     <div class="config-actions">
@@ -737,8 +743,10 @@
       <div class="field">
         <label>Plano</label>
         <select id="f-plano">
-          <option value="basico">Básico</option>
-          <option value="premium">Premium</option>
+          <option value="mensal">Básico Mensal</option>
+          <option value="anual">Básico Anual</option>
+          <option value="premium">Premium Mensal</option>
+          <option value="premium-anual">Premium Anual</option>
         </select>
       </div>
       <div class="field">
@@ -750,8 +758,8 @@
       </div>
     </div>
     <div class="field">
-      <label>Créditos disponíveis</label>
-      <input type="number" id="f-creditos" min="0" placeholder="0">
+      <label>Vencimento</label>
+      <input type="date" id="f-vence">
     </div>
 
     <div class="modal-footer">
@@ -771,7 +779,7 @@
   import { initializeApp }                         from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword }
                                                    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
-  import { getFirestore, collection, getDocs, getDoc, doc, setDoc, updateDoc, deleteDoc, serverTimestamp, onSnapshot, query, where, orderBy }
+  import { getFirestore, collection, getDocs, getDoc, doc, setDoc, updateDoc, deleteDoc, serverTimestamp, Timestamp, onSnapshot, query, where, orderBy }
                                                    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
   // ── CONFIG — substitua pelos seus valores do firebase.js ──
@@ -857,13 +865,6 @@
   async function carregarMembros() {
     const snap = await getDocs(collection(db, 'usuarios'));
     members = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
-    // Busca saldo de créditos para cada membro
-    await Promise.all(members.map(async m => {
-      try {
-        const cSnap = await getDoc(doc(db, 'creditos', m.uid));
-        m.saldoCreditos = cSnap.exists() ? (cSnap.data().saldo ?? m.creditos ?? 0) : (m.creditos ?? 0);
-      } catch(e) { m.saldoCreditos = m.creditos ?? 0; }
-    }));
     atualizarStats();
     renderTable();
     members.forEach(m => escutarPresenca(m.uid));
@@ -891,11 +892,10 @@
       section.style.display = 'block';
       badge.textContent = pendentes.length;
 
-      const tipoLabels = {
-        'onboarding-basico':  'Onboarding Básico',
-        'onboarding-premium': 'Onboarding Premium',
-        'credito-basico':     'Crédito Básico',
-        'credito-premium':    'Crédito Premium',
+      const planoLabels = {
+        'mensal': 'Básico Mensal', 'basico': 'Básico Mensal',
+        'anual': 'Básico Anual', 'basico-anual': 'Básico Anual',
+        'premium': 'Premium Mensal', 'premium-anual': 'Premium Anual',
       };
 
       const BASE = window.location.origin + window.location.pathname.replace('membros.html', '');
@@ -906,13 +906,11 @@
           : '—';
         const telLimpo = (p.telefone || '').replace(/\D/g, '');
         const numero   = telLimpo.startsWith('55') ? telLimpo : `55${telLimpo}`;
-        const link     = `${BASE}sucesso.html?tipo=${p.tipo || 'onboarding-basico'}&token=${p.id}`;
+        const link     = `${BASE}sucesso.html?plano=${p.plano}&token=${p.id}`;
         const msg      = encodeURIComponent(
           `Olá, ${p.nome}! 🎉 Seu pagamento foi confirmado!\n\nClique no link abaixo para criar sua conta e acessar o Painel Interativo:\n${link}`
         );
         const waUrl = `https://wa.me/${numero}?text=${msg}`;
-        const tipoLabel = tipoLabels[p.tipo] || p.tipo || '—';
-        const isPrem = (p.tipo || '').includes('premium');
 
         return `<tr>
           <td>
@@ -921,8 +919,8 @@
             <div style="color:var(--muted);font-size:11px;margin-top:2px">${p.telefone || '—'}</div>
           </td>
           <td>
-            <span style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:${isPrem ? 'rgba(251,191,36,0.1)' : 'rgba(255,60,110,0.1)'};border:1px solid ${isPrem ? 'rgba(251,191,36,0.3)' : 'rgba(255,60,110,0.3)'};color:${isPrem ? '#fbbf24' : '#ff3c6e'};padding:3px 10px;border-radius:99px;">
-              ${tipoLabel}
+            <span style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:rgba(255,60,110,0.1);border:1px solid rgba(255,60,110,0.3);color:#ff3c6e;padding:3px 10px;border-radius:99px;">
+              ${planoLabels[p.plano] || p.plano || '—'}
             </span>
           </td>
           <td style="color:var(--muted);font-size:13px">${criadoStr}</td>
@@ -944,9 +942,8 @@
 
   function escutarPresenca(uid) {
     if (unsubPresencas[uid]) return;
-    // Escuta slot1 (principal). Slots 2 e 3 só existem para premium — extensível futuramente.
     unsubPresencas[uid] = onSnapshot(
-      collection(db, 'eventos', `${uid}_slot1`, 'presencas'),
+      collection(db, 'eventos', uid, 'presencas'),
       (snap) => {
         presencas[uid] = snap.size;
         const cell = document.getElementById(`telas-${uid}`);
@@ -960,15 +957,22 @@
   }
 
   function atualizarStats() {
-    let ativos = 0, inativos = 0, semCreditos = 0;
+    const agora = new Date();
+    const em7   = new Date(agora); em7.setDate(em7.getDate() + 7);
+
+    let ativos = 0, inativos = 0, vencendo = 0;
     members.forEach(m => {
       if (m.status === 'ativo') ativos++; else inativos++;
-      if ((m.saldoCreditos ?? 0) === 0 && m.status === 'ativo') semCreditos++;
+      if (m.venceEm) {
+        const v = m.venceEm.toDate ? m.venceEm.toDate() : new Date(m.venceEm);
+        if (v >= agora && v <= em7 && m.status === 'ativo') vencendo++;
+      }
     });
+
     document.getElementById('stat-total').textContent    = members.length;
     document.getElementById('stat-ativos').textContent   = ativos;
     document.getElementById('stat-inativos').textContent = inativos;
-    document.getElementById('stat-vencendo').textContent = semCreditos;
+    document.getElementById('stat-vencendo').textContent = vencendo;
   }
 
   // ═══════════════════════════════
@@ -1005,21 +1009,40 @@
     }
 
     tbody.innerHTML = lista.map(m => {
+      const agora  = new Date();
+      let venceStr = '—';
+      let venceClass = 'vence-ok';
+
+      if (m.venceEm) {
+        const v = m.venceEm.toDate ? m.venceEm.toDate() : new Date(m.venceEm);
+        const diff = Math.ceil((v - agora) / 86400000);
+        venceStr = v.toLocaleDateString('pt-BR');
+        if (diff < 0)  venceClass = 'vence-vencido';
+        else if (diff <= 7) venceClass = 'vence-alerta';
+      }
+
       const criadoStr = m.criadoEm
         ? (m.criadoEm.toDate ? m.criadoEm.toDate() : new Date(m.criadoEm)).toLocaleDateString('pt-BR')
         : '—';
 
-      const planoLabels = { 'basico': 'Básico', 'premium': 'Premium' };
-      const plano  = m.plano  || 'basico';
+      const planoLabels = {
+        'mensal':        'Básico Mensal',
+        'anual':         'Básico Anual',
+        'premium':       'Premium Mensal',
+        'premium-anual': 'Premium Anual',
+      };
+      const plano  = m.plano  || 'mensal';
       const status = m.status || 'inativo';
       const planoLabel = planoLabels[plano] || plano;
       const badgePlanoClassMap = {
-        'basico':   'badge-mensal',
-        'premium':  'badge-premium',
+        'mensal':        'badge-mensal',
+        'basico':        'badge-mensal',
+        'anual':         'badge-anual',
+        'basico-anual':  'badge-anual',
+        'premium':       'badge-premium',
+        'premium-anual': 'badge-premium-anual',
       };
       const badgePlanoClass = badgePlanoClassMap[plano] || 'badge-mensal';
-      const saldo = m.saldoCreditos ?? 0;
-      const creditoColor = saldo === 0 ? 'var(--red)' : saldo <= 1 ? 'var(--yellow)' : 'var(--green)';
 
       const badgePlano  = `<span class="badge ${badgePlanoClass}">${planoLabel}</span>`;
       const badgeStatus = `<span class="badge badge-${status}"><span class="dot"></span>${status}</span>`;
@@ -1041,10 +1064,7 @@
           <td>${badgeStatus}</td>
           <td id="telas-${m.uid}" style="color:var(--muted);font-size:14px">${presencas[m.uid] > 0 ? `<span style="color:var(--green);font-weight:700">${presencas[m.uid]}</span>` : '—'}</td>
           <td style="color:var(--muted);font-size:13px">${criadoStr}</td>
-          <td>
-            <span style="font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:${creditoColor};">${saldo}</span>
-            <button onclick="adicionarCredito('${m.uid}')" title="Adicionar crédito manual" style="margin-left:8px;width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);font-size:14px;cursor:pointer;vertical-align:middle;display:inline-flex;align-items:center;justify-content:center;transition:all .2s;" onmouseover="this.style.borderColor='rgba(34,197,94,0.4)';this.style.color='var(--green)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">+</button>
-          </td>
+          <td class="${venceClass}">${venceStr}</td>
           <td>
             <div class="actions">
               <button class="btn btn-icon" title="Editar" onclick="openEdit('${m.uid}')">
@@ -1073,9 +1093,11 @@
     document.getElementById('f-pass').value   = '';
     document.getElementById('f-nome').value      = '';
     document.getElementById('f-telefone').value = '';
-    document.getElementById('f-plano').value  = 'basico';
+    document.getElementById('f-plano').value  = 'mensal';
     document.getElementById('f-status').value = 'ativo';
-    document.getElementById('f-creditos').value = '1';
+    // default vencimento = 30 dias
+    const d = new Date(); d.setDate(d.getDate() + 30);
+    document.getElementById('f-vence').value = d.toISOString().split('T')[0];
     document.getElementById('modal-error').style.display = 'none';
     document.getElementById('overlay').classList.add('open');
   };
@@ -1094,9 +1116,14 @@
     document.getElementById('field-pass-wrap').style.display  = 'none';
     document.getElementById('f-nome').value      = m.nome      || '';
     document.getElementById('f-telefone').value = m.telefone   || '';
-    document.getElementById('f-plano').value  = m.plano  || 'basico';
+    document.getElementById('f-plano').value  = m.plano  || 'mensal';
     document.getElementById('f-status').value = m.status || 'ativo';
-    document.getElementById('f-creditos').value = m.saldoCreditos ?? 0;
+    if (m.venceEm) {
+      const v = m.venceEm.toDate ? m.venceEm.toDate() : new Date(m.venceEm);
+      document.getElementById('f-vence').value = v.toISOString().split('T')[0];
+    } else {
+      document.getElementById('f-vence').value = '';
+    }
     document.getElementById('modal-error').style.display = 'none';
     document.getElementById('overlay').classList.add('open');
   };
@@ -1117,9 +1144,10 @@
 
     const nome     = document.getElementById('f-nome').value.trim();
     const telefone = document.getElementById('f-telefone').value.trim();
-    const plano    = document.getElementById('f-plano').value;
-    const status   = document.getElementById('f-status').value;
-    const creditos = parseInt(document.getElementById('f-creditos').value) || 0;
+    const plano  = document.getElementById('f-plano').value;
+    const status = document.getElementById('f-status').value;
+    const venceRaw = document.getElementById('f-vence').value;
+    const venceEm  = venceRaw ? Timestamp.fromDate(new Date(venceRaw + 'T00:00:00')) : null;
 
     if (!nome) { showErr('Preencha o nome.'); return; }
 
@@ -1129,12 +1157,11 @@
     try {
       if (editUID) {
         // ── EDITAR ──
-        const dados = { nome, plano, status, telefone, creditos };
+        const dados = { nome, plano, status, telefone };
+        if (venceEm) dados.venceEm = venceEm;
         await setDoc(doc(db, 'usuarios', editUID), dados, { merge: true });
-        // Atualiza saldo na coleção creditos
-        await setDoc(doc(db, 'creditos', editUID), { saldo: creditos, plano, ultimaEdicaoEm: serverTimestamp() }, { merge: true });
         const idx = members.findIndex(m => m.uid === editUID);
-        if (idx !== -1) members[idx] = { ...members[idx], ...dados, saldoCreditos: creditos };
+        if (idx !== -1) members[idx] = { ...members[idx], ...dados, telefone };
         toast('Membro atualizado!', 'success');
       } else {
         // ── CRIAR ──
@@ -1147,20 +1174,12 @@
         const cred = await createUserWithEmailAndPassword(auth, email, pass);
         const uid  = cred.user.uid;
 
-        // 2. Cria documento no Firestore
-        const dados = { email, nome, plano, status, telefone, creditos, criadoEm: serverTimestamp() };
+        // 2. Cria documento no Firestore com UID como ID
+        const dados = { email, nome, plano, status, telefone, criadoEm: serverTimestamp() };
+        if (venceEm) dados.venceEm = venceEm;
         await setDoc(doc(db, 'usuarios', uid), dados);
 
-        // 3. Cria documento de créditos
-        await setDoc(doc(db, 'creditos', uid), { saldo: creditos, plano, ultimaEdicaoEm: serverTimestamp() });
-
-        // 4. Cria slot inicial do evento
-        await setDoc(doc(db, 'eventos', `${uid}_slot1`), {
-          eventName: nome, slideDuration: 5000, paused: false,
-          moderation: false, photos: [], instagram: '@nfsolucoesparaeventos', creditoAtivo: false,
-        });
-
-        members.push({ uid, ...dados, criadoEm: new Date(), saldoCreditos: creditos });
+        members.push({ uid, ...dados, criadoEm: new Date() });
         escutarPresenca(uid);
         toast('Membro criado com sucesso!', 'success');
       }
@@ -1178,25 +1197,6 @@
     } finally {
       spinner.style.display  = 'none';
       btnLabel.style.display = 'block';
-    }
-  };
-
-  // ═══════════════════════════════
-  //  ADICIONAR CRÉDITO MANUAL
-  // ═══════════════════════════════
-  window.adicionarCredito = async function(uid) {
-    if (!confirm('Adicionar 1 crédito manualmente para este membro?')) return;
-    try {
-      const m = members.find(x => x.uid === uid);
-      const novoSaldo = (m?.saldoCreditos ?? 0) + 1;
-      await setDoc(doc(db, 'usuarios', uid), { creditos: novoSaldo }, { merge: true });
-      await setDoc(doc(db, 'creditos', uid), { saldo: novoSaldo, ultimaEdicaoEm: serverTimestamp() }, { merge: true });
-      if (m) m.saldoCreditos = novoSaldo;
-      atualizarStats();
-      renderTable();
-      toast('Crédito adicionado!', 'success');
-    } catch(e) {
-      toast('Erro: ' + (e.code || e.message), 'error');
     }
   };
 
@@ -1237,24 +1237,29 @@
     toastTimer = setTimeout(() => el.classList.remove('show'), 3000);
   };
 
+  // ── CONFIGURAÇÕES ──
   window.openConfig = async function() {
     document.getElementById('config-overlay').classList.add('open');
     document.getElementById('config-saved').style.display = 'none';
     try {
-      const snap = await getDoc(doc(db, 'config', 'precos'));
+      const snap = await getDoc(doc(db, 'config', 'planos'));
       if (snap.exists()) {
         const d = snap.data();
         if (d.valores) {
-          document.getElementById('cfg-val-onboarding-basico').value   = d.valores['onboarding-basico']   ?? '';
-          document.getElementById('cfg-val-onboarding-premium').value  = d.valores['onboarding-premium']  ?? '';
-          document.getElementById('cfg-val-credito-basico').value      = d.valores['credito-basico']      ?? '';
-          document.getElementById('cfg-val-credito-premium').value     = d.valores['credito-premium']     ?? '';
+          document.getElementById('cfg-val-basico').value          = d.valores.basico          ?? '';
+          document.getElementById('cfg-val-basico-anual').value    = d.valores['basico-anual'] ?? '';
+          document.getElementById('cfg-val-premium').value         = d.valores.premium         ?? '';
+          document.getElementById('cfg-val-premium-anual').value   = d.valores['premium-anual']?? '';
+          document.getElementById('cfg-val-upgrade').value         = d.valores.upgrade         ?? '';
+          document.getElementById('cfg-val-upgrade-anual').value   = d.valores['upgrade-anual']?? '';
         }
         if (d.descricoes) {
-          document.getElementById('cfg-desc-onboarding-basico').value  = d.descricoes['onboarding-basico']  ?? '';
-          document.getElementById('cfg-desc-onboarding-premium').value = d.descricoes['onboarding-premium'] ?? '';
-          document.getElementById('cfg-desc-credito-basico').value     = d.descricoes['credito-basico']     ?? '';
-          document.getElementById('cfg-desc-credito-premium').value    = d.descricoes['credito-premium']    ?? '';
+          document.getElementById('cfg-desc-basico').value         = d.descricoes.basico          ?? '';
+          document.getElementById('cfg-desc-basico-anual').value   = d.descricoes['basico-anual'] ?? '';
+          document.getElementById('cfg-desc-premium').value        = d.descricoes.premium         ?? '';
+          document.getElementById('cfg-desc-premium-anual').value  = d.descricoes['premium-anual']?? '';
+          document.getElementById('cfg-desc-upgrade').value        = d.descricoes.upgrade         ?? '';
+          document.getElementById('cfg-desc-upgrade-anual').value  = d.descricoes['upgrade-anual']?? '';
         }
       }
     } catch(e) { console.error('Erro ao carregar config:', e); }
@@ -1268,18 +1273,22 @@
     const btn = document.getElementById('btn-cfg-save');
     btn.disabled = true; document.getElementById('cfg-save-label').textContent = 'Salvando...';
     try {
-      await setDoc(doc(db, 'config', 'precos'), {
+      await setDoc(doc(db, 'config', 'planos'), {
         valores: {
-          'onboarding-basico':  parseFloat(document.getElementById('cfg-val-onboarding-basico').value)  || 49.90,
-          'onboarding-premium': parseFloat(document.getElementById('cfg-val-onboarding-premium').value) || 69.90,
-          'credito-basico':     parseFloat(document.getElementById('cfg-val-credito-basico').value)     || 49.90,
-          'credito-premium':    parseFloat(document.getElementById('cfg-val-credito-premium').value)    || 69.90,
+          basico:          parseFloat(document.getElementById('cfg-val-basico').value)          || 289.99,
+          'basico-anual':  parseFloat(document.getElementById('cfg-val-basico-anual').value)   || 2989.99,
+          premium:         parseFloat(document.getElementById('cfg-val-premium').value)        || 389.99,
+          'premium-anual': parseFloat(document.getElementById('cfg-val-premium-anual').value)  || 3989.99,
+          upgrade:         parseFloat(document.getElementById('cfg-val-upgrade').value)        || 100.00,
+          'upgrade-anual': parseFloat(document.getElementById('cfg-val-upgrade-anual').value)  || 1000.00,
         },
         descricoes: {
-          'onboarding-basico':  document.getElementById('cfg-desc-onboarding-basico').value  || 'Painel Interativo — Acesso Básico + 1 Crédito',
-          'onboarding-premium': document.getElementById('cfg-desc-onboarding-premium').value || 'Painel Interativo — Acesso Premium + 1 Crédito',
-          'credito-basico':     document.getElementById('cfg-desc-credito-basico').value     || 'Painel Interativo — Crédito de Evento Básico',
-          'credito-premium':    document.getElementById('cfg-desc-credito-premium').value    || 'Painel Interativo — Crédito de Evento Premium',
+          basico:          document.getElementById('cfg-desc-basico').value          || 'Painel Interativo — Plano Básico Mensal',
+          'basico-anual':  document.getElementById('cfg-desc-basico-anual').value   || 'Painel Interativo — Plano Básico Anual',
+          premium:         document.getElementById('cfg-desc-premium').value        || 'Painel Interativo — Plano Premium Mensal',
+          'premium-anual': document.getElementById('cfg-desc-premium-anual').value  || 'Painel Interativo — Plano Premium Anual',
+          upgrade:         document.getElementById('cfg-desc-upgrade').value        || 'Painel Interativo — Upgrade para Premium',
+          'upgrade-anual': document.getElementById('cfg-desc-upgrade-anual').value  || 'Painel Interativo — Upgrade para Premium Anual',
         },
         atualizadoEm: serverTimestamp(),
       });
